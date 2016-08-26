@@ -5,28 +5,24 @@ import org.unbrokendome.jsonwebtoken.impl.DefaultJoseHeaderBuilder;
 import org.unbrokendome.jsonwebtoken.impl.DefaultJwtProcessorBuilder;
 
 
-/**
- * @deprecated Use {@link Jwt} instead
- */
-@Deprecated
-public class Jwts {
+public class Jwt {
 
-    private Jwts() {
+    private Jwt() {
         // Private constructor prevents instantiation
     }
 
 
     public static JoseHeaderBuilder header() {
-        return Jwt.header();
+        return new DefaultJoseHeaderBuilder();
     }
 
 
     public static ClaimsBuilder claims() {
-        return Jwt.claims();
+        return new DefaultClaimsBuilder();
     }
 
 
     public static JwtProcessorBuilder processor() {
-        return Jwt.processor();
+        return new DefaultJwtProcessorBuilder();
     }
 }
