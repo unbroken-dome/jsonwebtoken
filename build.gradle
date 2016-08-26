@@ -123,9 +123,6 @@ bintray {
 
         version {
             vcsTag = project.version
-            attributes = [
-                    'gradle-plugin': "org.unbroken-dome.test-sets:${project.group}:${project.name}"
-            ]
         }
     }
 }
