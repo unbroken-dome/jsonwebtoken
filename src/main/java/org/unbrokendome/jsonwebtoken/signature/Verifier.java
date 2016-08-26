@@ -1,10 +1,11 @@
 package org.unbrokendome.jsonwebtoken.signature;
 
+import org.unbrokendome.jsonwebtoken.BinaryData;
+
 import java.security.Key;
 
-import org.unbrokendome.jsonwebtoken.BinaryData;
 
 public interface Verifier {
 
-	void verify(BinaryData header, BinaryData payload, BinaryData signature, Key key) throws JwsSignatureException;
+    void verify(BinaryData header, BinaryData payload, BinaryData signature, Key key) throws JwsSignatureException;
 }

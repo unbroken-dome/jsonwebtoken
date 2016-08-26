@@ -4,36 +4,37 @@ import org.unbrokendome.jsonwebtoken.BinaryData;
 import org.unbrokendome.jsonwebtoken.JoseHeader;
 import org.unbrokendome.jsonwebtoken.Jws;
 
+
 public interface JwsEncoding {
 
-	HeaderSerializer getHeaderSerializer();
+    HeaderSerializer getHeaderSerializer();
 
 
-	HeaderDeserializer getHeaderDeserializer();
+    HeaderDeserializer getHeaderDeserializer();
 
 
-	JwsEncoder getEncoder();
+    JwsEncoder getEncoder();
 
 
-	JwsDecoder getDecoder();
+    JwsDecoder getDecoder();
 
 
-	default BinaryData serializeHeader(JoseHeader header) {
-		return getHeaderSerializer().serialize(header);
-	}
+    default BinaryData serializeHeader(JoseHeader header) {
+        return getHeaderSerializer().serialize(header);
+    }
 
 
-	default JoseHeader deserializeHeader(BinaryData data) throws JwtMalformedTokenException {
-		return getHeaderDeserializer().deserialize(data);
-	}
+    default JoseHeader deserializeHeader(BinaryData data) throws JwtMalformedTokenException {
+        return getHeaderDeserializer().deserialize(data);
+    }
 
 
-	default String encode(BinaryData header, BinaryData payload, BinaryData signature) {
-		return getEncoder().encode(header, payload, signature);
-	}
+    default String encode(BinaryData header, BinaryData payload, BinaryData signature) {
+        return getEncoder().encode(header, payload, signature);
+    }
 
 
-	default Jws decode(String encoded) throws JwtMalformedTokenException {
-		return getDecoder().decode(encoded);
-	}
+    default Jws decode(String encoded) throws JwtMalformedTokenException {
+        return getDecoder().decode(encoded);
+    }
 }

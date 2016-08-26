@@ -2,13 +2,14 @@ package org.unbrokendome.jsonwebtoken.encoding.payload;
 
 import org.unbrokendome.jsonwebtoken.BinaryData;
 
+
 public interface PayloadSerializer<T> {
 
-	boolean supports(Class<?> payloadType);
+    boolean supports(Class<?> payloadType);
 
 
-	BinaryData serialize(Object payload);
+    BinaryData serialize(Object payload);
 
 
-	<U extends T> U deserialize(BinaryData rawPayload, Class<U> targetType);
+    <U extends T> U deserialize(BinaryData rawPayload, Class<U> targetType);
 }

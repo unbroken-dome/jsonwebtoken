@@ -1,10 +1,11 @@
 package org.unbrokendome.jsonwebtoken.signature;
 
+import org.unbrokendome.jsonwebtoken.JoseHeader;
+
 import java.security.Key;
 
-import org.unbrokendome.jsonwebtoken.JoseHeader;
 
 public interface VerificationKeyResolver {
 
-	Key getVerificationKey(JoseHeader header, Object payload);
+    Key getVerificationKey(JoseHeader header, Object payload);
 }

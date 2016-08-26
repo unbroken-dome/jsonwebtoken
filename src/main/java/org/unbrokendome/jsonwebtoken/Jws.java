@@ -2,28 +2,29 @@ package org.unbrokendome.jsonwebtoken;
 
 import java.nio.ByteBuffer;
 
+
 public interface Jws {
 
-	BinaryData getHeader();
+    BinaryData getHeader();
 
 
-	default ByteBuffer getHeaderBytes() {
-		return getHeader().toByteBuffer();
-	}
+    default ByteBuffer getHeaderBytes() {
+        return getHeader().toByteBuffer();
+    }
 
 
-	BinaryData getPayload();
+    BinaryData getPayload();
 
 
-	default ByteBuffer getPayloadBytes() {
-		return getPayload().toByteBuffer();
-	}
+    default ByteBuffer getPayloadBytes() {
+        return getPayload().toByteBuffer();
+    }
 
 
-	BinaryData getSignature();
+    BinaryData getSignature();
 
 
-	default ByteBuffer getSignatureBytes() {
-		return getSignature().toByteBuffer();
-	}
+    default ByteBuffer getSignatureBytes() {
+        return getSignature().toByteBuffer();
+    }
 }

@@ -1,15 +1,15 @@
 package org.unbrokendome.jsonwebtoken.impl;
 
-import java.util.Map;
-
+import com.fasterxml.jackson.annotation.JsonCreator;
 import org.unbrokendome.jsonwebtoken.Claims;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
+import java.util.Map;
+
 
 public class DefaultClaims extends AbstractMapData implements Claims {
 
-	@JsonCreator
-	public DefaultClaims(Map<String, Object> map) {
-		super(map);
-	}
+    @JsonCreator
+    public DefaultClaims(Map<String, Object> map) {
+        super(map);
+    }
 }

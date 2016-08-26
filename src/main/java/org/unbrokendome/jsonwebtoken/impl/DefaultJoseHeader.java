@@ -1,12 +1,13 @@
 package org.unbrokendome.jsonwebtoken.impl;
 
+import org.unbrokendome.jsonwebtoken.JoseHeader;
+
 import java.util.Map;
 
-import org.unbrokendome.jsonwebtoken.JoseHeader;
 
 public class DefaultJoseHeader extends AbstractMapData implements JoseHeader {
 
-	public DefaultJoseHeader(Map<String, Object> map) {
-		super(map);
-	}
+    public DefaultJoseHeader(Map<String, Object> map) {
+        super(map);
+    }
 }
