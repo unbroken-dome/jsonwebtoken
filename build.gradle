@@ -1,6 +1,5 @@
 plugins {
     id 'java'
-    id 'eclipse'
     id 'maven'
     id 'signing'
     id 'com.jfrog.bintray' version '1.7.1'
