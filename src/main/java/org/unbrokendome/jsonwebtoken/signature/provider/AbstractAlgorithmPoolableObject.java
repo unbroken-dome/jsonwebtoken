@@ -3,23 +3,26 @@ package org.unbrokendome.jsonwebtoken.signature.provider;
 import nf.fr.eraasoft.pool.PoolException;
 import nf.fr.eraasoft.pool.PoolableObjectBase;
 
+import javax.annotation.Nullable;
 import java.security.GeneralSecurityException;
 
 
 public abstract class AbstractAlgorithmPoolableObject<T> extends PoolableObjectBase<T> {
 
     private final String algorithm;
+    private final String provider;
 
 
-    public AbstractAlgorithmPoolableObject(String algorithm) {
+    public AbstractAlgorithmPoolableObject(String algorithm, @Nullable String provider) {
         this.algorithm = algorithm;
+        this.provider = provider;
     }
 
 
     @Override
     public T make() throws PoolException {
         try {
-            return getInstance(algorithm);
+            return getInstance(algorithm, provider);
         } catch (GeneralSecurityException e) {
             throw new PoolException(e);
         }
@@ -31,5 +34,6 @@ public abstract class AbstractAlgorithmPoolableObject<T> extends PoolableObjectB
     }
 
 
-    protected abstract T getInstance(String algorithm) throws GeneralSecurityException;
+    protected abstract T getInstance(String algorithm, @Nullable String provider)
+            throws GeneralSecurityException;
 }

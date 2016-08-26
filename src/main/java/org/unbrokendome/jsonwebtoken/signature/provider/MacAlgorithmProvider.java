@@ -1,22 +1,30 @@
 package org.unbrokendome.jsonwebtoken.signature.provider;
 
+import javax.annotation.Nullable;
 import javax.crypto.Mac;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 
 
 public class MacAlgorithmProvider implements AlgorithmProvider<Mac> {
 
     private final String algorithm;
+    private final String provider;
 
 
-    public MacAlgorithmProvider(String algorithm) {
+    public MacAlgorithmProvider(String algorithm, @Nullable String provider) {
         this.algorithm = algorithm;
+        this.provider = provider;
     }
 
 
     @Override
-    public Mac getInstance() throws NoSuchAlgorithmException {
-        return Mac.getInstance(algorithm);
+    public Mac getInstance() throws NoSuchAlgorithmException, NoSuchProviderException {
+        if (provider != null) {
+            return Mac.getInstance(algorithm, provider);
+        } else {
+            return Mac.getInstance(algorithm);
+        }
     }
 
 

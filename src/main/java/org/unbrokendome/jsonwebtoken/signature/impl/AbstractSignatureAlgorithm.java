@@ -2,6 +2,7 @@ package org.unbrokendome.jsonwebtoken.signature.impl;
 
 import org.unbrokendome.jsonwebtoken.signature.SignatureAlgorithm;
 
+import javax.annotation.Nullable;
 import java.security.Key;
 
 
@@ -10,11 +11,13 @@ public abstract class AbstractSignatureAlgorithm<TSigningKey extends Key, TVerif
 
     private final String jwaName;
     private final String jcaName;
+    private final String jcaProvider;
 
 
-    public AbstractSignatureAlgorithm(String jwaName, String jcaName) {
+    public AbstractSignatureAlgorithm(String jwaName, String jcaName, @Nullable String jcaProvider) {
         this.jwaName = jwaName;
         this.jcaName = jcaName;
+        this.jcaProvider = jcaProvider;
     }
 
 
@@ -26,5 +29,11 @@ public abstract class AbstractSignatureAlgorithm<TSigningKey extends Key, TVerif
 
     public String getJcaName() {
         return jcaName;
+    }
+
+
+    @Nullable
+    public String getJcaProvider() {
+        return jcaProvider;
     }
 }

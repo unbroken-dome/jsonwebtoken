@@ -13,19 +13,27 @@ import java.security.PublicKey;
 import java.security.Signature;
 
 
-public class DefaultRsaSignatureAlgorithm extends AbstractSignatureAlgorithm<PrivateKey, PublicKey> {
+public class DefaultAsymmetricSignatureAlgorithm extends AbstractSignatureAlgorithm<PrivateKey, PublicKey> {
 
-    public DefaultRsaSignatureAlgorithm(String jwaName, String jcaName) {
-        super(jwaName, jcaName);
+    public DefaultAsymmetricSignatureAlgorithm(String jwaName, String jcaName, @Nullable String jcaProvider) {
+        super(jwaName, jcaName, jcaProvider);
+    }
+
+
+    public DefaultAsymmetricSignatureAlgorithm(String jwaName, String jcaName) {
+        this(jwaName, jcaName, null);
     }
 
 
     @Override
     public Pair<Signer<PrivateKey>, Verifier<PublicKey>>
     createSignerAndVerifier(@Nullable PoolConfigurer poolConfigurer) {
-        AlgorithmProvider<Signature> provider = AlgorithmProviders.rsa(getJcaName(), poolConfigurer);
-        Signer<PrivateKey> signer = new RsaPrivateKeySigner(provider);
-        Verifier<PublicKey> verifier = new RsaPublicKeyVerifier(provider);
+
+        AlgorithmProvider<Signature> provider =
+                AlgorithmProviders.signature(getJcaName(), getJcaProvider(), poolConfigurer);
+
+        Signer<PrivateKey> signer = new SignaturePrivateKeySigner(provider);
+        Verifier<PublicKey> verifier = new SignaturePublicKeyVerifier(provider);
 
         return Pair.of(signer, verifier);
     }
@@ -33,6 +41,6 @@ public class DefaultRsaSignatureAlgorithm extends AbstractSignatureAlgorithm<Pri
 
     @Override
     public Verifier<PublicKey> createVerifier(@Nullable PoolConfigurer poolConfigurer) {
-        return new RsaPublicKeyVerifier(AlgorithmProviders.rsa(getJcaName(), poolConfigurer));
+        return new SignaturePublicKeyVerifier(AlgorithmProviders.signature(getJcaName(), poolConfigurer));
     }
 }

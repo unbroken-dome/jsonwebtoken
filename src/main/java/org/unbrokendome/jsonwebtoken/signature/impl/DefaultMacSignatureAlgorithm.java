@@ -12,8 +12,13 @@ import javax.crypto.SecretKey;
 
 public class DefaultMacSignatureAlgorithm extends AbstractSignatureAlgorithm<SecretKey, SecretKey> {
 
+    public DefaultMacSignatureAlgorithm(String jwaName, String jcaName, @Nullable String jcaProvider) {
+        super(jwaName, jcaName, jcaProvider);
+    }
+
+
     public DefaultMacSignatureAlgorithm(String jwaName, String jcaName) {
-        super(jwaName, jcaName);
+        this(jwaName, jcaName, null);
     }
 
 

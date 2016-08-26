@@ -1,18 +1,25 @@
 package org.unbrokendome.jsonwebtoken.signature.provider;
 
+import javax.annotation.Nullable;
 import javax.crypto.Mac;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 
 
 public final class MacPoolableObject extends AbstractAlgorithmPoolableObject<Mac> {
 
-    public MacPoolableObject(String algorithm) {
-        super(algorithm);
+    public MacPoolableObject(String algorithm, @Nullable String provider) {
+        super(algorithm, provider);
     }
 
 
     @Override
-    protected Mac getInstance(String algorithm) throws NoSuchAlgorithmException {
-        return Mac.getInstance(algorithm);
+    protected Mac getInstance(String algorithm, @Nullable String provider)
+            throws NoSuchAlgorithmException, NoSuchProviderException {
+        if (provider != null) {
+            return Mac.getInstance(algorithm, provider);
+        } else {
+            return Mac.getInstance(algorithm);
+        }
     }
 }

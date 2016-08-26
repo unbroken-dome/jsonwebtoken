@@ -1,7 +1,7 @@
 package org.unbrokendome.jsonwebtoken.signature;
 
 import org.unbrokendome.jsonwebtoken.signature.impl.DefaultMacSignatureAlgorithm;
-import org.unbrokendome.jsonwebtoken.signature.impl.DefaultRsaSignatureAlgorithm;
+import org.unbrokendome.jsonwebtoken.signature.impl.DefaultAsymmetricSignatureAlgorithm;
 import org.unbrokendome.jsonwebtoken.signature.impl.NoneSignatureAlgorithm;
 
 import javax.crypto.SecretKey;
@@ -24,13 +24,31 @@ public final class SignatureAlgorithms {
             new DefaultMacSignatureAlgorithm("HS512", "HmacSHA512");
 
     public static final SignatureAlgorithm<PrivateKey, PublicKey> RS256 =
-            new DefaultRsaSignatureAlgorithm("RS256", "SHA256withRSA");
+            new DefaultAsymmetricSignatureAlgorithm("RS256", "SHA256withRSA");
 
     public static final SignatureAlgorithm<PrivateKey, PublicKey> RS384 =
-            new DefaultRsaSignatureAlgorithm("RS384", "SHA384withRSA");
+            new DefaultAsymmetricSignatureAlgorithm("RS384", "SHA384withRSA");
 
     public static final SignatureAlgorithm<PrivateKey, PublicKey> RS512 =
-            new DefaultRsaSignatureAlgorithm("RS512", "SHA512withRSA");
+            new DefaultAsymmetricSignatureAlgorithm("RS512", "SHA512withRSA");
+
+    public static final SignatureAlgorithm<PrivateKey, PublicKey> ES256 =
+            new DefaultAsymmetricSignatureAlgorithm("ES256", "SHA256withECDSA");
+
+    public static final SignatureAlgorithm<PrivateKey, PublicKey> ES384 =
+            new DefaultAsymmetricSignatureAlgorithm("ES384", "SHA384withECDSA");
+
+    public static final SignatureAlgorithm<PrivateKey, PublicKey> ES512 =
+            new DefaultAsymmetricSignatureAlgorithm("ES512", "SHA512withECDSA");
+
+    public static final SignatureAlgorithm<PrivateKey, PublicKey> PS256 =
+            new DefaultAsymmetricSignatureAlgorithm("PS256", "SHA256WITHRSAANDMGF1");
+
+    public static final SignatureAlgorithm<PrivateKey, PublicKey> PS384 =
+            new DefaultAsymmetricSignatureAlgorithm("PS384", "SHA384WITHRSAANDMGF1");
+
+    public static final SignatureAlgorithm<PrivateKey, PublicKey> PS512 =
+            new DefaultAsymmetricSignatureAlgorithm("PS512", "SHA512WITHRSAANDMGF1");
 
 
     private SignatureAlgorithms() {

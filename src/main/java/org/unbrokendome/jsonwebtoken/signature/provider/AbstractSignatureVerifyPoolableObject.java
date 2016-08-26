@@ -2,14 +2,15 @@ package org.unbrokendome.jsonwebtoken.signature.provider;
 
 import nf.fr.eraasoft.pool.PoolException;
 
+import javax.annotation.Nullable;
 import java.security.Signature;
 import java.security.SignatureException;
 
 
-public abstract class AbstractRsaVerifyPoolableObject extends AbstractAlgorithmPoolableObject<Signature> {
+public abstract class AbstractSignatureVerifyPoolableObject extends AbstractAlgorithmPoolableObject<Signature> {
 
-    public AbstractRsaVerifyPoolableObject(String algorithm) {
-        super(algorithm);
+    public AbstractSignatureVerifyPoolableObject(String algorithm, @Nullable String provider) {
+        super(algorithm, provider);
     }
 
 

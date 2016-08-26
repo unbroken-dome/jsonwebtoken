@@ -8,9 +8,9 @@ import java.security.Signature;
 import java.security.SignatureException;
 
 
-public final class RsaPrivateKeySigner extends AbstractSigner<Signature, PrivateKey> {
+public final class SignaturePrivateKeySigner extends AbstractSigner<Signature, PrivateKey> {
 
-    public RsaPrivateKeySigner(AlgorithmProvider<Signature> provider) {
+    public SignaturePrivateKeySigner(AlgorithmProvider<Signature> provider) {
         super(provider);
     }
 

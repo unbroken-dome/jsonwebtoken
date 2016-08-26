@@ -1,32 +1,37 @@
 package org.unbrokendome.jsonwebtoken.signature.impl;
 
+import com.google.common.base.Preconditions;
 import org.unbrokendome.jsonwebtoken.BinaryData;
 import org.unbrokendome.jsonwebtoken.signature.JwsSignatureException;
 import org.unbrokendome.jsonwebtoken.signature.JwsSignatureMismatchException;
 import org.unbrokendome.jsonwebtoken.signature.Verifier;
 import org.unbrokendome.jsonwebtoken.signature.provider.AlgorithmProvider;
 
+import javax.annotation.Nullable;
 import java.nio.charset.StandardCharsets;
 import java.security.PublicKey;
 import java.security.Signature;
 import java.security.SignatureException;
 
 
-public final class RsaPublicKeyVerifier
+public final class SignaturePublicKeyVerifier
         extends SecurityAlgorithmSupport<Signature>
         implements Verifier<PublicKey> {
 
     private static final byte[] ENCODED_SEPARATOR = ".".getBytes(StandardCharsets.UTF_8);
 
 
-    public RsaPublicKeyVerifier(AlgorithmProvider<Signature> provider) {
+    public SignaturePublicKeyVerifier(AlgorithmProvider<Signature> provider) {
         super(provider);
     }
 
 
     @Override
-    public void verify(BinaryData header, BinaryData payload, BinaryData signature, PublicKey key)
+    public void verify(BinaryData header, BinaryData payload, BinaryData signature, @Nullable PublicKey key)
             throws JwsSignatureException {
+
+        Preconditions.checkArgument(key != null, "Verification key must not be null");
+
         try {
             if (!doVerify(header, payload, signature, key)) {
                 throw new JwsSignatureMismatchException("Incorrect signature");

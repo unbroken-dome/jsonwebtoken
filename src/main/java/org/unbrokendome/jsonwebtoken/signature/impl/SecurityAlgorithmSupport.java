@@ -2,6 +2,7 @@ package org.unbrokendome.jsonwebtoken.signature.impl;
 
 import org.unbrokendome.jsonwebtoken.signature.provider.AlgorithmProvider;
 
+import java.security.GeneralSecurityException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SignatureException;
@@ -44,8 +45,8 @@ public abstract class SecurityAlgorithmSupport<T> {
     private T getAlgorithmInstance() {
         try {
             return provider.getInstance();
-        } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException("Signature algorithm not supported");
+        } catch (GeneralSecurityException e) {
+            throw new IllegalStateException("Signature algorithm not supported", e);
         }
     }
 
