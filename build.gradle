@@ -1,126 +1,140 @@
 plugins {
-	id 'java'
-	id 'eclipse'
-	id 'maven'
-	id 'maven-publish'
-	id 'signing'
-	id 'com.jfrog.bintray' version '1.0'
+    id 'java'
+    id 'eclipse'
+    id 'maven'
+    id 'signing'
+    id 'com.jfrog.bintray' version '1.7.1'
 }
 
-group = 'org.unbroken-dome.jsonwebtoken'
-archivesBaseName = 'jsonwebtoken'
-version = '0.1'
-
+if (!gradle.startParameter.taskNames.contains('release')) {
+    println "Not a release build, setting version to ${version}-SNAPSHOT"
+    version += '-SNAPSHOT'
+}
 
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
 
 
 dependencies {
-	compile 'org.apache.commons:commons-lang3:3.3.2'
-	compile 'org.slf4j:slf4j-api:1.7.10'
-	compile 'com.fasterxml.jackson.core:jackson-databind:2.5.1'
-	compile 'com.google.guava:guava:18.0'
-	compile 'nf.fr.eraasoft:objectpool:1.1.2'
-	compile 'com.google.code.findbugs:jsr305:3.0.0'
-	
-	testCompile 'junit:junit:4.12'
-	testCompile 'org.hamcrest:hamcrest-all:1.3'
-	testCompile 'org.mockito:mockito-all:1.10.19'
+    compile 'org.apache.commons:commons-lang3:3.3.2'
+    compile 'org.slf4j:slf4j-api:1.7.10'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.5.1'
+    compile 'com.google.guava:guava:18.0'
+    compile 'nf.fr.eraasoft:objectpool:1.1.2'
+    compile 'com.google.code.findbugs:jsr305:3.0.0'
+
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.hamcrest:hamcrest-all:1.3'
+    testCompile 'org.mockito:mockito-all:1.10.19'
+}
+
+
+def pomDefinition = pom {
+    project {
+        name project.friendly_name
+        packaging 'jar'
+        description project.description
+        url project.home_url
+
+        scm {
+            connection "scm:git:${project.scm_url}"
+            developerConnection "scm:git:${project.scm_url}"
+            url project.scm_url
+        }
+
+        licenses {
+            license {
+                name = project.license_name
+                url project.license_url
+            }
+        }
+
+        developers {
+            developer {
+                name 'Till Krullmann'
+                email 'till.krullmann@gmx.net'
+            }
+        }
+    }
+}
+
+
+task generatePom {
+    outputs.file "$buildDir/poms/pom.xml"
+    doLast {
+        pomDefinition.writeTo "$buildDir/poms/pom.xml"
+    }
+}
+
+
+jar {
+    into("META-INF/maven/$project.group/$project.name") {
+        from generatePom
+    }
 }
 
 
 task javadocJar(type: Jar) {
-	description = 'Assembles a jar archive containing the javadocs.'
-	classifier = 'javadoc'
-	from javadoc
+    description = 'Assembles a jar archive containing the javadocs.'
+    classifier = 'javadoc'
+    from javadoc
 }
 
 
 task sourcesJar(type: Jar) {
-	description = 'Assembles a jar archive containing the sources.'
-	classifier = 'sources'
-	from sourceSets.main.allSource
-}
-
-
-eclipse.project {
-	natures 'org.springsource.ide.eclipse.gradle.core.nature'
+    description = 'Assembles a jar archive containing the sources.'
+    classifier = 'sources'
+    from sourceSets.main.allSource
 }
 
 
 artifacts {
-	archives javadocJar, sourcesJar
+    archives javadocJar, sourcesJar
 }
 
 
 signing {
-	sign configurations.archives
-}
-
-
-
-def pomDefinition = pom {
-	project {
-		name project.friendly_name
-		packaging 'jar'
-		description project.description
-		url project.home_url
-		
-		scm {
-			connection "scm:git:${project.scm_url}"
-			developerConnection "scm:git:${project.scm_url}"
-			url project.scm_url
-		}
-		
-		licenses {
-			license {
-				name = project.license_name
-				url project.license_url
-			}
-		}
-		
-		developers {
-			developer {
-				name 'Till Krullmann'
-				email 'till.krullmann@gmx.net'
-			}
-		}
-	}
+    sign configurations.archives
 }
 
 
 install {
-	repositories.mavenInstaller {
-		beforeDeployment { deployment -> signing.signPom(deployment) }
-		
-		pom = pomDefinition
-	}
+    repositories.mavenInstaller {
+        beforeDeployment { deployment -> signing.signPom(deployment) }
+        pom = pomDefinition
+    }
 }
 
 
 bintray {
-	user = bintray_user
-	key = bintray_key
-	configurations = ['archives']
-	
-	pkg {
-		repo = project.bintray_repo
-		name = project.name
-		desc = project.description
-		websiteUrl = project.home_url
-		licenses = ['MIT']
-		labels = ['jsonwebtoken', 'jwt']
-		
-		vcsUrl = project.scm_url
-		issueTrackerUrl = project.issues_url
-		publicDownloadNumbers = true
-		
-		version {
-			vcsTag = project.version
-			attributes = [
-				'gradle-plugin': "org.unbroken-dome.test-sets:${project.group}:${project.name}"
-			]
-		}
-	}
+    user = bintray_user
+    key = bintray_key
+    configurations = ['archives']
+
+    pkg {
+        repo = project.bintray_repo
+        name = project.name
+        desc = project.description
+        websiteUrl = project.home_url
+        licenses = ['MIT']
+        labels = ['jsonwebtoken', 'jwt']
+
+        vcsUrl = project.scm_url
+        issueTrackerUrl = project.issues_url
+        publicDownloadNumbers = true
+
+        version {
+            vcsTag = project.version
+            attributes = [
+                    'gradle-plugin': "org.unbroken-dome.test-sets:${project.group}:${project.name}"
+            ]
+        }
+    }
+}
+
+
+task release(dependsOn: ['bintrayUpload']) {
+    group = 'publishing'
+} << {
+    println "Releasing $version"
 }
