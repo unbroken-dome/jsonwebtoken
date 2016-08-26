@@ -6,7 +6,7 @@ import org.unbrokendome.jsonwebtoken.signature.Verifier;
 import java.security.Key;
 
 
-public final class NoneVerifier implements Verifier {
+public final class NoneVerifier implements Verifier<Key> {
 
     private static final NoneVerifier INSTANCE = new NoneVerifier();
 

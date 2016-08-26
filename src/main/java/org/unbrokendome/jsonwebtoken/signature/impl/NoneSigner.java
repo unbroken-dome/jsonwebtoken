@@ -7,7 +7,7 @@ import org.unbrokendome.jsonwebtoken.signature.Signer;
 import java.security.Key;
 
 
-public final class NoneSigner implements Signer {
+public final class NoneSigner implements Signer<Key> {
 
     private static final NoneSigner INSTANCE = new NoneSigner();
 

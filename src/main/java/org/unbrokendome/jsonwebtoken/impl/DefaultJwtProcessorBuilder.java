@@ -14,9 +14,9 @@ import org.unbrokendome.jsonwebtoken.encoding.payload.StringPayloadSerializer;
 import org.unbrokendome.jsonwebtoken.signature.*;
 import org.unbrokendome.jsonwebtoken.signature.provider.PoolConfigurer;
 
+import java.security.Key;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -25,12 +25,12 @@ public class DefaultJwtProcessorBuilder implements JwtProcessorBuilder {
 
     private Supplier<ObjectMapper> objectMapperSupplier = ObjectMapper::new;
     private ImmutableList.Builder<PayloadSerializer<?>> payloadSerializers = ImmutableList.builder();
-    private SignatureAlgorithm signingAlgorithm = SignatureAlgorithms.NONE;
-    private SigningKeyResolver signingKeyResolver;
-    private VerificationKeyResolver verificationKeyResolver;
+    private SignatureAlgorithm<?, ?> signingAlgorithm = SignatureAlgorithms.NONE;
+    private SigningKeyResolver<?> signingKeyResolver;
+    private VerificationKeyResolver<?> verificationKeyResolver;
 
-    private Optional<PoolConfigurer> poolConfigurer = Optional.empty();
-    private Map<String, Function<Optional<PoolConfigurer>, VerifierWithKeyResolver>> verifierBuilders = new HashMap<>();
+    private PoolConfigurer poolConfigurer;
+    private Map<String, Function<PoolConfigurer, VerifierWithKeyResolver<?>>> verifierBuilders = new HashMap<>();
 
 
     @Override
@@ -42,9 +42,7 @@ public class DefaultJwtProcessorBuilder implements JwtProcessorBuilder {
 
     @Override
     public JwtProcessorBuilder configurePool(int minSize, int maxIdle) {
-        this.poolConfigurer = Optional.of(settings -> {
-            settings.min(minSize).maxIdle(maxIdle);
-        });
+        this.poolConfigurer = settings -> settings.min(minSize).maxIdle(maxIdle);
         return this;
     }
 
@@ -57,8 +55,10 @@ public class DefaultJwtProcessorBuilder implements JwtProcessorBuilder {
 
 
     @Override
-    public JwtProcessorBuilder signAndVerifyWith(SignatureAlgorithm algorithm, SigningKeyResolver signingKeyResolver,
-                                                 VerificationKeyResolver verificationKeyResolver) {
+    public <TSigningKey extends Key, TVerificationKey extends Key>
+    JwtProcessorBuilder signAndVerifyWith(SignatureAlgorithm<TSigningKey, TVerificationKey> algorithm,
+                                          SigningKeyResolver<TSigningKey> signingKeyResolver,
+                                          VerificationKeyResolver<TVerificationKey> verificationKeyResolver) {
         this.signingAlgorithm = algorithm;
         this.signingKeyResolver = signingKeyResolver;
         this.verificationKeyResolver = verificationKeyResolver;
@@ -67,9 +67,11 @@ public class DefaultJwtProcessorBuilder implements JwtProcessorBuilder {
 
 
     @Override
-    public JwtProcessorBuilder verifyWith(SignatureAlgorithm algorithm, VerificationKeyResolver keyResolver) {
+    public <TVerificationKey extends Key>
+    JwtProcessorBuilder verifyWith(SignatureAlgorithm<?, TVerificationKey> algorithm,
+                                   VerificationKeyResolver<TVerificationKey> keyResolver) {
         verifierBuilders.put(algorithm.getJwaName(),
-                poolConfigurer -> new VerifierWithKeyResolver(algorithm.createVerifier(poolConfigurer), keyResolver));
+                poolConfigurer -> new VerifierWithKeyResolver<>(algorithm.createVerifier(poolConfigurer), keyResolver));
         return this;
     }
 
@@ -80,19 +82,28 @@ public class DefaultJwtProcessorBuilder implements JwtProcessorBuilder {
 
         addDefaultPayloadSerializers(objectMapper);
 
-        Map<String, VerifierWithKeyResolver> verifiers = new HashMap<>();
+        Map<String, VerifierWithKeyResolver<?>> verifiers = new HashMap<>();
 
-        Pair<Signer, Verifier> signerAndVerifier = signingAlgorithm.createSignerAndVerifier(poolConfigurer);
-        Signer signer = signerAndVerifier.getLeft();
-        verifiers.put(signingAlgorithm.getJwaName(), new VerifierWithKeyResolver(signerAndVerifier.getRight(),
-                verificationKeyResolver));
+        Pair<? extends Signer<?>, ? extends Verifier<?>> signerAndVerifier =
+                signingAlgorithm.createSignerAndVerifier(poolConfigurer);
+        Signer<?> signer = signerAndVerifier.getLeft();
+
+        //noinspection unchecked, rawtypes
+        verifiers.put(signingAlgorithm.getJwaName(),
+                new VerifierWithKeyResolver(signerAndVerifier.getRight(), verificationKeyResolver));
 
         if (verifierBuilders != null) {
-            verifiers.putAll(Maps.transformValues(verifierBuilders, (f) -> f.apply(poolConfigurer)));
+            verifiers.putAll(Maps.transformValues(verifierBuilders,
+                    f -> (f != null) ? f.apply(poolConfigurer) : null));
         }
 
-        return new DefaultJwtProcessor(payloadSerializers.build(), signingAlgorithm, signer, signingKeyResolver,
-                verifiers, new JwsCompactEncoding(objectMapper));
+        return new DefaultJwtProcessor(
+                payloadSerializers.build(),
+                signingAlgorithm,
+                signer,
+                signingKeyResolver,
+                verifiers,
+                new JwsCompactEncoding(objectMapper));
     }
 
 

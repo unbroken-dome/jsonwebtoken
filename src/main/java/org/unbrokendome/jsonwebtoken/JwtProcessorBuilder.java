@@ -7,24 +7,42 @@ import org.unbrokendome.jsonwebtoken.signature.SigningKeyResolver;
 import org.unbrokendome.jsonwebtoken.signature.VerificationKeyResolver;
 
 import java.security.Key;
+import java.security.KeyPair;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 
 
 public interface JwtProcessorBuilder {
 
-    JwtProcessorBuilder signAndVerifyWith(SignatureAlgorithm algorithm, SigningKeyResolver signingKeyResolver,
-                                          VerificationKeyResolver verificationKeyResolver);
+    <TSigningKey extends Key, TVerificationKey extends Key>
+    JwtProcessorBuilder signAndVerifyWith(SignatureAlgorithm<TSigningKey, TVerificationKey> algorithm,
+                                          SigningKeyResolver<TSigningKey> signingKeyResolver,
+                                          VerificationKeyResolver<TVerificationKey> verificationKeyResolver);
 
 
-    default JwtProcessorBuilder signAndVerifyWith(SignatureAlgorithm algorithm, Key key) {
+    default <TKey extends Key>
+    JwtProcessorBuilder signAndVerifyWith(SignatureAlgorithm<TKey, TKey> algorithm, TKey key) {
         return signAndVerifyWith(algorithm, (h, p) -> key, (h, p) -> key);
     }
 
 
-    JwtProcessorBuilder verifyWith(SignatureAlgorithm algorithm, VerificationKeyResolver keyResolver);
+    default JwtProcessorBuilder signAndVerifyWith(SignatureAlgorithm<PrivateKey, PublicKey> algorithm,
+                                                  KeyPair keyPair) {
+        return signAndVerifyWith(algorithm,
+                (h, p) -> keyPair.getPrivate(),
+                (h, p) -> keyPair.getPublic());
+    }
 
 
-    default JwtProcessorBuilder verifyWith(SignatureAlgorithm algorithm, Key key) {
-        return verifyWith(algorithm, (h, p) -> key);
+    <TVerificationKey extends Key>
+    JwtProcessorBuilder verifyWith(SignatureAlgorithm<?, TVerificationKey> algorithm,
+                                   VerificationKeyResolver<TVerificationKey> keyResolver);
+
+
+    default <TVerificationKey extends Key>
+    JwtProcessorBuilder verifyWith(SignatureAlgorithm<?, TVerificationKey> algorithm,
+                                   TVerificationKey key) {
+        return verifyWith(algorithm, (VerificationKeyResolver<TVerificationKey>) ((h, p) -> key));
     }
 
 

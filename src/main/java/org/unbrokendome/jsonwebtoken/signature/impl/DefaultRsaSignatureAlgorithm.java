@@ -7,11 +7,13 @@ import org.unbrokendome.jsonwebtoken.signature.provider.AlgorithmProvider;
 import org.unbrokendome.jsonwebtoken.signature.provider.AlgorithmProviders;
 import org.unbrokendome.jsonwebtoken.signature.provider.PoolConfigurer;
 
+import javax.annotation.Nullable;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.Signature;
-import java.util.Optional;
 
 
-public class DefaultRsaSignatureAlgorithm extends AbstractSignatureAlgorithm {
+public class DefaultRsaSignatureAlgorithm extends AbstractSignatureAlgorithm<PrivateKey, PublicKey> {
 
     public DefaultRsaSignatureAlgorithm(String jwaName, String jcaName) {
         super(jwaName, jcaName);
@@ -19,17 +21,18 @@ public class DefaultRsaSignatureAlgorithm extends AbstractSignatureAlgorithm {
 
 
     @Override
-    public Pair<Signer, Verifier> createSignerAndVerifier(Optional<PoolConfigurer> poolConfigurer) {
+    public Pair<Signer<PrivateKey>, Verifier<PublicKey>>
+    createSignerAndVerifier(@Nullable PoolConfigurer poolConfigurer) {
         AlgorithmProvider<Signature> provider = AlgorithmProviders.rsa(getJcaName(), poolConfigurer);
-        Signer signer = new RsaPrivateKeySigner(provider);
-        Verifier verifier = new RsaFlexibleVerifier(provider, signer);
+        Signer<PrivateKey> signer = new RsaPrivateKeySigner(provider);
+        Verifier<PublicKey> verifier = new RsaPublicKeyVerifier(provider);
 
         return Pair.of(signer, verifier);
     }
 
 
     @Override
-    public Verifier createVerifier(Optional<PoolConfigurer> poolConfigurer) {
+    public Verifier<PublicKey> createVerifier(@Nullable PoolConfigurer poolConfigurer) {
         return new RsaPublicKeyVerifier(AlgorithmProviders.rsa(getJcaName(), poolConfigurer));
     }
 }

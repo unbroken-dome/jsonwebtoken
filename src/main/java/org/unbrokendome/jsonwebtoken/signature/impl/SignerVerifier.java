@@ -9,18 +9,18 @@ import org.unbrokendome.jsonwebtoken.signature.Verifier;
 import java.security.Key;
 
 
-public final class SignerVerifier implements Verifier {
+public final class SignerVerifier<TKey extends Key> implements Verifier<TKey> {
 
-    private final Signer signer;
+    private final Signer<TKey> signer;
 
 
-    public SignerVerifier(Signer signer) {
+    public SignerVerifier(Signer<TKey> signer) {
         this.signer = signer;
     }
 
 
     @Override
-    public void verify(BinaryData header, BinaryData payload, BinaryData signature, Key key)
+    public void verify(BinaryData header, BinaryData payload, BinaryData signature, TKey key)
             throws JwsSignatureException {
         BinaryData expectedSignature = signer.sign(header, payload, key);
         if (!expectedSignature.equals(signature)) {

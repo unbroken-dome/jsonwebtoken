@@ -6,10 +6,11 @@ import org.unbrokendome.jsonwebtoken.signature.Verifier;
 import org.unbrokendome.jsonwebtoken.signature.provider.AlgorithmProviders;
 import org.unbrokendome.jsonwebtoken.signature.provider.PoolConfigurer;
 
-import java.util.Optional;
+import javax.annotation.Nullable;
+import javax.crypto.SecretKey;
 
 
-public class DefaultMacSignatureAlgorithm extends AbstractSignatureAlgorithm {
+public class DefaultMacSignatureAlgorithm extends AbstractSignatureAlgorithm<SecretKey, SecretKey> {
 
     public DefaultMacSignatureAlgorithm(String jwaName, String jcaName) {
         super(jwaName, jcaName);
@@ -17,15 +18,15 @@ public class DefaultMacSignatureAlgorithm extends AbstractSignatureAlgorithm {
 
 
     @Override
-    public Pair<Signer, Verifier> createSignerAndVerifier(Optional<PoolConfigurer> poolConfigurer) {
-        Signer signer = new MacSigner(AlgorithmProviders.mac(getJcaName(), poolConfigurer));
-        Verifier verifier = new SignerVerifier(signer);
+    public Pair<Signer<SecretKey>, Verifier<SecretKey>> createSignerAndVerifier(@Nullable PoolConfigurer poolConfigurer) {
+        Signer<SecretKey> signer = new MacSigner(AlgorithmProviders.mac(getJcaName(), poolConfigurer));
+        Verifier<SecretKey> verifier = new SignerVerifier<>(signer);
         return Pair.of(signer, verifier);
     }
 
 
     @Override
-    public Verifier createVerifier(Optional<PoolConfigurer> poolConfigurer) {
+    public Verifier<SecretKey> createVerifier(@Nullable PoolConfigurer poolConfigurer) {
         return createSignerAndVerifier(poolConfigurer).getRight();
     }
 }

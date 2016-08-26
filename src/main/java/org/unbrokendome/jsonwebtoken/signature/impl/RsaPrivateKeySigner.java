@@ -1,16 +1,14 @@
 package org.unbrokendome.jsonwebtoken.signature.impl;
 
-import com.google.common.base.Preconditions;
 import org.unbrokendome.jsonwebtoken.BinaryData;
 import org.unbrokendome.jsonwebtoken.signature.provider.AlgorithmProvider;
 
-import java.security.Key;
 import java.security.PrivateKey;
 import java.security.Signature;
 import java.security.SignatureException;
 
 
-public final class RsaPrivateKeySigner extends AbstractSigner<Signature> {
+public final class RsaPrivateKeySigner extends AbstractSigner<Signature, PrivateKey> {
 
     public RsaPrivateKeySigner(AlgorithmProvider<Signature> provider) {
         super(provider);
@@ -18,12 +16,11 @@ public final class RsaPrivateKeySigner extends AbstractSigner<Signature> {
 
 
     @Override
-    protected final BinaryData calculateSignature(BinaryData header, BinaryData payload, Key key)
+    protected final BinaryData calculateSignature(BinaryData header, BinaryData payload, PrivateKey key)
             throws SignatureException {
-        Preconditions.checkArgument(key instanceof PrivateKey, "Key must be a PrivateKey");
 
         byte[] sigBytes = doWithAlgorithm(sig -> {
-            sig.initSign((PrivateKey) key);
+            sig.initSign(key);
             sig.update(header.toByteBuffer());
             sig.update(getEncodedSeparator());
             sig.update(payload.toByteBuffer());

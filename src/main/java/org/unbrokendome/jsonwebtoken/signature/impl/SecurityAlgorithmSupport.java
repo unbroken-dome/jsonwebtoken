@@ -50,13 +50,13 @@ public abstract class SecurityAlgorithmSupport<T> {
     }
 
 
-    protected static interface AlgorithmCallback<T, R> {
+    protected interface AlgorithmCallback<T, R> {
 
         R callback(T instance) throws InvalidKeyException, SignatureException;
     }
 
 
-    protected static interface SafeAlgorithmCallback<T, R> {
+    protected interface SafeAlgorithmCallback<T, R> {
 
         R callback(T instance) throws InvalidKeyException;
     }

@@ -10,7 +10,9 @@ import java.security.Key;
 import java.security.SignatureException;
 
 
-public abstract class AbstractSigner<T> extends SecurityAlgorithmSupport<T> implements Signer {
+public abstract class AbstractSigner<TAlgorithm, TSigningKey extends Key>
+        extends SecurityAlgorithmSupport<TAlgorithm>
+        implements Signer<TSigningKey> {
 
     private static final byte[] ENCODED_SEPARATOR = ".".getBytes(StandardCharsets.UTF_8);
 
@@ -20,13 +22,13 @@ public abstract class AbstractSigner<T> extends SecurityAlgorithmSupport<T> impl
     }
 
 
-    public AbstractSigner(AlgorithmProvider<T> provider) {
+    public AbstractSigner(AlgorithmProvider<TAlgorithm> provider) {
         super(provider);
     }
 
 
     @Override
-    public final BinaryData sign(BinaryData header, BinaryData payload, Key key) throws JwsSignatureException {
+    public final BinaryData sign(BinaryData header, BinaryData payload, TSigningKey key) throws JwsSignatureException {
         try {
             return calculateSignature(header, payload, key);
         } catch (SignatureException e) {
@@ -35,6 +37,6 @@ public abstract class AbstractSigner<T> extends SecurityAlgorithmSupport<T> impl
     }
 
 
-    protected abstract BinaryData calculateSignature(BinaryData header, BinaryData payload, Key key)
+    protected abstract BinaryData calculateSignature(BinaryData header, BinaryData payload, TSigningKey key)
             throws SignatureException;
 }

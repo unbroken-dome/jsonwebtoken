@@ -5,7 +5,7 @@ import org.unbrokendome.jsonwebtoken.JoseHeaderBuilder;
 import java.security.Key;
 
 
-public interface SigningKeyResolver {
+public interface SigningKeyResolver<TSigningKey extends Key> {
 
-    Key getSigningKey(JoseHeaderBuilder header, Object payload);
+    TSigningKey getSigningKey(JoseHeaderBuilder header, Object payload);
 }

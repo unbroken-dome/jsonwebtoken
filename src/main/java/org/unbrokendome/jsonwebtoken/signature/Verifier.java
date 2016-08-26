@@ -5,7 +5,8 @@ import org.unbrokendome.jsonwebtoken.BinaryData;
 import java.security.Key;
 
 
-public interface Verifier {
+public interface Verifier<TVerificationKey extends Key> {
 
-    void verify(BinaryData header, BinaryData payload, BinaryData signature, Key key) throws JwsSignatureException;
+    void verify(BinaryData header, BinaryData payload, BinaryData signature, TVerificationKey key)
+            throws JwsSignatureException;
 }

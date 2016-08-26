@@ -3,25 +3,28 @@ package org.unbrokendome.jsonwebtoken.impl;
 import org.unbrokendome.jsonwebtoken.signature.VerificationKeyResolver;
 import org.unbrokendome.jsonwebtoken.signature.Verifier;
 
-
-class VerifierWithKeyResolver {
-
-    private final Verifier verifier;
-    private final VerificationKeyResolver verificationKeyResolver;
+import java.security.Key;
 
 
-    public VerifierWithKeyResolver(Verifier verifier, VerificationKeyResolver verificationKeyResolver) {
+class VerifierWithKeyResolver<TVerificationKey extends Key> {
+
+    private final Verifier<TVerificationKey> verifier;
+    private final VerificationKeyResolver<TVerificationKey> verificationKeyResolver;
+
+
+    public VerifierWithKeyResolver(Verifier<TVerificationKey> verifier,
+                                   VerificationKeyResolver<TVerificationKey> verificationKeyResolver) {
         this.verifier = verifier;
         this.verificationKeyResolver = verificationKeyResolver;
     }
 
 
-    public Verifier getVerifier() {
+    public Verifier<TVerificationKey> getVerifier() {
         return verifier;
     }
 
 
-    public VerificationKeyResolver getVerificationKeyResolver() {
+    public VerificationKeyResolver<TVerificationKey> getVerificationKeyResolver() {
         return verificationKeyResolver;
     }
 }

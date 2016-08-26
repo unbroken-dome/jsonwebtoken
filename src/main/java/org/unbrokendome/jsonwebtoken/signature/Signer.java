@@ -5,7 +5,7 @@ import org.unbrokendome.jsonwebtoken.BinaryData;
 import java.security.Key;
 
 
-public interface Signer {
+public interface Signer<TSigningKey extends Key> {
 
-    BinaryData sign(BinaryData header, BinaryData payload, Key key) throws JwsSignatureException;
+    BinaryData sign(BinaryData header, BinaryData payload, TSigningKey key) throws JwsSignatureException;
 }

@@ -14,15 +14,17 @@ import java.util.Map;
 public class DefaultJwtProcessor implements JwtProcessor {
 
     private final List<PayloadSerializer<?>> payloadSerializers;
-    private final SignatureAlgorithm signingAlgorithm;
+    private final SignatureAlgorithm<?, ?> signingAlgorithm;
+    @SuppressWarnings("rawtypes")
     private final Signer signer;
-    private final SigningKeyResolver signingKeyResolver;
-    private final Map<String, VerifierWithKeyResolver> verifiers;
+    private final SigningKeyResolver<?> signingKeyResolver;
+    private final Map<String, VerifierWithKeyResolver<?>> verifiers;
     private final JwsEncoding jwsEncoding;
 
 
-    public DefaultJwtProcessor(List<PayloadSerializer<?>> payloadSerializers, SignatureAlgorithm signingAlgorithm,
-                               Signer signer, SigningKeyResolver signingKeyResolver, Map<String, VerifierWithKeyResolver> verifiers,
+    public DefaultJwtProcessor(List<PayloadSerializer<?>> payloadSerializers, SignatureAlgorithm<?, ?> signingAlgorithm,
+                               Signer<?> signer, SigningKeyResolver<?> signingKeyResolver,
+                               Map<String, VerifierWithKeyResolver<?>> verifiers,
                                JwsEncoding jwsEncoding) {
         this.payloadSerializers = payloadSerializers;
         this.signingAlgorithm = signingAlgorithm;
@@ -42,6 +44,8 @@ public class DefaultJwtProcessor implements JwtProcessor {
 
         BinaryData headerBytes = jwsEncoding.serializeHeader(header);
         BinaryData payloadBytes = serializePayload(payload);
+
+        //noinspection unchecked
         BinaryData signature = signer.sign(headerBytes, payloadBytes, signingKey);
 
         return jwsEncoding.encode(headerBytes, payloadBytes, signature);
@@ -87,22 +91,25 @@ public class DefaultJwtProcessor implements JwtProcessor {
     }
 
 
-    private void verifySignature(Jws jws, JoseHeader header, Object payload) throws JwsUnsupportedAlgorithmException,
-            JwsSignatureException {
-        VerifierWithKeyResolver verifierWithKeyResolver = getVerifierAndKeyResolver(header);
+    private void verifySignature(Jws jws, JoseHeader header, Object payload)
+            throws JwsUnsupportedAlgorithmException, JwsSignatureException {
+        VerifierWithKeyResolver<?> verifierWithKeyResolver = getVerifierAndKeyResolver(header);
 
-        VerificationKeyResolver verificationKeyResolver = verifierWithKeyResolver.getVerificationKeyResolver();
+        VerificationKeyResolver<?> verificationKeyResolver = verifierWithKeyResolver.getVerificationKeyResolver();
+
+        // noinspection rawtypes
         Verifier verifier = verifierWithKeyResolver.getVerifier();
         Key verificationKey = verificationKeyResolver.getVerificationKey(header, payload);
 
+        //noinspection unchecked
         verifier.verify(jws.getHeader(), jws.getPayload(), jws.getSignature(), verificationKey);
     }
 
 
-    private VerifierWithKeyResolver getVerifierAndKeyResolver(JoseHeader header)
+    private VerifierWithKeyResolver<?> getVerifierAndKeyResolver(JoseHeader header)
             throws JwsUnsupportedAlgorithmException {
         String algorithmName = header.getAlgorithm();
-        VerifierWithKeyResolver verifierWithKeyResolver = verifiers.get(algorithmName);
+        VerifierWithKeyResolver<?> verifierWithKeyResolver = verifiers.get(algorithmName);
         if (verifierWithKeyResolver == null) {
             throw new JwsUnsupportedAlgorithmException(algorithmName);
         }

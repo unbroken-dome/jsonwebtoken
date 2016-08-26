@@ -2,8 +2,11 @@ package org.unbrokendome.jsonwebtoken.signature.impl;
 
 import org.unbrokendome.jsonwebtoken.signature.SignatureAlgorithm;
 
+import java.security.Key;
 
-public abstract class AbstractSignatureAlgorithm implements SignatureAlgorithm {
+
+public abstract class AbstractSignatureAlgorithm<TSigningKey extends Key, TVerificationKey extends Key>
+        implements SignatureAlgorithm<TSigningKey, TVerificationKey> {
 
     private final String jwaName;
     private final String jcaName;

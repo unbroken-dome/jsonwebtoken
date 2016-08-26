@@ -5,7 +5,7 @@ import org.unbrokendome.jsonwebtoken.JoseHeader;
 import java.security.Key;
 
 
-public interface VerificationKeyResolver {
+public interface VerificationKeyResolver<TKey extends Key> {
 
-    Key getVerificationKey(JoseHeader header, Object payload);
+    TKey getVerificationKey(JoseHeader header, Object payload);
 }

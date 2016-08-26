@@ -1,5 +1,6 @@
 package org.unbrokendome.jsonwebtoken.signature.provider;
 
+import javax.annotation.Nullable;
 import javax.crypto.Mac;
 import java.security.Signature;
 import java.util.Optional;
@@ -7,8 +8,8 @@ import java.util.Optional;
 
 public final class AlgorithmProviders {
 
-    public static AlgorithmProvider<Mac> mac(String algorithm, Optional<PoolConfigurer> poolConfigurer) {
-        return poolConfigurer.isPresent() ? pooledMac(algorithm, poolConfigurer.get()) : simpleMac(algorithm);
+    public static AlgorithmProvider<Mac> mac(String algorithm, @Nullable PoolConfigurer poolConfigurer) {
+        return poolConfigurer != null ? pooledMac(algorithm, poolConfigurer) : simpleMac(algorithm);
     }
 
 
@@ -22,8 +23,8 @@ public final class AlgorithmProviders {
     }
 
 
-    public static AlgorithmProvider<Signature> rsa(String algorithm, Optional<PoolConfigurer> poolConfigurer) {
-        return poolConfigurer.isPresent() ? pooledRsa(algorithm, poolConfigurer.get()) : simpleRsa(algorithm);
+    public static AlgorithmProvider<Signature> rsa(String algorithm, @Nullable PoolConfigurer poolConfigurer) {
+        return poolConfigurer != null ? pooledRsa(algorithm, poolConfigurer) : simpleRsa(algorithm);
     }
 
 
