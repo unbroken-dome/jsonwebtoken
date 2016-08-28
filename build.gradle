@@ -1,15 +1,10 @@
 plugins {
     id 'java'
     id 'groovy'
-    id 'maven'
-    id 'signing'
-    id 'com.jfrog.bintray' version '1.7.1'
+    id 'maven-publish'
+    id 'com.jfrog.bintray' version '1.7'
 }
 
-if (!gradle.startParameter.taskNames.contains('release')) {
-    println "Not a release build, setting version to ${version}-SNAPSHOT"
-    version += '-SNAPSHOT'
-}
 
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
@@ -27,109 +22,4 @@ dependencies {
 }
 
 
-def pomDefinition = pom {
-    project {
-        name project.friendly_name
-        packaging 'jar'
-        description project.description
-        url project.home_url
-
-        scm {
-            connection "scm:git:${project.scm_url}"
-            developerConnection "scm:git:${project.scm_url}"
-            url project.scm_url
-        }
-
-        licenses {
-            license {
-                name = project.license_name
-                url project.license_url
-            }
-        }
-
-        developers {
-            developer {
-                name 'Till Krullmann'
-                email 'till.krullmann@gmx.net'
-            }
-        }
-    }
-}
-
-
-task generatePom {
-    outputs.file "$buildDir/poms/pom.xml"
-    doLast {
-        pomDefinition.writeTo "$buildDir/poms/pom.xml"
-    }
-}
-
-
-jar {
-    into("META-INF/maven/$project.group/$project.name") {
-        from generatePom
-    }
-}
-
-
-task javadocJar(type: Jar) {
-    description = 'Assembles a jar archive containing the javadocs.'
-    classifier = 'javadoc'
-    from javadoc
-}
-
-
-task sourcesJar(type: Jar) {
-    description = 'Assembles a jar archive containing the sources.'
-    classifier = 'sources'
-    from sourceSets.main.allSource
-}
-
-
-artifacts {
-    archives javadocJar, sourcesJar
-}
-
-
-signing {
-    sign configurations.archives
-}
-
-
-install {
-    repositories.mavenInstaller {
-        beforeDeployment { deployment -> signing.signPom(deployment) }
-        pom = pomDefinition
-    }
-}
-
-
-bintray {
-    user = bintray_user
-    key = bintray_key
-    configurations = ['archives']
-
-    pkg {
-        repo = project.bintray_repo
-        name = project.name
-        desc = project.description
-        websiteUrl = project.home_url
-        licenses = ['MIT']
-        labels = ['jsonwebtoken', 'jwt']
-
-        vcsUrl = project.scm_url
-        issueTrackerUrl = project.issues_url
-        publicDownloadNumbers = true
-
-        version {
-            vcsTag = project.version
-        }
-    }
-}
-
-
-task release(dependsOn: ['bintrayUpload']) {
-    group = 'publishing'
-} << {
-    println "Releasing $version"
-}
+apply from: "$rootDir/publishing.gradle"
