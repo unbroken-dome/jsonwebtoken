@@ -17,10 +17,10 @@ public class JwtIntegrationTest extends Specification {
 
     def "Encode and decode claims"() {
         given:
-            def processor = Jwts.processor()
+            def processor = Jwt.processor()
                     .signAndVerifyWith(SignatureAlgorithms.HS256, SIGN_KEY)
                     .build()
-            def claims = Jwts.claims()
+            def claims = Jwt.claims()
                     .setSubject("Till")
                     .setIssuedAt(Instant.now())
                     .setExpiration(Instant.now().plusSeconds(300))
