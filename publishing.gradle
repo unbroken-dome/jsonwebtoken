@@ -64,7 +64,7 @@ project.plugins.withId('com.jfrog.bintray') {
         user = project.bintray_user
         key = project.bintray_key
 
-        dryRun = project.bintray_dryrun
+        dryRun = Boolean.valueOf(project.bintray_dryrun as String)
 
         pkg {
             repo = project.bintray_repo
