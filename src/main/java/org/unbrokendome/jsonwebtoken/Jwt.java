@@ -5,6 +5,9 @@ import org.unbrokendome.jsonwebtoken.impl.DefaultJoseHeaderBuilder;
 import org.unbrokendome.jsonwebtoken.impl.DefaultJwtProcessorBuilder;
 
 
+/**
+ * Main entry point to the JSON Web Token library.
+ */
 public class Jwt {
 
     private Jwt() {
@@ -12,16 +15,31 @@ public class Jwt {
     }
 
 
+    /**
+     * Starts constructing a JOSE header for a token.
+     *
+     * @return a new {@link JoseHeaderBuilder} instance
+     */
     public static JoseHeaderBuilder header() {
         return new DefaultJoseHeaderBuilder();
     }
 
 
+    /**
+     * Starts constructing claims for a token.
+     *
+     * @return a new {@link ClaimsBuilder} instance
+     */
     public static ClaimsBuilder claims() {
         return new DefaultClaimsBuilder();
     }
 
 
+    /**
+     * Starts configuration of a {@link JwtProcessor} instance.
+     *
+     * @return a new {@link JwtProcessorBuilder} that can be used to configure and construct the {@link JwtProcessor}
+     */
     public static JwtProcessorBuilder processor() {
         return new DefaultJwtProcessorBuilder();
     }

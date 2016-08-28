@@ -8,6 +8,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 
+/**
+ * Stores a blob of binary data.
+ *
+ * This is essentially a wrapper over {@link ByteBuffer} to ensure immutability.
+ */
 public final class BinaryData {
 
     public static final BinaryData EMPTY = BinaryData.of(ByteBuffer.allocate(0));

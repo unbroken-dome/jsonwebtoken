@@ -8,6 +8,10 @@ import java.security.Signature;
 import java.security.SignatureException;
 
 
+/**
+ * Implementation of {@link org.unbrokendome.jsonwebtoken.signature.Signer Signer} that uses a {@link Signature}
+ * algorithm and a private key.
+ */
 public final class SignaturePrivateKeySigner extends AbstractSigner<Signature, PrivateKey> {
 
     public SignaturePrivateKeySigner(AlgorithmProvider<Signature> provider) {

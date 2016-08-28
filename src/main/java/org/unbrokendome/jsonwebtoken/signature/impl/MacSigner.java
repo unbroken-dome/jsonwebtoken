@@ -7,6 +7,10 @@ import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 
 
+/**
+ * Implementation of {@link org.unbrokendome.jsonwebtoken.signature.Signer Signer} that uses a {@link Mac}
+ * algorithm and a secret key.
+ */
 public class MacSigner extends AbstractSigner<Mac, SecretKey> {
 
     public MacSigner(AlgorithmProvider<Mac> macProvider) {

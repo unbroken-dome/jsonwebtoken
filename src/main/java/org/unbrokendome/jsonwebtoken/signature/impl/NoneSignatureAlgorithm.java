@@ -1,6 +1,5 @@
 package org.unbrokendome.jsonwebtoken.signature.impl;
 
-import org.apache.commons.lang3.tuple.Pair;
 import org.unbrokendome.jsonwebtoken.signature.SignatureAlgorithm;
 import org.unbrokendome.jsonwebtoken.signature.Signer;
 import org.unbrokendome.jsonwebtoken.signature.Verifier;
@@ -31,8 +30,8 @@ public final class NoneSignatureAlgorithm implements SignatureAlgorithm<Key, Key
 
 
     @Override
-    public Pair<Signer<Key>, Verifier<Key>> createSignerAndVerifier(@Nullable PoolConfigurer poolConfigurer) {
-        return Pair.of(NoneSigner.getInstance(), NoneVerifier.getInstance());
+    public Signer<Key> createSigner(@Nullable PoolConfigurer poolConfigurer) {
+        return NoneSigner.getInstance();
     }
 
 

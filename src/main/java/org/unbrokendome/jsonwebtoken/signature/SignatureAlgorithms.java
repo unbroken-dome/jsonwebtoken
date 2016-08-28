@@ -10,6 +10,9 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 
 
+/**
+ * Defines built-in signature algorithms for use with JSON Web Tokens.
+ */
 public final class SignatureAlgorithms {
 
     public static final SignatureAlgorithm<Key, Key> NONE = NoneSignatureAlgorithm.getInstance();

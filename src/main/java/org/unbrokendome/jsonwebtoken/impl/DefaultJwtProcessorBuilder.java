@@ -55,13 +55,22 @@ public class DefaultJwtProcessorBuilder implements JwtProcessorBuilder {
 
 
     @Override
+    public <TSigningKey extends Key>
+    JwtProcessorBuilder signWith(SignatureAlgorithm<TSigningKey, ?> algorithm,
+                                 SigningKeyResolver<TSigningKey> signingKeyResolver) {
+        this.signingAlgorithm = algorithm;
+        this.signingKeyResolver = signingKeyResolver;
+        return this;
+    }
+
+
+    @Override
     public <TSigningKey extends Key, TVerificationKey extends Key>
     JwtProcessorBuilder signAndVerifyWith(SignatureAlgorithm<TSigningKey, TVerificationKey> algorithm,
                                           SigningKeyResolver<TSigningKey> signingKeyResolver,
                                           VerificationKeyResolver<TVerificationKey> verificationKeyResolver) {
-        this.signingAlgorithm = algorithm;
-        this.signingKeyResolver = signingKeyResolver;
-        this.verificationKeyResolver = verificationKeyResolver;
+        signWith(algorithm, signingKeyResolver);
+        verifyWith(algorithm, verificationKeyResolver);
         return this;
     }
 
@@ -69,9 +78,9 @@ public class DefaultJwtProcessorBuilder implements JwtProcessorBuilder {
     @Override
     public <TVerificationKey extends Key>
     JwtProcessorBuilder verifyWith(SignatureAlgorithm<?, TVerificationKey> algorithm,
-                                   VerificationKeyResolver<TVerificationKey> keyResolver) {
+                                   VerificationKeyResolver<TVerificationKey> verificationKeyResolver) {
         verifierBuilders.put(algorithm.getJwaName(),
-                poolConfigurer -> new VerifierWithKeyResolver<>(algorithm.createVerifier(poolConfigurer), keyResolver));
+                poolConfigurer -> new VerifierWithKeyResolver<>(algorithm.createVerifier(poolConfigurer), verificationKeyResolver));
         return this;
     }
 

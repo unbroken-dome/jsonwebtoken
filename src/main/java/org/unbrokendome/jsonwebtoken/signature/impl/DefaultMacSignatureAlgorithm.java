@@ -23,15 +23,21 @@ public class DefaultMacSignatureAlgorithm extends AbstractSignatureAlgorithm<Sec
 
 
     @Override
-    public Pair<Signer<SecretKey>, Verifier<SecretKey>> createSignerAndVerifier(@Nullable PoolConfigurer poolConfigurer) {
-        Signer<SecretKey> signer = new MacSigner(AlgorithmProviders.mac(getJcaName(), poolConfigurer));
-        Verifier<SecretKey> verifier = new SignerVerifier<>(signer);
-        return Pair.of(signer, verifier);
+    public Signer<SecretKey> createSigner(@Nullable PoolConfigurer poolConfigurer) {
+        return new MacSigner(AlgorithmProviders.mac(getJcaName(), poolConfigurer));
     }
 
 
     @Override
     public Verifier<SecretKey> createVerifier(@Nullable PoolConfigurer poolConfigurer) {
         return createSignerAndVerifier(poolConfigurer).getRight();
+    }
+
+
+    @Override
+    public Pair<Signer<SecretKey>, Verifier<SecretKey>> createSignerAndVerifier(@Nullable PoolConfigurer poolConfigurer) {
+        Signer<SecretKey> signer = createSigner(poolConfigurer);
+        Verifier<SecretKey> verifier = new SignerVerifier<>(signer);
+        return Pair.of(signer, verifier);
     }
 }

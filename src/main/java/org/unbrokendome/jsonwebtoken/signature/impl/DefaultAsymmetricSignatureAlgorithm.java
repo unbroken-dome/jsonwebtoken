@@ -26,11 +26,24 @@ public class DefaultAsymmetricSignatureAlgorithm extends AbstractSignatureAlgori
 
 
     @Override
+    public Signer<PrivateKey> createSigner(@Nullable PoolConfigurer poolConfigurer) {
+        return new SignaturePrivateKeySigner(
+                getAlgorithmProvider(poolConfigurer));
+    }
+
+
+    @Override
+    public Verifier<PublicKey> createVerifier(@Nullable PoolConfigurer poolConfigurer) {
+        return new SignaturePublicKeyVerifier(
+                getAlgorithmProvider(poolConfigurer));
+    }
+
+
+    @Override
     public Pair<Signer<PrivateKey>, Verifier<PublicKey>>
     createSignerAndVerifier(@Nullable PoolConfigurer poolConfigurer) {
 
-        AlgorithmProvider<Signature> provider =
-                AlgorithmProviders.signature(getJcaName(), getJcaProvider(), poolConfigurer);
+        AlgorithmProvider<Signature> provider = getAlgorithmProvider(poolConfigurer);
 
         Signer<PrivateKey> signer = new SignaturePrivateKeySigner(provider);
         Verifier<PublicKey> verifier = new SignaturePublicKeyVerifier(provider);
@@ -38,9 +51,7 @@ public class DefaultAsymmetricSignatureAlgorithm extends AbstractSignatureAlgori
         return Pair.of(signer, verifier);
     }
 
-
-    @Override
-    public Verifier<PublicKey> createVerifier(@Nullable PoolConfigurer poolConfigurer) {
-        return new SignaturePublicKeyVerifier(AlgorithmProviders.signature(getJcaName(), poolConfigurer));
+    private AlgorithmProvider<Signature> getAlgorithmProvider(@Nullable PoolConfigurer poolConfigurer) {
+        return AlgorithmProviders.signature(getJcaName(), getJcaProvider(), poolConfigurer);
     }
 }
