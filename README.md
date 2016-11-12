@@ -14,12 +14,12 @@ JwtProcessor processor = Jwt.processor()
 		.signAndVerifyWith(SignatureAlgorithms.HS256, signingKey)
 		.build();
 ```
-				
+
 The `JwtProcessor` instance is stateless, and can safely be used by multiple threads.
 
 ## Encoding claims as JWT
 
-Use the `Jwts.claims()` to construct a `Claims` object using a fluent syntax:
+Use the `Jwt.claims()` to construct a `Claims` object using a fluent syntax:
 
 ```java
 Claims claims = Jwt.claims()
