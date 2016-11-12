@@ -62,9 +62,11 @@ public interface MapData {
             return ((Collection<?>) value).stream()
                     .map(Objects::toString)
                     .collect(Collectors.toSet());
-        } else {
+        } else if (value != null) {
             String stringValue = Objects.toString(value);
             return Collections.singleton(stringValue);
+        } else {
+            return null;
         }
     }
 
