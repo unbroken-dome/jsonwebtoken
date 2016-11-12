@@ -2,8 +2,9 @@ package org.unbrokendome.jsonwebtoken;
 
 import javax.annotation.Nullable;
 import java.time.Instant;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 /**
@@ -39,6 +40,34 @@ public interface MapData {
     default String getString(String key) {
         return Objects.toString(get(key), null);
     }
+
+
+    /**
+     * Returns a value as a set of strings.
+     *
+     * <p>A JSON array will be converted to a Set, with each element converted to String using the
+     * {@link Object#toString()} method. Nested JSON arrays are not treated specially.
+     *
+     * <p>If the value is not a JSON array but a simple value (e.g. a string), it is wrapped in a
+     * one-element Set.</p>
+     *
+     * @param key the key
+     * @return the associated values as a {@link Set} of strings or <code>null</code> if no entry with the given
+     *         key is present
+     */
+    @Nullable
+    default Set<String> getStringSet(String key) {
+        Object value = get(key);
+        if (value instanceof Collection) {
+            return ((Collection<?>) value).stream()
+                    .map(Objects::toString)
+                    .collect(Collectors.toSet());
+        } else {
+            String stringValue = Objects.toString(value);
+            return Collections.singleton(stringValue);
+        }
+    }
+
 
     /**
      * Returns a value as an instant in time.

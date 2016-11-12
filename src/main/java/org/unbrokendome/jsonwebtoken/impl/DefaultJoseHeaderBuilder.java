@@ -3,6 +3,7 @@ package org.unbrokendome.jsonwebtoken.impl;
 import org.unbrokendome.jsonwebtoken.JoseHeader;
 import org.unbrokendome.jsonwebtoken.JoseHeaderBuilder;
 
+import javax.annotation.Nonnull;
 import java.util.Map;
 
 
@@ -10,6 +11,7 @@ public class DefaultJoseHeaderBuilder extends AbstractMapDataBuilder<JoseHeaderB
         JoseHeaderBuilder {
 
     @Override
+    @Nonnull
     protected JoseHeader buildFromMap(Map<String, Object> map) {
         return new DefaultJoseHeader(map);
     }

@@ -1,5 +1,6 @@
 package org.unbrokendome.jsonwebtoken;
 
+import javax.annotation.Nonnull;
 import java.time.Instant;
 import java.util.Map;
 
@@ -23,15 +24,32 @@ public interface MapDataBuilder<TBuilder extends MapDataBuilder<TBuilder, TResul
      * @param value the value
      * @return the current builder instance
      */
+    @Nonnull
     TBuilder set(String key, Object value);
 
+    /**
+     * Sets key-value entries from the given {@link Map}.
+     * @param values a map of key-value entries
+     * @return the current builder instance
+     */
+    @Nonnull
+    TBuilder set(Map<String, ?> values);
 
-    TBuilder set(Map<String, Object> values);
-
-
+    @Nonnull
     TResult build();
 
-
+    /**
+     * Sets a value as an {@link Instant}.
+     *
+     * <p>The instant is converted to a number using the {@link Instant#getEpochSecond()}</p> method,
+     * which complies with the <em>NumericDate</em> from
+     * <a href="https://tools.ietf.org/html/rfc7519#section-2">RFC 7519</a>.
+     *
+     * @param key the key
+     * @param value the value as an {@link Instant}
+     * @return the current builder instance
+     */
+    @Nonnull
     default TBuilder set(String key, Instant value) {
         return set(key, value.getEpochSecond());
     }
