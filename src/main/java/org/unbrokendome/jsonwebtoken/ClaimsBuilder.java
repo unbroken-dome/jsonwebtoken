@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableSet;
 
 import javax.annotation.Nonnull;
 import java.time.Instant;
+import java.util.Set;
 
 
 public interface ClaimsBuilder extends MapDataBuilder<ClaimsBuilder, Claims>, Claims {
@@ -55,7 +56,7 @@ public interface ClaimsBuilder extends MapDataBuilder<ClaimsBuilder, Claims>, Cl
      * @see Claims#getAudiences()
      */
     @Nonnull
-    default ClaimsBuilder setAudiences(Iterable<String> audiences) {
+    default ClaimsBuilder setAudiences(Set<String> audiences) {
         return set(AUDIENCE, ImmutableSet.copyOf(audiences));
     }
 
