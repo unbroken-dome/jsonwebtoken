@@ -1,6 +1,7 @@
 # Output directories
-/build/
-/bin/
+build/
+bin/
+out/
 
-# Files starting with a dot
-.*
+.idea/
+.gradle/
