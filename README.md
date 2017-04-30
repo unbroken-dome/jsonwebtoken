@@ -36,6 +36,7 @@ signature parts are automatically added by the processor.
 String token = processor.encode(claims);
 ```
 
+
 ## Decoding a JWT
 
 Call the `decode` method on `JwtProcessor` to decode a string and extract the claims.
@@ -43,4 +44,40 @@ The processor will verify the signature and throw an exception if it does not ma
 
 ```java
 Claims claims = processor.decodeClaims(jwt);
-```		
+```
+
+
+## Using multiple signing keys
+
+For added security, it may be desirable to use multiple cryptographic keys for signing and
+verification. JWT allows a key id to be stored in the token header, in the `kid` field. The
+`signWith` and `verifyWith` overloads that take a `SigningKeyResolver` or a `VerificationKeyResolver`
+may be used for this purpose.
+
+The following example creates an array of 10 keys, then configures the JWT processor to select one
+at random each time a token is signed, and looks up the correct key for verification:
+
+```java
+KeyGenerator keyGenerator = KeyGenerator.getInstance("HmacSHA256");
+SecretKey[] keys = new SecretKey[10];
+for (int i = 0; i < 10; i++) {
+    keys[i] = keyGenerator.generateKey();
+}
+
+Random random = new Random();
+
+JwtProcessor jwtProcessor = Jwt.processor()
+        .signAndVerifyWith(SignatureAlgorithms.HS256,
+            // The SigningKeyResolver selects a random key and stores it in the header
+            (header, payload) -> {
+                int keyIndex = random.nextInt(10);
+                header.setKeyId(String.valueOf(keyIndex));
+                return keys[keyIndex];
+            },
+            // The VerificationKeyResolver looks up the correct key from the index
+            (header, payload) -> {
+                int keyIndex = Integer.parseInt(header.getKeyId());
+                return keys[keyIndex];
+            })
+        .build();
+```
