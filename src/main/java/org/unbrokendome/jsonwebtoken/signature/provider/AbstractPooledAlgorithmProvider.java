@@ -13,7 +13,7 @@ public abstract class AbstractPooledAlgorithmProvider<T> implements AlgorithmPro
     private final ObjectPool<T> pool;
 
 
-    public AbstractPooledAlgorithmProvider(PoolableObject<T> poolable, PoolConfigurer poolConfigurer) {
+    protected AbstractPooledAlgorithmProvider(PoolableObject<T> poolable, PoolConfigurer poolConfigurer) {
         PoolSettings<T> poolSettings = new PoolSettings<>(poolable);
         poolConfigurer.configure(poolSettings);
 

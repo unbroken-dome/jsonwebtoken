@@ -6,7 +6,7 @@ import org.unbrokendome.jsonwebtoken.BinaryData;
 import org.unbrokendome.jsonwebtoken.JoseHeader;
 
 
-public class DefaultHeaderSerializer implements HeaderSerializer {
+public final class DefaultHeaderSerializer implements HeaderSerializer {
 
     private final ObjectMapper objectMapper;
 

@@ -6,7 +6,6 @@ import org.unbrokendome.jsonwebtoken.signature.provider.PoolConfigurer;
 
 import javax.annotation.Nullable;
 import java.security.Key;
-import java.util.Optional;
 
 
 /**

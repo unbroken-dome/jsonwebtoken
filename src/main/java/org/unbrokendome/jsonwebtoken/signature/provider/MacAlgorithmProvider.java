@@ -6,7 +6,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 
 
-public class MacAlgorithmProvider implements AlgorithmProvider<Mac> {
+public final class MacAlgorithmProvider implements AlgorithmProvider<Mac> {
 
     private final String algorithm;
     private final String provider;

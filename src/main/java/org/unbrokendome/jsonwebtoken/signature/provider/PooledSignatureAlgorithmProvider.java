@@ -4,7 +4,7 @@ import javax.annotation.Nullable;
 import java.security.Signature;
 
 
-public class PooledSignatureAlgorithmProvider extends AbstractPooledAlgorithmProvider<Signature> {
+final class PooledSignatureAlgorithmProvider extends AbstractPooledAlgorithmProvider<Signature> {
 
     public PooledSignatureAlgorithmProvider(String algorithm, @Nullable String provider,
                                             PoolConfigurer poolConfigurer) {

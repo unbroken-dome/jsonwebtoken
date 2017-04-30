@@ -5,12 +5,12 @@ import spock.lang.Specification
 import spock.lang.Subject
 
 
-public class StringPayloadSerializerTest extends Specification {
+class StringPayloadSerializerTest extends Specification {
 
     private static final String TEST_STRING = 'Lorem ipsum dolor sit amet'
 
     @Subject
-    private PayloadSerializer<String> serializer = StringPayloadSerializer.instance
+    def serializer = StringPayloadSerializer.instance
 
 
     def "Serializing should return equivalent byte array"() {

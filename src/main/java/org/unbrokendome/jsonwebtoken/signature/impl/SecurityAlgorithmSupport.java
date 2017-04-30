@@ -4,16 +4,15 @@ import org.unbrokendome.jsonwebtoken.signature.provider.AlgorithmProvider;
 
 import java.security.GeneralSecurityException;
 import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.security.SignatureException;
 
 
-public abstract class SecurityAlgorithmSupport<T> {
+abstract class SecurityAlgorithmSupport<T> {
 
     private final AlgorithmProvider<T> provider;
 
 
-    public SecurityAlgorithmSupport(AlgorithmProvider<T> provider) {
+    protected SecurityAlgorithmSupport(AlgorithmProvider<T> provider) {
         this.provider = provider;
     }
 

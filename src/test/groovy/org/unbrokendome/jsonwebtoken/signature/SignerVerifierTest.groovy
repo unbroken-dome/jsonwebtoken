@@ -9,7 +9,7 @@ import javax.crypto.spec.SecretKeySpec
 import java.security.Key
 
 
-public class SignerVerifierTest extends Specification {
+class SignerVerifierTest extends Specification {
 
     static final Key TEST_KEY = new SecretKeySpec(
             Base64.decoder.decode('0NGVvKq99Ew17WICWnp91OyNLGreCpQYfdn7ctDSIR8='),
@@ -18,7 +18,7 @@ public class SignerVerifierTest extends Specification {
     def signer = Mock(Signer)
 
     @Subject
-    def verifier = new SignerVerifier(signer);
+    def verifier = new SignerVerifier(signer)
 
 
     def "Matching signature should be verified"() {

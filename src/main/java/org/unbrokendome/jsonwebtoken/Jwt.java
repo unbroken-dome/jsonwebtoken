@@ -8,7 +8,7 @@ import org.unbrokendome.jsonwebtoken.impl.DefaultJwtProcessorBuilder;
 /**
  * Main entry point to the JSON Web Token library.
  */
-public class Jwt {
+public final class Jwt {
 
     private Jwt() {
         // Private constructor prevents instantiation

@@ -5,7 +5,7 @@ import org.unbrokendome.jsonwebtoken.BinaryData;
 import java.nio.ByteBuffer;
 
 
-public class ByteBufferPayloadSerializer extends AbstractPayloadSerializer<ByteBuffer> {
+public final class ByteBufferPayloadSerializer extends AbstractPayloadSerializer<ByteBuffer> {
 
     private static final ByteBufferPayloadSerializer INSTANCE = new ByteBufferPayloadSerializer();
 

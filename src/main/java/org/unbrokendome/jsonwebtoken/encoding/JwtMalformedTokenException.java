@@ -3,7 +3,7 @@ package org.unbrokendome.jsonwebtoken.encoding;
 import org.unbrokendome.jsonwebtoken.JwtException;
 
 
-public class JwtMalformedTokenException extends JwtException {
+public final class JwtMalformedTokenException extends JwtException {
 
     private static final long serialVersionUID = -3953815089602358758L;
 

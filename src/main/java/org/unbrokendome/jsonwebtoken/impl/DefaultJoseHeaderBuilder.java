@@ -7,8 +7,9 @@ import javax.annotation.Nonnull;
 import java.util.Map;
 
 
-public class DefaultJoseHeaderBuilder extends AbstractMapDataBuilder<JoseHeaderBuilder, JoseHeader> implements
-        JoseHeaderBuilder {
+public final class DefaultJoseHeaderBuilder
+        extends AbstractMapDataBuilder<JoseHeaderBuilder, JoseHeader>
+        implements JoseHeaderBuilder {
 
     @Override
     @Nonnull

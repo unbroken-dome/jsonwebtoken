@@ -6,7 +6,7 @@ import javax.annotation.Nullable;
 import java.security.Key;
 
 
-public abstract class AbstractSignatureAlgorithm<TSigningKey extends Key, TVerificationKey extends Key>
+abstract class AbstractSignatureAlgorithm<TSigningKey extends Key, TVerificationKey extends Key>
         implements SignatureAlgorithm<TSigningKey, TVerificationKey> {
 
     private final String jwaName;
@@ -14,7 +14,7 @@ public abstract class AbstractSignatureAlgorithm<TSigningKey extends Key, TVerif
     private final String jcaProvider;
 
 
-    public AbstractSignatureAlgorithm(String jwaName, String jcaName, @Nullable String jcaProvider) {
+    protected AbstractSignatureAlgorithm(String jwaName, String jcaName, @Nullable String jcaProvider) {
         this.jwaName = jwaName;
         this.jcaName = jcaName;
         this.jcaProvider = jcaProvider;
@@ -22,18 +22,18 @@ public abstract class AbstractSignatureAlgorithm<TSigningKey extends Key, TVerif
 
 
     @Override
-    public String getJwaName() {
+    public final String getJwaName() {
         return jwaName;
     }
 
 
-    public String getJcaName() {
+    public final String getJcaName() {
         return jcaName;
     }
 
 
     @Nullable
-    public String getJcaProvider() {
+    public final String getJcaProvider() {
         return jcaProvider;
     }
 }

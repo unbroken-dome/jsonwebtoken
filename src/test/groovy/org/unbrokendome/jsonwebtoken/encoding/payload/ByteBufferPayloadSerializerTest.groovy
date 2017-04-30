@@ -13,7 +13,7 @@ class ByteBufferPayloadSerializerTest extends Specification {
                                                    -28, 90, 24, 7, 56, -44, 120]
 
     @Subject
-    private def serializer = ByteBufferPayloadSerializer.instance
+    def serializer = ByteBufferPayloadSerializer.instance
 
 
     def "Serializing should return equivalent BinaryData"() {

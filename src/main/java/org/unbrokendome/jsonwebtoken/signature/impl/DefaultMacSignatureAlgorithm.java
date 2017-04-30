@@ -10,7 +10,7 @@ import javax.annotation.Nullable;
 import javax.crypto.SecretKey;
 
 
-public class DefaultMacSignatureAlgorithm extends AbstractSignatureAlgorithm<SecretKey, SecretKey> {
+public final class DefaultMacSignatureAlgorithm extends AbstractSignatureAlgorithm<SecretKey, SecretKey> {
 
     public DefaultMacSignatureAlgorithm(String jwaName, String jcaName, @Nullable String jcaProvider) {
         super(jwaName, jcaName, jcaProvider);

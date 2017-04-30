@@ -1,5 +1,5 @@
 plugins {
-    id 'java'
+    id 'java-library'
     id 'groovy'
     id 'maven-publish'
     id 'com.jfrog.bintray' version '1.7'
@@ -10,15 +10,24 @@ sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
 
 
-dependencies {
-    compile 'org.apache.commons:commons-lang3:3.4'
-    compile 'org.slf4j:slf4j-api:1.7.21'
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.8.1'
-    compile 'com.google.guava:guava:19.0'
-    compile 'nf.fr.eraasoft:objectpool:1.1.2'
-    compile 'com.google.code.findbugs:jsr305:3.0.1'
+repositories {
+    jcenter()
+}
 
-    testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
+
+dependencies {
+
+    api 'com.fasterxml.jackson.core:jackson-databind:2.8.8'
+
+    implementation 'org.apache.commons:commons-lang3:3.5'
+    implementation 'org.slf4j:slf4j-api:1.7.25'
+    implementation 'com.google.guava:guava:21.0'
+    implementation 'nf.fr.eraasoft:objectpool:1.1.2'
+
+    compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
+
+    testCompile 'org.spockframework:spock-core:1.1-groovy-2.4-rc-4'
+    testCompile 'org.codehaus.groovy:groovy-all:2.4.11'
 }
 
 

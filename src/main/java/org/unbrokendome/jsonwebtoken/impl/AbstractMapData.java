@@ -7,12 +7,12 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import java.util.Map;
 
 
-public abstract class AbstractMapData {
+abstract class AbstractMapData {
 
     private final Map<String, Object> map;
 
 
-    public AbstractMapData(Map<String, Object> map) {
+    protected AbstractMapData(Map<String, Object> map) {
         this.map = ImmutableMap.copyOf(map);
     }
 

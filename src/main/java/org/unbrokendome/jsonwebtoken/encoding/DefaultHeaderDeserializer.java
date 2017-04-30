@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.Map;
 
 
-public class DefaultHeaderDeserializer implements HeaderDeserializer {
+public final class DefaultHeaderDeserializer implements HeaderDeserializer {
 
     private final ObjectMapper objectMapper;
 
@@ -21,6 +21,7 @@ public class DefaultHeaderDeserializer implements HeaderDeserializer {
 
 
     @Override
+    @SuppressWarnings("unchecked")
     public JoseHeader deserialize(BinaryData data) throws JwtMalformedTokenException {
         try {
             Map<String, Object> headerValues = objectMapper.readValue(

@@ -1,9 +1,5 @@
 package org.unbrokendome.jsonwebtoken;
 
-import org.unbrokendome.jsonwebtoken.impl.DefaultClaimsBuilder;
-import org.unbrokendome.jsonwebtoken.impl.DefaultJoseHeaderBuilder;
-import org.unbrokendome.jsonwebtoken.impl.DefaultJwtProcessorBuilder;
-
 
 /**
  * @deprecated Use {@link Jwt} instead

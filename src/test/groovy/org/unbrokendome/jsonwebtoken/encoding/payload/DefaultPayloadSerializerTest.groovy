@@ -8,10 +8,10 @@ import spock.lang.Subject
 import java.nio.charset.StandardCharsets
 
 
-public class DefaultPayloadSerializerTest extends Specification {
+class DefaultPayloadSerializerTest extends Specification {
 
     @Subject
-    def serializer = new DefaultPayloadSerializer(new ObjectMapper());
+    def serializer = new DefaultPayloadSerializer(new ObjectMapper())
 
 
     def "Serializing a map should return correct bytes"() {
@@ -22,12 +22,5 @@ public class DefaultPayloadSerializerTest extends Specification {
     }
 
 
-    def "Deserializing a serialized map should return correct map"() {
-        when:
-            def map = serializer.deserialize(
-                    BinaryData.of('{"key1":"value1","key2":123,"key3":false}', StandardCharsets.UTF_8),
-                    Map)
-        then:
-            map == ["key1": "value1", "key2": 123, "key3": false]
-    }
+
 }

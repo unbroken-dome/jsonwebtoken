@@ -1,6 +1,6 @@
 package org.unbrokendome.jsonwebtoken;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.unbrokendome.jsonwebtoken.encoding.payload.PayloadDeserializer;
 import org.unbrokendome.jsonwebtoken.encoding.payload.PayloadSerializer;
 import org.unbrokendome.jsonwebtoken.signature.SignatureAlgorithm;
 import org.unbrokendome.jsonwebtoken.signature.SigningKeyResolver;
@@ -15,85 +15,29 @@ import java.security.PublicKey;
 /**
  * Provides a fluent API for configuring and constructing {@link JwtProcessor} instances.
  */
-public interface JwtProcessorBuilder {
+public interface JwtProcessorBuilder
+        extends JwtEncodingProcessorBuilderBase<JwtProcessor, JwtProcessorBuilder>,
+                JwtDecodingProcessorBuilderBase<JwtProcessor, JwtProcessorBuilder> {
 
     /**
-     * Configures the JWT processor to sign every token using the specified algorithm.
+     * Returns a builder to create a JWT processor that only encodes (but does not decode) tokens.
      * <p>
-     * Only one signing algorithm may be configured; any previously configured signing algorithm will be
-     * replaced.
-     * <p>
-     * This method allows to select a signing key for each token by registering a {@link SigningKeyResolver}.
-     * If the same key should be used for each token, you can use the convenience method
-     * {@link #signWith(SignatureAlgorithm, Key)} instead.
+     * The returned builder will keep all the relevant settings from the current builder (but not the ones that only
+     * apply to token decoding).
      *
-     * @param algorithm          the signature algorithm to use; typically one of the predefined algorithms from
-     *                           {@link org.unbrokendome.jsonwebtoken.signature.SignatureAlgorithms SignatureAlgorithms}
-     * @param signingKeyResolver a function that will select a key for signing a token, based on its payload
-     * @param <TSigningKey>      the type of the signing key; must be a subclass of {@link Key}
-     * @return the current builder instance
-     * @see org.unbrokendome.jsonwebtoken.signature.SignatureAlgorithms
+     * @return a {@link JwtEncodeOnlyProcessorBuilder}
      */
-    <TSigningKey extends Key>
-    JwtProcessorBuilder signWith(SignatureAlgorithm<TSigningKey, ?> algorithm,
-                                 SigningKeyResolver<TSigningKey> signingKeyResolver);
+    JwtEncodeOnlyProcessorBuilder encodeOnly();
 
     /**
-     * Configures the JWT processor to sign every token using the specified algorithm.
+     * Returns a builder to create a JWT processor that only decodes (but does not encode) tokens.
      * <p>
-     * Only one signing algorithm may be configured; any previously configured signing algorithm will be
-     * replaced.
+     * The returned builder will keep all the relevant settings from the current builder (but not the ones that only
+     * apply to token encoding).
      *
-     * @param algorithm     the signature algorithm to use; typically one of the predefined algorithms from
-     *                      {@link org.unbrokendome.jsonwebtoken.signature.SignatureAlgorithms SignatureAlgorithms}
-     * @param signingKey    the key to use for signing the tokens
-     * @param <TSigningKey> the type of the signing key; must be a subclass of {@link Key}
-     * @return the current builder instance
-     * @see org.unbrokendome.jsonwebtoken.signature.SignatureAlgorithms
+     * @return a {@link JwtDecodeOnlyProcessorBuilder}
      */
-    default <TSigningKey extends Key>
-    JwtProcessorBuilder signWith(SignatureAlgorithm<TSigningKey, ?> algorithm,
-                                 TSigningKey signingKey) {
-        return signWith(algorithm, (SigningKeyResolver<TSigningKey>) (h, p) -> signingKey);
-    }
-
-    /**
-     * Configures the JWT processor to verify the signature of every token passed to the {@link JwtProcessor#decode}
-     * method, using the specified algorithm.
-     * <p>
-     * <code>verifyWith</code> may be called multiple times with different <em>algorithm</em> arguments, so that
-     * the JWT processor will support multiple algorithms.
-     * <p>
-     * This method allows to select a verification key for each token by registering a {@link VerificationKeyResolver}.
-     * If the same key should be used for each token, you can use the convenience method
-     * {@link #verifyWith(SignatureAlgorithm, Key)} instead.
-     *
-     * @param algorithm               the signature algorithm to use; typically one of the predefined algorithms from
-     *                                {@link org.unbrokendome.jsonwebtoken.signature.SignatureAlgorithms SignatureAlgorithms}
-     * @param verificationKeyResolver a function that will select a key for verifying a token, based on its header
-     *                                and payload
-     * @param <TVerificationKey>      the type of the verification key; must be a subclass of {@link Key}
-     * @return the current builder instance
-     */
-    <TVerificationKey extends Key>
-    JwtProcessorBuilder verifyWith(SignatureAlgorithm<?, TVerificationKey> algorithm,
-                                   VerificationKeyResolver<TVerificationKey> verificationKeyResolver);
-
-    /**
-     * Configures the JWT processor to verify the signature of every token passed to the {@link JwtProcessor#decode}
-     * method, using the specified algorithm.
-     *
-     * @param algorithm          the signature algorithm to use; typically one of the predefined algorithms from
-     *                           {@link org.unbrokendome.jsonwebtoken.signature.SignatureAlgorithms SignatureAlgorithms}
-     * @param verificationKey    the key to use for verifying the tokens
-     * @param <TVerificationKey> the type of the verification key; must be a subclass of {@link Key}
-     * @return the current builder instance
-     */
-    default <TVerificationKey extends Key>
-    JwtProcessorBuilder verifyWith(SignatureAlgorithm<?, TVerificationKey> algorithm,
-                                   TVerificationKey verificationKey) {
-        return verifyWith(algorithm, (VerificationKeyResolver<TVerificationKey>) ((h, p) -> verificationKey));
-    }
+    JwtDecodeOnlyProcessorBuilder decodeOnly();
 
     /**
      * Configures the JWT processor to sign every token it creates, and verify the signature of each token passed to
@@ -190,44 +134,28 @@ public interface JwtProcessorBuilder {
     /**
      * Register a strategy for serializing and deserializing payloads.
      * <p>
+     * This is a convenience method for cases where the registered object implements both {@link PayloadSerializer}
+     * and {@link PayloadDeserializer}. It is equivalent to calling {@link #serializePayloadWith} and
+     * {@link #deserializePayloadWith} with the same argument.
+     * <p>
      * Per default, the constructed <code>JwtProcessor</code> supports serialization of strings,
      * {@link java.nio.ByteBuffer ByteBuffer}s as well as arbitrary objects from JSON. In addition, custom
-     * payload formats can be registered by adding a custom <code>PayloadSerializer</code> using this method.
+     * payload formats can be registered by adding a custom payload serializer/deserializer using this method.
      *
-     * @param payloadSerializer the custom {@link PayloadSerializer} to register
+     * @param payloadSerializer the custom payload serializer/deserializer to register
      * @return the current builder instance
      */
-    JwtProcessorBuilder serializePayloadWith(PayloadSerializer<?> payloadSerializer);
-
-
-    /**
-     * Configures pooling for security algorithm objects.
-     * <p>
-     * If pooling is set up for signing and verification, a number of relevant algorithm instances (e.g.
-     * {@link javax.crypto.Mac} or {@link java.security.Signature} for each supported algorithm will be
-     * pre-constructed and kept in a pool. However, an exhausted pool does not block any signing or verification
-     * requests; it will be grown as required.
-     *
-     * @param minSize the minimum number of instances that should be kept in the pool
-     * @param maxIdle the maximum number of idle instances in the pool (any surplus will be released)
-     * @return the current builder instance
-     */
-    JwtProcessorBuilder configurePool(int minSize, int maxIdle);
-
-
-    /**
-     * Configures a custom Jackson {@link ObjectMapper} to use for JSON serialization and deserialization.
-     *
-     * @param objectMapper the {@link ObjectMapper} instance to use
-     * @return the current builder instance
-     */
-    JwtProcessorBuilder setObjectMapper(ObjectMapper objectMapper);
-
+    default <T extends PayloadSerializer & PayloadDeserializer<?>>
+    JwtProcessorBuilder serializeAndDeserializePayloadWith(T payloadSerializer) {
+        return serializePayloadWith(payloadSerializer)
+                .deserializePayloadWith(payloadSerializer);
+    }
 
     /**
      * Builds a {@link JwtProcessor} instance from the current configuration.
      *
      * @return the {@link JwtProcessor}
      */
+    @Override
     JwtProcessor build();
 }

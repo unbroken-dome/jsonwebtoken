@@ -4,12 +4,12 @@ import org.unbrokendome.jsonwebtoken.BinaryData;
 
 
 @SuppressWarnings("null")
-public abstract class AbstractPayloadSerializer<T> implements PayloadSerializer<T> {
+public abstract class AbstractPayloadSerializer<T> implements PayloadSerializer, PayloadDeserializer<T> {
 
     private final Class<T> payloadType;
 
 
-    public AbstractPayloadSerializer(Class<T> payloadType) {
+    protected AbstractPayloadSerializer(Class<T> payloadType) {
         this.payloadType = payloadType;
     }
 

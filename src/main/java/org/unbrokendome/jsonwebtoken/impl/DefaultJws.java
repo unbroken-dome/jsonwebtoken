@@ -4,7 +4,7 @@ import org.unbrokendome.jsonwebtoken.BinaryData;
 import org.unbrokendome.jsonwebtoken.Jws;
 
 
-public class DefaultJws implements Jws {
+public final class DefaultJws implements Jws {
 
     private final BinaryData header, payload, signature;
 

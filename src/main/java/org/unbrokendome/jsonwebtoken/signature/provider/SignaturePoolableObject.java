@@ -1,13 +1,12 @@
 package org.unbrokendome.jsonwebtoken.signature.provider;
 
 import javax.annotation.Nullable;
-import java.security.GeneralSecurityException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.Signature;
 
 
-public class SignaturePoolableObject extends AbstractAlgorithmPoolableObject<Signature> {
+public final class SignaturePoolableObject extends AbstractAlgorithmPoolableObject<Signature> {
 
     public SignaturePoolableObject(String algorithm, @Nullable String provider) {
         super(algorithm, provider);

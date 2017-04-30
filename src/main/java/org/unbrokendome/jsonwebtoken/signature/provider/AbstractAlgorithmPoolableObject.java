@@ -7,13 +7,13 @@ import javax.annotation.Nullable;
 import java.security.GeneralSecurityException;
 
 
-public abstract class AbstractAlgorithmPoolableObject<T> extends PoolableObjectBase<T> {
+abstract class AbstractAlgorithmPoolableObject<T> extends PoolableObjectBase<T> {
 
     private final String algorithm;
     private final String provider;
 
 
-    public AbstractAlgorithmPoolableObject(String algorithm, @Nullable String provider) {
+    protected AbstractAlgorithmPoolableObject(String algorithm, @Nullable String provider) {
         this.algorithm = algorithm;
         this.provider = provider;
     }

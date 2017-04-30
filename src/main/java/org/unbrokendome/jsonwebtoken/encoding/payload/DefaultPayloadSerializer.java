@@ -2,14 +2,10 @@ package org.unbrokendome.jsonwebtoken.encoding.payload;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.util.ByteBufferBackedInputStream;
 import org.unbrokendome.jsonwebtoken.BinaryData;
 
-import java.io.IOException;
 
-
-@SuppressWarnings("null")
-public class DefaultPayloadSerializer implements PayloadSerializer<Object> {
+public final class DefaultPayloadSerializer implements PayloadSerializer {
 
     private final ObjectMapper objectMapper;
 
@@ -32,16 +28,6 @@ public class DefaultPayloadSerializer implements PayloadSerializer<Object> {
             return BinaryData.of(payloadBytes);
         } catch (JsonProcessingException e) {
             throw new IllegalArgumentException("Error serializing payload", e);
-        }
-    }
-
-
-    @Override
-    public <U> U deserialize(BinaryData rawPayload, Class<U> targetType) {
-        try {
-            return objectMapper.readValue(new ByteBufferBackedInputStream(rawPayload.toByteBuffer()), targetType);
-        } catch (IOException e) {
-            throw new IllegalArgumentException("Error deserializing payload", e);
         }
     }
 }

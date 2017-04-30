@@ -7,7 +7,9 @@ import javax.annotation.Nonnull;
 import java.util.Map;
 
 
-public class DefaultClaimsBuilder extends AbstractMapDataBuilder<ClaimsBuilder, Claims> implements ClaimsBuilder {
+public final class DefaultClaimsBuilder
+        extends AbstractMapDataBuilder<ClaimsBuilder, Claims>
+        implements ClaimsBuilder {
 
     @Override
     @Nonnull

@@ -1,12 +1,13 @@
 package org.unbrokendome.jsonwebtoken.encoding;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.unbrokendome.jsonwebtoken.BinaryData;
+import org.unbrokendome.jsonwebtoken.encoding.text.Base64TextEncoding;
 
+import javax.annotation.Nullable;
 import java.util.function.Function;
 
 
-public class JwsCompactEncoder implements JwsEncoder {
+public final class JwsCompactEncoder implements JwsEncoder {
 
     private static final char SEPARATOR = '.';
 
@@ -18,14 +19,18 @@ public class JwsCompactEncoder implements JwsEncoder {
     }
 
 
+    public JwsCompactEncoder() {
+        this(Base64TextEncoding.BASE64_URL.getEncoder());
+    }
+
+
     @Override
-    public String encode(BinaryData header, BinaryData payload, BinaryData signature) {
-        try {
-            return encodeHeader(header) + SEPARATOR + encodePayload(payload) + SEPARATOR
-                    + encodeSignatureIfPresent(signature);
-        } catch (JsonProcessingException e) {
-            throw new IllegalArgumentException("Error encoding JWT", e);
-        }
+    public String encode(BinaryData header, BinaryData payload, @Nullable BinaryData signature) {
+        return encodeHeader(header)
+                + SEPARATOR
+                + encodePayload(payload)
+                + SEPARATOR
+                + encodeSignatureIfPresent(signature);
     }
 
 
@@ -34,12 +39,12 @@ public class JwsCompactEncoder implements JwsEncoder {
     }
 
 
-    private String encodePayload(BinaryData payload) throws JsonProcessingException {
+    private String encodePayload(BinaryData payload) {
         return textEncoder.apply(payload);
     }
 
 
-    private String encodeSignatureIfPresent(BinaryData signature) {
+    private String encodeSignatureIfPresent(@Nullable BinaryData signature) {
         return (signature != null) ? textEncoder.apply(signature) : "";
     }
 }

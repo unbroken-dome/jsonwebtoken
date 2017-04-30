@@ -7,7 +7,7 @@ import spock.lang.Specification
 import spock.lang.Subject
 
 
-public class DefaultHeaderSerializerTest extends Specification {
+class DefaultHeaderSerializerTest extends Specification {
 
     def objectMapper = new ObjectMapper()
 

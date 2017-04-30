@@ -22,7 +22,7 @@ public abstract class AbstractSigner<TAlgorithm, TSigningKey extends Key>
     }
 
 
-    public AbstractSigner(AlgorithmProvider<TAlgorithm> provider) {
+    protected AbstractSigner(AlgorithmProvider<TAlgorithm> provider) {
         super(provider);
     }
 

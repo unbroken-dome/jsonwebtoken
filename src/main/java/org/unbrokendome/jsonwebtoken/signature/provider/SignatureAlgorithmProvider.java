@@ -4,7 +4,7 @@ import javax.annotation.Nullable;
 import java.security.*;
 
 
-public class SignatureAlgorithmProvider implements AlgorithmProvider<Signature> {
+public final class SignatureAlgorithmProvider implements AlgorithmProvider<Signature> {
 
     private final String algorithm;
     private final String provider;

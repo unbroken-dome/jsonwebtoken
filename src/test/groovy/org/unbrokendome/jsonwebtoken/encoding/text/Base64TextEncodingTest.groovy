@@ -5,13 +5,13 @@ import spock.lang.Specification
 import spock.lang.Subject
 
 
-public class Base64TextEncodingTest extends Specification {
+class Base64TextEncodingTest extends Specification {
 
     private static final byte[] TEST_DATA_BYTES = [18, 119, 101, -110, 23, 1, 53, 15, -27, 54, 21, 31, -33,
                                                    -28, 90, 24, 7, 56, -44, 120]
 
     @Subject
-    private TextEncoding encoding = Base64TextEncoding.BASE64_URL
+    def encoding = Base64TextEncoding.BASE64_URL
 
 
     def "Encode to Base64"() {

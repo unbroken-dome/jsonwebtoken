@@ -4,13 +4,14 @@ import com.google.common.base.Splitter;
 import org.apache.commons.lang3.StringUtils;
 import org.unbrokendome.jsonwebtoken.BinaryData;
 import org.unbrokendome.jsonwebtoken.Jws;
+import org.unbrokendome.jsonwebtoken.encoding.text.Base64TextEncoding;
 import org.unbrokendome.jsonwebtoken.impl.DefaultJws;
 
 import java.util.List;
 import java.util.function.Function;
 
 
-public class JwsCompactDecoder implements JwsDecoder {
+public final class JwsCompactDecoder implements JwsDecoder {
 
     private static final char SEPARATOR = '.';
 
@@ -20,6 +21,11 @@ public class JwsCompactDecoder implements JwsDecoder {
 
     public JwsCompactDecoder(Function<String, BinaryData> textDecoder) {
         this.textDecoder = textDecoder;
+    }
+
+
+    public JwsCompactDecoder() {
+        this(Base64TextEncoding.BASE64_URL.getDecoder());
     }
 
 

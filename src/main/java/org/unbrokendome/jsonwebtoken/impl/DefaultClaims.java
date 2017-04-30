@@ -6,7 +6,7 @@ import org.unbrokendome.jsonwebtoken.Claims;
 import java.util.Map;
 
 
-public class DefaultClaims extends AbstractMapData implements Claims {
+public final class DefaultClaims extends AbstractMapData implements Claims {
 
     @JsonCreator
     public DefaultClaims(Map<String, Object> map) {

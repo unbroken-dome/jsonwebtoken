@@ -6,7 +6,7 @@ import org.unbrokendome.jsonwebtoken.signature.Verifier;
 import java.security.Key;
 
 
-class VerifierWithKeyResolver<TVerificationKey extends Key> {
+final class VerifierWithKeyResolver<TVerificationKey extends Key> {
 
     private final Verifier<TVerificationKey> verifier;
     private final VerificationKeyResolver<TVerificationKey> verificationKeyResolver;

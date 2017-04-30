@@ -13,7 +13,7 @@ import java.security.PublicKey;
 import java.security.Signature;
 
 
-public class DefaultAsymmetricSignatureAlgorithm extends AbstractSignatureAlgorithm<PrivateKey, PublicKey> {
+public final class DefaultAsymmetricSignatureAlgorithm extends AbstractSignatureAlgorithm<PrivateKey, PublicKey> {
 
     public DefaultAsymmetricSignatureAlgorithm(String jwaName, String jcaName, @Nullable String jcaProvider) {
         super(jwaName, jcaName, jcaProvider);

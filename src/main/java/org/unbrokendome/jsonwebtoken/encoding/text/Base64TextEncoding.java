@@ -9,7 +9,7 @@ import java.util.Base64;
 import java.util.function.Function;
 
 
-public class Base64TextEncoding implements TextEncoding {
+public final class Base64TextEncoding implements TextEncoding {
 
     private final Base64.Encoder base64Encoder;
     private final Base64.Decoder base64Decoder;

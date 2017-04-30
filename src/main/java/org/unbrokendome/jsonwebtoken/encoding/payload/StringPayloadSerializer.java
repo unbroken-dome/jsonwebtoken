@@ -6,7 +6,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 
-public class StringPayloadSerializer extends AbstractPayloadSerializer<String> {
+public final class StringPayloadSerializer extends AbstractPayloadSerializer<String> {
 
     private static final StringPayloadSerializer UTF8_INSTANCE = new StringPayloadSerializer(StandardCharsets.UTF_8);
     private final Charset charset;

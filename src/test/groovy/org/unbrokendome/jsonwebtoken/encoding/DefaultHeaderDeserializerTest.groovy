@@ -8,7 +8,7 @@ import spock.lang.Specification
 import spock.lang.Subject
 
 
-public class DefaultHeaderDeserializerTest extends Specification {
+class DefaultHeaderDeserializerTest extends Specification {
 
     static final JoseHeader TEST_HEADER = new DefaultJoseHeaderBuilder()
             .setAlgorithm("none")
