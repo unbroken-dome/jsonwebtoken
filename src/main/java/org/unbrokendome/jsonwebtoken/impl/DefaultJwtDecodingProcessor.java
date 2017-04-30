@@ -51,9 +51,14 @@ public final class DefaultJwtDecodingProcessor implements JwtDecodingProcessor {
     }
 
 
-    private <T> T deserializePayload(BinaryData payloadBytes, Class<T> payloadType) {
+    private <T> T deserializePayload(BinaryData payloadBytes, Class<T> payloadType) throws JwtMalformedTokenException {
         PayloadDeserializer<T> payloadSerializer = findPayloadSerializerForType(payloadType);
-        return payloadSerializer.deserialize(payloadBytes, payloadType);
+
+        try {
+            return payloadSerializer.deserialize(payloadBytes, payloadType);
+        } catch (Exception ex) {
+            throw new JwtMalformedTokenException("Error deserializing JWT payload", ex);
+        }
     }
 
 
