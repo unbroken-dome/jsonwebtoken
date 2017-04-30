@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.unbrokendome.jsonwebtoken.encoding.DefaultHeaderSerializer
 import org.unbrokendome.jsonwebtoken.encoding.JwsCompactEncoder
 import org.unbrokendome.jsonwebtoken.encoding.payload.DefaultPayloadSerializer
-import org.unbrokendome.jsonwebtoken.signature.JwsSignatureException
+import org.unbrokendome.jsonwebtoken.signature.JwsUnsupportedAlgorithmException
 import org.unbrokendome.jsonwebtoken.signature.SignatureAlgorithms
 import spock.lang.Specification
 
@@ -51,7 +51,6 @@ class JwtIntegrationTest extends Specification {
 
         when:
             def jwt = processor.encode claims
-            println jwt
 
         then:
             jwt != null
@@ -71,6 +70,35 @@ class JwtIntegrationTest extends Specification {
 
         then:
             claims.asMap() == expectedClaims.asMap()
+    }
+
+
+    def "Cannot forge claims using NONE algorithm"() {
+        given:
+            def processor = Jwt.processor()
+                    .signAndVerifyWith(SignatureAlgorithms.HS256, SECRET_KEY)
+                    .build()
+            def originalClaims = buildClaims()
+
+        and:
+            def forgedHeader = Jwt.header()
+                    .setAlgorithm("NONE")
+                    .build()
+            def forgedClaims = Jwt.claims()
+                    .setSubject(originalClaims.subject)
+                    .setIssuedAt(originalClaims.issuedAt)
+                    .setExpiration(originalClaims.expiration)
+                    .setAudience("restricted")
+            def forgedToken = new JwsCompactEncoder().encode(
+                    new DefaultHeaderSerializer(objectMapper).serialize(forgedHeader),
+                    new DefaultPayloadSerializer(objectMapper).serialize(forgedClaims.asMap()),
+                    null)
+
+        when:
+            processor.decodeClaims forgedToken
+
+        then:
+            thrown JwsUnsupportedAlgorithmException
     }
 
 
