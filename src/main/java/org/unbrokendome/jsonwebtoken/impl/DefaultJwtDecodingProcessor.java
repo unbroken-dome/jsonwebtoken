@@ -62,6 +62,7 @@ public final class DefaultJwtDecodingProcessor implements JwtDecodingProcessor {
     }
 
 
+    @SuppressWarnings("unchecked")
     private <T> PayloadDeserializer<T> findPayloadSerializerForType(Class<T> payloadType) {
         PayloadDeserializer<?> payloadDeserializer = payloadDeserializers
                 .stream()
@@ -70,22 +71,21 @@ public final class DefaultJwtDecodingProcessor implements JwtDecodingProcessor {
                 .orElseThrow(
                         () -> new IllegalStateException("No payload serializer could handle the payload of type: "
                                 + payloadType));
-        // noinspection unchecked
+
         return (PayloadDeserializer<T>) payloadDeserializer;
     }
 
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     private void verifySignature(Jws jws, JoseHeader header, Object payload)
             throws JwsUnsupportedAlgorithmException, JwsSignatureException {
         VerifierWithKeyResolver<?> verifierWithKeyResolver = getVerifierAndKeyResolver(header);
 
         VerificationKeyResolver<?> verificationKeyResolver = verifierWithKeyResolver.getVerificationKeyResolver();
 
-        // noinspection rawtypes
         Verifier verifier = verifierWithKeyResolver.getVerifier();
         Key verificationKey = verificationKeyResolver.getVerificationKey(header, payload);
 
-        //noinspection unchecked
         verifier.verify(jws.getHeader(), jws.getPayload(), jws.getSignature(), verificationKey);
     }
 
