@@ -2,6 +2,20 @@
 
 This library is a simple and lightweight implementation of JSON Web Token (JWT) in Java.
 
+## Using the library
+
+The library is available in [JCenter](https://jcenter.bintray.com). In Gradle, add the following
+to your build script:
+
+```groovy
+repositories { jcenter() }
+
+dependencies {
+    compile 'org.unbroken-dome.jsonwebtoken:jsonwebtoken:1.2.0
+}
+```
+
+
 ## Usage
 
 The central interface to the library is the `JwtProcessor`, which defines the workflow of your
