@@ -1,4 +1,4 @@
-rootProject.name = 'jsonwebtoken-parent'
+rootProject.name = 'jsonwebtoken'
 
 def path = [] as LinkedList
 rootDir.traverse(

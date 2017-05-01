@@ -1,0 +1,15 @@
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+
+dependencies {
+    compileOnly 'com.google.code.findbugs:jsr305'
+}
+
+
+plugins.withId('groovy') {
+    dependencies {
+        testCompile 'org.spockframework:spock-core'
+        testCompile 'org.codehaus.groovy:groovy-all'
+    }
+}

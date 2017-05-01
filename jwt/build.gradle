@@ -1,34 +1,13 @@
-plugins {
-    id 'java-library'
-    id 'groovy'
-    id 'maven-publish'
-    id 'com.jfrog.bintray' version '1.7'
-}
-
-
-sourceCompatibility = '1.8'
-targetCompatibility = '1.8'
-
-
-repositories {
-    jcenter()
-}
+apply plugin: 'java-library'
+apply plugin: 'groovy'
+apply plugin: 'maven-publish'
+apply plugin: 'com.jfrog.bintray'
 
 
 dependencies {
-
-    api 'com.fasterxml.jackson.core:jackson-databind:2.8.8'
-
-    implementation 'org.apache.commons:commons-lang3:3.5'
-    implementation 'org.slf4j:slf4j-api:1.7.25'
-    implementation 'com.google.guava:guava:21.0'
-    implementation 'nf.fr.eraasoft:objectpool:1.1.2'
-
-    compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
-
-    testCompile 'org.spockframework:spock-core:1.1-groovy-2.4-rc-4'
-    testCompile 'org.codehaus.groovy:groovy-all:2.4.11'
+    api 'com.fasterxml.jackson.core:jackson-databind'
+    implementation 'org.apache.commons:commons-lang3'
+    implementation 'org.slf4j:slf4j-api'
+    implementation 'com.google.guava:guava'
+    implementation 'nf.fr.eraasoft:objectpool'
 }
-
-
-apply from: "$rootDir/publishing.gradle"

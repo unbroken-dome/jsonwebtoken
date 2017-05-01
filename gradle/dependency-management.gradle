@@ -1,0 +1,26 @@
+apply plugin: 'io.spring.dependency-management'
+
+repositories {
+    jcenter()
+}
+
+dependencyManagement {
+
+    dependencies {
+        dependency 'com.fasterxml.jackson.core:jackson-databind:2.8.8'
+
+        dependency 'com.google.code.findbugs:jsr305:3.0.2'
+
+        dependency 'com.google.guava:guava:21.0'
+
+        dependency 'nf.fr.eraasoft:objectpool:1.1.2'
+
+        dependency 'org.apache.commons:commons-lang3:3.5'
+
+        dependency 'org.codehaus.groovy:groovy-all:2.4.11'
+
+        dependency 'org.slf4j:slf4j-api:1.7.25'
+
+        dependency 'org.spockframework:spock-core:1.1-groovy-2.4-rc-4'
+    }
+}
