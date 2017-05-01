@@ -143,6 +143,7 @@ public interface JwtProcessorBuilder
      * payload formats can be registered by adding a custom payload serializer/deserializer using this method.
      *
      * @param payloadSerializer the custom payload serializer/deserializer to register
+     * @param <T> A type that implements both {@link PayloadSerializer} and {@link PayloadDeserializer}
      * @return the current builder instance
      */
     default <T extends PayloadSerializer & PayloadDeserializer<?>>
