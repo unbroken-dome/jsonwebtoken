@@ -27,6 +27,7 @@ public interface MapData {
      */
     Map<String, Object> asMap();
 
+
     /**
      * Returns a value as a string.
      * <p>
