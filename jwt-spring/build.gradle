@@ -1,0 +1,31 @@
+apply plugin: 'java-library'
+apply plugin: 'groovy'
+apply plugin: 'maven-publish'
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'net.ltgt.apt'
+apply plugin: 'nebula.optional-base'
+
+dependencies {
+    api project(':jwt')
+    api 'org.springframework:spring-context'
+    api 'org.springframework.boot:spring-boot', optional
+    api 'org.springframework.boot:spring-boot-autoconfigure', optional
+
+    implementation 'org.slf4j:slf4j-api'
+
+    implementation 'org.bouncycastle:bcpkix-jdk15on', optional
+    implementation 'org.bouncycastle:bcprov-jdk15on', optional
+
+    testCompile 'org.springframework:spring-test'
+    testCompile 'org.spockframework:spock-spring'
+
+    testCompile 'org.hamcrest:hamcrest-all'
+    testCompile 'org.slf4j:jcl-over-slf4j'
+
+    testRuntime 'ch.qos.logback:logback-classic'
+
+    testCompile 'org.bouncycastle:bcpkix-jdk15on'
+    testCompile 'org.bouncycastle:bcprov-jdk15on'
+
+    apt 'org.springframework.boot:spring-boot-configuration-processor'
+}

@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  org.unbrokendome.jsonwebtoken.spring.autoconfigure.JwtAutoConfiguration
