@@ -27,13 +27,13 @@ abstract class AbstractSignatureAlgorithm<TSigningKey extends Key, TVerification
     }
 
 
-    public final String getJcaName() {
+    protected final String getJcaName() {
         return jcaName;
     }
 
 
     @Nullable
-    public final String getJcaProvider() {
+    protected final String getJcaProvider() {
         return jcaProvider;
     }
 }

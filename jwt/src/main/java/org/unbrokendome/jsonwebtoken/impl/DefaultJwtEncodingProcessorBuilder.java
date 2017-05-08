@@ -14,7 +14,9 @@ import org.unbrokendome.jsonwebtoken.signature.SignatureAlgorithm;
 import org.unbrokendome.jsonwebtoken.signature.SignatureAlgorithms;
 import org.unbrokendome.jsonwebtoken.signature.Signer;
 import org.unbrokendome.jsonwebtoken.signature.SigningKeyResolver;
+import org.unbrokendome.jsonwebtoken.signature.impl.NoneKeyResolver;
 
+import javax.annotation.Nullable;
 import java.security.Key;
 
 
@@ -24,6 +26,7 @@ public final class DefaultJwtEncodingProcessorBuilder
 
     private final ImmutableList.Builder<PayloadSerializer> payloadSerializers = ImmutableList.builder();
     private SignatureAlgorithm<?, ?> signingAlgorithm = SignatureAlgorithms.NONE;
+    @Nullable
     private SigningKeyResolver<?> signingKeyResolver;
 
 
@@ -56,7 +59,7 @@ public final class DefaultJwtEncodingProcessorBuilder
         return new DefaultJwtEncodingProcessor(
                 payloadSerializers.build(),
                 signingAlgorithm, signer,
-                signingKeyResolver,
+                signingKeyResolver != null ? signingKeyResolver : NoneKeyResolver.getInstance(),
                 new DefaultHeaderSerializer(objectMapper),
                 new JwsCompactEncoder());
     }

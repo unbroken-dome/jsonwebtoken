@@ -11,6 +11,7 @@ import java.security.Key;
 /**
  * Defines a cryptographic algorithm for signing JSON Web Tokens and verifying their signatures.
  *
+ * <p>
  * All built-in algorithms are defined as constant fields in the {@link SignatureAlgorithms} class.
  *
  * @param <TSigningKey> the type of signing key used by this algorithm
@@ -68,4 +69,21 @@ public interface SignatureAlgorithm<TSigningKey extends Key, TVerificationKey ex
     default void createHeader(JoseHeaderBuilder header) {
         header.setAlgorithm(getJwaName());
     }
+
+    /**
+     * Gets the {@link KeyLoader} that can be used to load the signing key from key material.
+     *
+     * @return the {@link KeyLoader} for the signing key, or {@code null}
+     */
+    @Nullable
+    KeyLoader<TSigningKey> getSigningKeyLoader();
+
+    /**
+     * Gets the {@link KeyLoader} that can be used to load the verification key from key material.
+     *
+     * @param fromSigningKey {@code true} if the verification key should be loaded from the same material as the
+     *                       signing key; {@code false} otherwise
+     * @return the {@link KeyLoader} for the signing key, or {@code null}
+     */
+    KeyLoader<TVerificationKey> getVerificationKeyLoader(boolean fromSigningKey);
 }

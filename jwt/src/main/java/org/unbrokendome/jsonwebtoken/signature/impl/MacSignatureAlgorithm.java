@@ -1,6 +1,7 @@
 package org.unbrokendome.jsonwebtoken.signature.impl;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.unbrokendome.jsonwebtoken.signature.KeyLoader;
 import org.unbrokendome.jsonwebtoken.signature.Signer;
 import org.unbrokendome.jsonwebtoken.signature.Verifier;
 import org.unbrokendome.jsonwebtoken.signature.provider.AlgorithmProviders;
@@ -10,14 +11,14 @@ import javax.annotation.Nullable;
 import javax.crypto.SecretKey;
 
 
-public final class DefaultMacSignatureAlgorithm extends AbstractSignatureAlgorithm<SecretKey, SecretKey> {
+public final class MacSignatureAlgorithm extends AbstractSignatureAlgorithm<SecretKey, SecretKey> {
 
-    public DefaultMacSignatureAlgorithm(String jwaName, String jcaName, @Nullable String jcaProvider) {
+    public MacSignatureAlgorithm(String jwaName, String jcaName, @Nullable String jcaProvider) {
         super(jwaName, jcaName, jcaProvider);
     }
 
 
-    public DefaultMacSignatureAlgorithm(String jwaName, String jcaName) {
+    public MacSignatureAlgorithm(String jwaName, String jcaName) {
         this(jwaName, jcaName, null);
     }
 
@@ -39,5 +40,17 @@ public final class DefaultMacSignatureAlgorithm extends AbstractSignatureAlgorit
         Signer<SecretKey> signer = createSigner(poolConfigurer);
         Verifier<SecretKey> verifier = new SignerVerifier<>(signer);
         return Pair.of(signer, verifier);
+    }
+
+
+    @Override
+    public KeyLoader<SecretKey> getSigningKeyLoader() {
+        return new SecretKeyLoader(getJcaName());
+    }
+
+
+    @Override
+    public KeyLoader<SecretKey> getVerificationKeyLoader(boolean fromSigningKey) {
+        return getSigningKeyLoader();
     }
 }

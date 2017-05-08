@@ -1,7 +1,6 @@
 package org.unbrokendome.jsonwebtoken.signature.impl;
 
 import org.unbrokendome.jsonwebtoken.BinaryData;
-import org.unbrokendome.jsonwebtoken.signature.JwsSignatureException;
 import org.unbrokendome.jsonwebtoken.signature.Signer;
 
 import java.security.Key;
@@ -22,7 +21,7 @@ public final class NoneSigner implements Signer<Key> {
 
 
     @Override
-    public BinaryData sign(BinaryData header, BinaryData payload, Key key) throws JwsSignatureException {
+    public BinaryData sign(BinaryData header, BinaryData payload, Key key) {
         return BinaryData.EMPTY;
     }
 }

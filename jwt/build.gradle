@@ -2,12 +2,18 @@ apply plugin: 'java-library'
 apply plugin: 'groovy'
 apply plugin: 'maven-publish'
 apply plugin: 'com.jfrog.bintray'
+apply plugin: 'nebula.optional-base'
 
 
 dependencies {
     api 'com.fasterxml.jackson.core:jackson-databind'
+    api 'com.google.guava:guava'
+
     implementation 'org.apache.commons:commons-lang3'
     implementation 'org.slf4j:slf4j-api'
-    implementation 'com.google.guava:guava'
     implementation 'nf.fr.eraasoft:objectpool'
+
+    implementation 'org.bouncycastle:bcpkix-jdk15on', optional
+    implementation 'org.bouncycastle:bcprov-jdk15on', optional
+
 }

@@ -1,13 +1,16 @@
 package org.unbrokendome.jsonwebtoken.signature;
 
-import org.unbrokendome.jsonwebtoken.signature.impl.DefaultMacSignatureAlgorithm;
-import org.unbrokendome.jsonwebtoken.signature.impl.DefaultAsymmetricSignatureAlgorithm;
+import org.unbrokendome.jsonwebtoken.signature.impl.MacSignatureAlgorithm;
+import org.unbrokendome.jsonwebtoken.signature.impl.EllipticCurveSignatureAlgorithm;
 import org.unbrokendome.jsonwebtoken.signature.impl.NoneSignatureAlgorithm;
+import org.unbrokendome.jsonwebtoken.signature.impl.RSASignatureAlgorithm;
 
+import javax.annotation.Nullable;
 import javax.crypto.SecretKey;
-import java.security.Key;
+import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.Security;
 
 
 /**
@@ -15,43 +18,147 @@ import java.security.PublicKey;
  */
 public final class SignatureAlgorithms {
 
-    public static final SignatureAlgorithm<Key, Key> NONE = NoneSignatureAlgorithm.getInstance();
+    public static final SignatureAlgorithm<?, ?> NONE = KnownAlgorithm.NONE.getAlgorithm();
+    public static final SignatureAlgorithm<SecretKey, SecretKey> HS256 = getUnchecked(KnownAlgorithm.HS256);
+    public static final SignatureAlgorithm<SecretKey, SecretKey> HS384 = getUnchecked(KnownAlgorithm.HS384);
+    public static final SignatureAlgorithm<SecretKey, SecretKey> HS512 = getUnchecked(KnownAlgorithm.HS512);
+    public static final SignatureAlgorithm<PrivateKey, PublicKey> RS256 = getUnchecked(KnownAlgorithm.RS256);
+    public static final SignatureAlgorithm<PrivateKey, PublicKey> RS384 = getUnchecked(KnownAlgorithm.RS384);
+    public static final SignatureAlgorithm<PrivateKey, PublicKey> RS512 = getUnchecked(KnownAlgorithm.RS512);
+    public static final SignatureAlgorithm<PrivateKey, PublicKey> ES256 = getUnchecked(KnownAlgorithm.ES256);
+    public static final SignatureAlgorithm<PrivateKey, PublicKey> ES384 = getUnchecked(KnownAlgorithm.ES384);
+    public static final SignatureAlgorithm<PrivateKey, PublicKey> ES512 = getUnchecked(KnownAlgorithm.ES512);
+    public static final SignatureAlgorithm<PrivateKey, PublicKey> PS256 = getUnchecked(KnownAlgorithm.PS256);
+    public static final SignatureAlgorithm<PrivateKey, PublicKey> PS384 = getUnchecked(KnownAlgorithm.PS384);
+    public static final SignatureAlgorithm<PrivateKey, PublicKey> PS512 = getUnchecked(KnownAlgorithm.PS512);
 
-    public static final SignatureAlgorithm<SecretKey, SecretKey> HS256 =
-            new DefaultMacSignatureAlgorithm("HS256", "HmacSHA256");
+    public enum KnownAlgorithm {
+        NONE {
+            @Override
+            SignatureAlgorithm<?, ?> getAlgorithm(@Nullable String provider) {
+                return NoneSignatureAlgorithm.getInstance();
+            }
+        },
+        HS256 {
+            @Override
+            SignatureAlgorithm<?, ?> getAlgorithm(@Nullable String provider) {
+                return new MacSignatureAlgorithm("HS256", "HmacSHA256", provider);
+            }
+        },
+        HS384 {
+            @Override
+            SignatureAlgorithm<?, ?> getAlgorithm(@Nullable String provider) {
+                return new MacSignatureAlgorithm("HS384", "HmacSHA384", provider);
+            }
+        },
+        HS512 {
+            @Override
+            SignatureAlgorithm<?, ?> getAlgorithm(@Nullable String provider) {
+                return new MacSignatureAlgorithm("HS512", "HmacSHA512", provider);
+            }
+        },
+        RS256 {
+            @Override
+            SignatureAlgorithm<?, ?> getAlgorithm(@Nullable String provider) {
+                return new RSASignatureAlgorithm("RS256", "SHA256withRSA",
+                        "RSA", provider);
+            }
+        },
+        RS384 {
+            @Override
+            SignatureAlgorithm<?, ?> getAlgorithm(@Nullable String provider) {
+                return new RSASignatureAlgorithm("RS384", "SHA384withRSA",
+                        "RSA", provider);
+            }
+        },
+        RS512 {
+            @Override
+            SignatureAlgorithm<?, ?> getAlgorithm(@Nullable String provider) {
+                return new RSASignatureAlgorithm("RS512", "SHA512withRSA",
+                        "RSA", provider);
+            }
+        },
+        ES256 {
+            @Override
+            SignatureAlgorithm<?, ?> getAlgorithm(@Nullable String provider) {
+                return new EllipticCurveSignatureAlgorithm("ES256", "SHA256withECDSA", provider);
+            }
+        },
+        ES384 {
+            @Override
+            SignatureAlgorithm<?, ?> getAlgorithm(@Nullable String provider) {
+                return new EllipticCurveSignatureAlgorithm("ES384", "SHA384withECDSA", provider);
+            }
+        },
+        ES512 {
+            @Override
+            SignatureAlgorithm<?, ?> getAlgorithm(@Nullable String provider) {
+                return new EllipticCurveSignatureAlgorithm("ES512", "SHA512withECDSA", provider);
+            }
+        },
+        PS256 {
+            @Override
+            SignatureAlgorithm<?, ?> getAlgorithm(@Nullable String provider) {
+                return new RSASignatureAlgorithm("PS256", "SHA256WITHRSAANDMGF1",
+                        "RSA", provider);
+            }
+        },
+        PS384 {
+            @Override
+            SignatureAlgorithm<?, ?> getAlgorithm(@Nullable String provider) {
+                return new RSASignatureAlgorithm("PS384", "SHA384WITHRSAANDMGF1",
+                        "RSA", provider);
+            }
+        },
+        PS512 {
+            @Override
+            SignatureAlgorithm<?, ?> getAlgorithm(@Nullable String provider) {
+                return new RSASignatureAlgorithm("PS512", "SHA512WITHRSAANDMGF1",
+                        "RSA", provider);
+            }
+        };
 
-    public static final SignatureAlgorithm<SecretKey, SecretKey> HS384 =
-            new DefaultMacSignatureAlgorithm("HS384", "HmacSHA384");
+        abstract SignatureAlgorithm<?, ?> getAlgorithm(@Nullable String provider);
 
-    public static final SignatureAlgorithm<SecretKey, SecretKey> HS512 =
-            new DefaultMacSignatureAlgorithm("HS512", "HmacSHA512");
+        final SignatureAlgorithm<?, ?> getAlgorithm() {
+            return getAlgorithm(null);
+        }
+    }
 
-    public static final SignatureAlgorithm<PrivateKey, PublicKey> RS256 =
-            new DefaultAsymmetricSignatureAlgorithm("RS256", "SHA256withRSA");
 
-    public static final SignatureAlgorithm<PrivateKey, PublicKey> RS384 =
-            new DefaultAsymmetricSignatureAlgorithm("RS384", "SHA384withRSA");
+    public static SignatureAlgorithm<?, ?> get(KnownAlgorithm algorithm, String provider)
+            throws NoSuchProviderException {
+        if (Security.getProvider(provider) == null) {
+            throw new NoSuchProviderException("Cannot find provider: " + provider);
+        }
+        return algorithm.getAlgorithm(provider);
+    }
 
-    public static final SignatureAlgorithm<PrivateKey, PublicKey> RS512 =
-            new DefaultAsymmetricSignatureAlgorithm("RS512", "SHA512withRSA");
 
-    public static final SignatureAlgorithm<PrivateKey, PublicKey> ES256 =
-            new DefaultAsymmetricSignatureAlgorithm("ES256", "SHA256withECDSA");
+    public static SignatureAlgorithm<?, ?> get(KnownAlgorithm algorithm) {
+        return algorithm.getAlgorithm();
+    }
 
-    public static final SignatureAlgorithm<PrivateKey, PublicKey> ES384 =
-            new DefaultAsymmetricSignatureAlgorithm("ES384", "SHA384withECDSA");
 
-    public static final SignatureAlgorithm<PrivateKey, PublicKey> ES512 =
-            new DefaultAsymmetricSignatureAlgorithm("ES512", "SHA512withECDSA");
+    public static SignatureAlgorithm<?, ?> get(String jwaName, String provider)
+            throws NoSuchProviderException {
+        if (Security.getProvider(provider) == null) {
+            throw new NoSuchProviderException("Cannot find provider: " + provider);
+        }
+        return KnownAlgorithm.valueOf(jwaName).getAlgorithm(provider);
+    }
 
-    public static final SignatureAlgorithm<PrivateKey, PublicKey> PS256 =
-            new DefaultAsymmetricSignatureAlgorithm("PS256", "SHA256WITHRSAANDMGF1");
 
-    public static final SignatureAlgorithm<PrivateKey, PublicKey> PS384 =
-            new DefaultAsymmetricSignatureAlgorithm("PS384", "SHA384WITHRSAANDMGF1");
+    public static SignatureAlgorithm<?, ?> get(String jwaName) {
+        return KnownAlgorithm.valueOf(jwaName).getAlgorithm();
+    }
 
-    public static final SignatureAlgorithm<PrivateKey, PublicKey> PS512 =
-            new DefaultAsymmetricSignatureAlgorithm("PS512", "SHA512WITHRSAANDMGF1");
+
+    @SuppressWarnings("unchecked")
+    private static <T extends SignatureAlgorithm<?, ?>>
+    T getUnchecked(KnownAlgorithm algorithm) {
+        return (T) algorithm.getAlgorithm();
+    }
 
 
     private SignatureAlgorithms() {

@@ -1,5 +1,7 @@
 package org.unbrokendome.jsonwebtoken.signature.impl;
 
+import com.google.common.io.ByteSource;
+import org.unbrokendome.jsonwebtoken.signature.KeyLoader;
 import org.unbrokendome.jsonwebtoken.signature.SignatureAlgorithm;
 import org.unbrokendome.jsonwebtoken.signature.Signer;
 import org.unbrokendome.jsonwebtoken.signature.Verifier;
@@ -38,5 +40,32 @@ public final class NoneSignatureAlgorithm implements SignatureAlgorithm<Key, Key
     @Override
     public Verifier<Key> createVerifier(@Nullable PoolConfigurer poolConfigurer) {
         return NoneVerifier.getInstance();
+    }
+
+
+    @Nullable
+    @Override
+    public KeyLoader<Key> getSigningKeyLoader() {
+        return NoneKeyLoader.INSTANCE;
+    }
+
+
+    @Override
+    public KeyLoader<Key> getVerificationKeyLoader(boolean fromSigningKey) {
+        return NoneKeyLoader.INSTANCE;
+    }
+
+
+    private static class NoneKeyLoader implements KeyLoader<Key> {
+
+        public static NoneKeyLoader INSTANCE = new NoneKeyLoader();
+
+        private NoneKeyLoader() {
+        }
+
+        @Override
+        public Key load(ByteSource source) {
+            return NoneKey.getInstance();
+        }
     }
 }
