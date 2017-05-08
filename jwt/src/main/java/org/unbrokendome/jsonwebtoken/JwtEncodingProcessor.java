@@ -40,4 +40,24 @@ public interface JwtEncodingProcessor extends JwtProcessorBase {
      * @throws JwsSignatureException if the signature for the token cannot be created
      */
     String encode(Object payload) throws JwsSignatureException;
+
+
+    /**
+     * Creates a new JSON Web Token from the given payload.
+     *
+     * <p>
+     * This is the same as {@link #encode(Object)}, but wraps any {@link JwsSignatureException} in an unchecked
+     * {@link IllegalStateException}.
+     *
+     * @param payload the payload to encode as a JSON Web Token
+     * @return the encoded JSON Web Token as a string
+     * @throws IllegalStateException if the signature for the token cannot be created
+     */
+    default String encodeUnchecked(Object payload) {
+        try {
+            return encode(payload);
+        } catch (JwsSignatureException ex) {
+            throw new IllegalStateException("Error creating signature for JSON Web Token", ex);
+        }
+    }
 }
