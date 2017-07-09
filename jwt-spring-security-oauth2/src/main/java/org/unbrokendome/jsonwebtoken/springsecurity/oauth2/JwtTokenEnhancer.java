@@ -5,7 +5,6 @@ import org.springframework.security.oauth2.common.ExpiringOAuth2RefreshToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2RefreshToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
-import org.springframework.security.oauth2.provider.token.AccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.unbrokendome.jsonwebtoken.Claims;
 import org.unbrokendome.jsonwebtoken.ClaimsBuilder;
@@ -119,6 +118,7 @@ public final class JwtTokenEnhancer implements TokenEnhancer {
                 .setSubject(authentication.getName())
                 .setIssuedAt(clock.instant());
         JwtExtraClaims.setClientId(refreshTokenClaims, authentication.getOAuth2Request().getClientId());
+        JwtExtraClaims.setScope(refreshTokenClaims, authentication.getOAuth2Request().getScope());
         if (refreshTokenExpiration != null) {
             refreshTokenClaims.setExpiration(refreshTokenExpiration);
         }
