@@ -11,7 +11,7 @@ to your build script:
 repositories { jcenter() }
 
 dependencies {
-    compile 'org.unbroken-dome.jsonwebtoken:jsonwebtoken:1.2.0'
+    compile 'org.unbroken-dome.jsonwebtoken:jsonwebtoken:1.3.1'
 }
 ```
 
