@@ -1,14 +1,4 @@
-if (!gradle.startParameter.taskNames.contains('release')) {
-    println "Not a release build, setting version to ${project.version}-SNAPSHOT"
-    project.version += '-SNAPSHOT'
-}
-
-
-tasks.create('release') {
-    doLast {
-        println "Releasing $version"
-    }
-}
+tasks.create 'release'
 
 
 project.plugins.withId('maven-publish') {

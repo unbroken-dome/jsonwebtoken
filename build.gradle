@@ -6,7 +6,23 @@ plugins {
     id 'org.unbroken-dome.test-sets' version '1.3.2' apply false
 }
 
+
+if (!gradle.startParameter.taskNames.contains('release')) {
+    println "Not a release build, setting version to ${project.version}-SNAPSHOT"
+    project.version += '-SNAPSHOT'
+}
+
+
+task 'release' {
+    doLast {
+        println "Releasing $version"
+    }
+}
+
+
 subprojects { p ->
+    p.version = rootProject.version
+
     p.plugins.withId('base') {
         p.apply from: "$rootDir/gradle/dependency-management.gradle"
     }
@@ -19,3 +35,5 @@ subprojects { p ->
         p.apply from: "$rootDir/gradle/common-java.gradle"
     }
 }
+
+
