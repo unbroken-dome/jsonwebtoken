@@ -2,29 +2,26 @@ package org.unbrokendome.jsonwebtoken.springsecurity.oauth2.autoconfigure;
 
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
-import org.springframework.boot.autoconfigure.security.oauth2.OAuth2AutoConfiguration;
 import org.springframework.boot.autoconfigure.security.oauth2.OAuth2ClientProperties;
 import org.springframework.boot.autoconfigure.security.oauth2.authserver.AuthorizationServerProperties;
 import org.springframework.boot.autoconfigure.security.oauth2.authserver.OAuth2AuthorizationServerConfiguration;
+import org.springframework.boot.autoconfigure.security.oauth2.method.OAuth2MethodSecurityConfiguration;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerEndpointsConfiguration;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
+import org.springframework.security.oauth2.config.annotation.web.configuration.OAuth2ClientConfiguration;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.provider.approval.ApprovalStore;
 import org.springframework.security.oauth2.provider.client.BaseClientDetails;
 import org.springframework.security.oauth2.provider.token.AccessTokenConverter;
-import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
-import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.unbrokendome.jsonwebtoken.JwtDecodingProcessor;
@@ -40,19 +37,34 @@ import java.time.Clock;
 
 @Configuration
 @AutoConfigureAfter(JwtAutoConfiguration.class)
-@AutoConfigureBefore(OAuth2AutoConfiguration.class)
-@SuppressWarnings("SpringJavaAutowiringInspection")
+@Import({ OAuth2AuthorizationServerConfiguration.class,
+        OAuth2ResourceServerConfiguration.class,
+        OAuth2MethodSecurityConfiguration.class,
+        OAuth2ClientConfiguration.class })
+@EnableConfigurationProperties(OAuth2ClientProperties.class)
 public class JwtOAuth2AutoConfiguration {
+
+    private final Clock clock;
+    private final OAuth2ClientProperties credentials;
+
+
+    public JwtOAuth2AutoConfiguration(ObjectProvider<Clock> clock, OAuth2ClientProperties credentials) {
+        Clock injectedClock = clock.getIfAvailable();
+        this.clock = injectedClock != null ? injectedClock : Clock.systemDefaultZone();
+        this.credentials = credentials;
+    }
+
 
     @Bean
     @ConditionalOnBean(JwtDecodingProcessor.class)
     @ConditionalOnMissingBean(TokenStore.class)
     public JwtTokenStore jwtTokenStore(JwtDecodingProcessor jwtProcessor,
-                                       ObjectProvider<ApprovalStore> approvalStore,
-                                       ObjectProvider<Clock> clock) {
-        return new JwtTokenStore(jwtProcessor,
-                approvalStore.getIfAvailable(),
-                getClockOrDefault(clock));
+                                       ObjectProvider<ApprovalStore> approvalStore) {
+        if (clock != null) {
+            return new JwtTokenStore(jwtProcessor, approvalStore.getIfAvailable(), clock);
+        } else {
+            return new JwtTokenStore(jwtProcessor, approvalStore.getIfAvailable());
+        }
     }
 
 
@@ -67,10 +79,8 @@ public class JwtOAuth2AutoConfiguration {
     @Bean
     @ConditionalOnBean(JwtEncodingProcessor.class)
     @ConditionalOnMissingBean(TokenEnhancer.class)
-    public JwtTokenEnhancer jwtTokenEnhancer(JwtEncodingProcessor jwtProcessor,
-                                             ObjectProvider<Clock> clock) {
-        return new JwtTokenEnhancer(jwtProcessor,
-                getClockOrDefault(clock));
+    public JwtTokenEnhancer jwtTokenEnhancer(JwtEncodingProcessor jwtProcessor) {
+        return new JwtTokenEnhancer(jwtProcessor, clock);
     }
 
 
@@ -81,12 +91,9 @@ public class JwtOAuth2AutoConfiguration {
     }
 
 
-    private Clock getClockOrDefault(ObjectProvider<Clock> clockProvider) {
-        Clock clock = clockProvider.getIfAvailable();
-        if (clock != null) {
-            return clock;
-        }
-        return Clock.systemDefaultZone();
+    @Bean
+    public ResourceServerProperties resourceServerProperties() {
+        return new ResourceServerProperties(credentials.getClientId(), credentials.getClientSecret());
     }
 
 
@@ -116,27 +123,5 @@ public class JwtOAuth2AutoConfiguration {
                 endpoints.tokenEnhancer(tokenEnhancer);
             }
         }
-    }
-
-
-    @Configuration
-    @ConditionalOnClass({ EnableResourceServer.class, SecurityProperties.class })
-    @ConditionalOnWebApplication
-    @ConditionalOnBean({ ResourceServerConfiguration.class, JwtDecodingProcessor.class })
-    static class ResourceServerConfiguration {
-
-        @Bean
-        @ConditionalOnMissingBean(ResourceServerTokenServices.class)
-        public ResourceServerTokenServices resourceServerTokenServices(TokenStore tokenStore) {
-            DefaultTokenServices tokenServices = new DefaultTokenServices();
-            tokenServices.setTokenStore(tokenStore);
-            return tokenServices;
-        }
-    }
-
-
-    @Bean
-    public static ResourceServerPropertiesPostProcessor resourceServerPropertiesPostProcessor(OAuth2ClientProperties credentials) {
-        return new ResourceServerPropertiesPostProcessor(credentials);
     }
 }
