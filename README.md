@@ -11,7 +11,7 @@ to your build script:
 repositories { jcenter() }
 
 dependencies {
-    compile 'org.unbroken-dome.jsonwebtoken:jsonwebtoken:1.3.1'
+    compile 'org.unbroken-dome.jsonwebtoken:jsonwebtoken:1.3.2'
 }
 ```
 
@@ -95,3 +95,20 @@ JwtProcessor jwtProcessor = Jwt.processor()
             })
         .build();
 ```
+
+
+## Using with Spring Security OAuth2 and Spring Boot
+
+This library can be used together with Spring Security OAuth2 as a replacement for the built-in JWT support. It
+ adds the following features that Spring Security OAuth2 does not offer:
+ 
+- Elliptic Curve (EC) and custom signing algorithms
+- Multiple signing/verification keys and custom key selection strategies
+
+The library provides implementations of `TokenStore`, `TokenEnhancer` and `AccessTokenConverter` that can be used
+ in an authorization and/or resource server.
+ 
+### Injecting a custom `Clock`
+
+The `JwtTokenStore` and `JwtTokenEnhancer` services can be provided with a custom `java.time.Clock` that will be used
+for timestamps in tokens as well as expiration checking. Using a fixed-instant clock can greatly simplify testing.
