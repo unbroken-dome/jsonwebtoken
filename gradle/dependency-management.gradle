@@ -7,18 +7,16 @@ repositories {
 dependencyManagement {
 
     imports {
-        mavenBom 'org.springframework:spring-framework-bom:4.3.8.RELEASE'
-        mavenBom 'org.springframework.boot:spring-boot-starter-parent:1.5.3.RELEASE'
+        mavenBom 'org.springframework.boot:spring-boot-starter-parent:1.5.8.RELEASE'
+        mavenBom 'com.fasterxml.jackson:jackson-bom:2.9.2'
     }
 
     dependencies {
-        dependency 'com.fasterxml.jackson.core:jackson-databind:2.8.8'
-
         dependency 'com.google.code.findbugs:jsr305:3.0.2'
 
         dependency 'nf.fr.eraasoft:objectpool:1.1.2'
 
-        dependencySet(group: 'org.bouncycastle', version: '1.55') {
+        dependencySet(group: 'org.bouncycastle', version: '1.58') {
             entry 'bcpkix-jdk15on'
             entry 'bcprov-jdk15on'
         }
@@ -36,7 +34,7 @@ dependencyManagement {
             entry 'jcl-over-slf4j'
         }
 
-        dependencySet(group: 'org.spockframework', version: '1.1-groovy-2.4-rc-4') {
+        dependencySet(group: 'org.spockframework', version: '1.1-groovy-2.4') {
             entry 'spock-core'
             entry 'spock-spring'
         }
