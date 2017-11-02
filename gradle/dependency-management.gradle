@@ -16,11 +16,7 @@ dependencyManagement {
 
         dependency 'com.google.code.findbugs:jsr305:3.0.2'
 
-        dependency 'com.google.guava:guava:21.0'
-
         dependency 'nf.fr.eraasoft:objectpool:1.1.2'
-
-        dependency 'org.apache.commons:commons-lang3:3.5'
 
         dependencySet(group: 'org.bouncycastle', version: '1.55') {
             entry 'bcpkix-jdk15on'

@@ -1,6 +1,6 @@
 package org.unbrokendome.jsonwebtoken.signature.impl;
 
-import com.google.common.io.ByteSource;
+import org.unbrokendome.jsonwebtoken.IOSupplier;
 import org.unbrokendome.jsonwebtoken.signature.KeyLoader;
 import org.unbrokendome.jsonwebtoken.signature.SignatureAlgorithm;
 import org.unbrokendome.jsonwebtoken.signature.Signer;
@@ -8,6 +8,7 @@ import org.unbrokendome.jsonwebtoken.signature.Verifier;
 import org.unbrokendome.jsonwebtoken.signature.provider.PoolConfigurer;
 
 import javax.annotation.Nullable;
+import java.io.InputStream;
 import java.security.Key;
 
 
@@ -64,7 +65,7 @@ public final class NoneSignatureAlgorithm implements SignatureAlgorithm<Key, Key
         }
 
         @Override
-        public Key load(ByteSource source) {
+        public Key load(IOSupplier<byte[]> source) {
             return NoneKey.getInstance();
         }
     }

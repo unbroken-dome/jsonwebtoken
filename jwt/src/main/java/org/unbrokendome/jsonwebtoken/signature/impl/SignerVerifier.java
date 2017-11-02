@@ -1,6 +1,5 @@
 package org.unbrokendome.jsonwebtoken.signature.impl;
 
-import com.google.common.base.Preconditions;
 import org.unbrokendome.jsonwebtoken.BinaryData;
 import org.unbrokendome.jsonwebtoken.signature.JwsSignatureException;
 import org.unbrokendome.jsonwebtoken.signature.JwsSignatureMismatchException;
@@ -34,7 +33,9 @@ public final class SignerVerifier<TKey extends Key> implements Verifier<TKey> {
     public void verify(BinaryData header, BinaryData payload, BinaryData signature, @Nullable TKey key)
             throws JwsSignatureException {
 
-        Preconditions.checkArgument(key != null, "Key must not be null");
+        if (key == null) {
+            throw new IllegalArgumentException("Key must not be null");
+        }
 
         BinaryData expectedSignature = signer.sign(header, payload, key);
         if (!expectedSignature.equals(signature)) {

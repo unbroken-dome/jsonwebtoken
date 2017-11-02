@@ -1,6 +1,6 @@
 package org.unbrokendome.jsonwebtoken.signature.impl;
 
-import com.google.common.io.ByteSource;
+import org.unbrokendome.jsonwebtoken.IOSupplier;
 import org.unbrokendome.jsonwebtoken.signature.KeyLoader;
 
 import java.io.IOException;
@@ -23,9 +23,9 @@ public class PKCS8PrivateKeyLoader implements KeyLoader<PrivateKey> {
 
 
     @Override
-    public PrivateKey load(ByteSource source) throws IOException, InvalidKeySpecException {
+    public PrivateKey load(IOSupplier<byte[]> source) throws IOException, InvalidKeySpecException {
 
-        KeySpec keySpec = new PKCS8EncodedKeySpec(source.read());
+        KeySpec keySpec = new PKCS8EncodedKeySpec(source.get());
 
         KeyFactory keyFactory = keyFactorySupplier.get();
         return keyFactory.generatePrivate(keySpec);

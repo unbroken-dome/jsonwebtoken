@@ -1,7 +1,6 @@
 package org.unbrokendome.jsonwebtoken.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.ImmutableList;
 import org.unbrokendome.jsonwebtoken.JwtEncodeOnlyProcessorBuilder;
 import org.unbrokendome.jsonwebtoken.JwtEncodingProcessor;
 import org.unbrokendome.jsonwebtoken.encoding.DefaultHeaderSerializer;
@@ -18,13 +17,15 @@ import org.unbrokendome.jsonwebtoken.signature.impl.NoneKeyResolver;
 
 import javax.annotation.Nullable;
 import java.security.Key;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public final class DefaultJwtEncodingProcessorBuilder
         extends AbstractJwtProcessorBuilder<JwtEncodingProcessor, JwtEncodeOnlyProcessorBuilder>
         implements JwtEncodeOnlyProcessorBuilder {
 
-    private final ImmutableList.Builder<PayloadSerializer> payloadSerializers = ImmutableList.builder();
+    private final List<PayloadSerializer> payloadSerializers = new ArrayList<>();
     private SignatureAlgorithm<?, ?> signingAlgorithm = SignatureAlgorithms.NONE;
     @Nullable
     private SigningKeyResolver<?> signingKeyResolver;
@@ -57,7 +58,7 @@ public final class DefaultJwtEncodingProcessorBuilder
         Signer<?> signer = signingAlgorithm.createSigner(getPoolConfigurer());
 
         return new DefaultJwtEncodingProcessor(
-                payloadSerializers.build(),
+                payloadSerializers,
                 signingAlgorithm, signer,
                 signingKeyResolver != null ? signingKeyResolver : NoneKeyResolver.getInstance(),
                 new DefaultHeaderSerializer(objectMapper),

@@ -1,11 +1,10 @@
 package org.unbrokendome.jsonwebtoken;
 
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.Objects;
 
 
 /**
@@ -88,7 +87,7 @@ public final class BinaryData {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(buffer).toHashCode();
+        return Objects.hash(buffer);
     }
 
 

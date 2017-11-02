@@ -1,10 +1,9 @@
 package org.unbrokendome.jsonwebtoken.spring.autoconfigure;
 
-import com.google.common.io.ByteSource;
-import com.google.common.io.CharSource;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.core.io.Resource;
 import org.springframework.util.StringUtils;
+import org.unbrokendome.jsonwebtoken.IOSupplier;
 import org.unbrokendome.jsonwebtoken.JwtDecodeOnlyProcessorBuilder;
 import org.unbrokendome.jsonwebtoken.JwtDecodingProcessorBuilderBase;
 import org.unbrokendome.jsonwebtoken.JwtEncodeOnlyProcessorBuilder;
@@ -18,7 +17,7 @@ import org.unbrokendome.jsonwebtoken.signature.SigningKeyResolver;
 import org.unbrokendome.jsonwebtoken.signature.VerificationKeyResolver;
 import org.unbrokendome.jsonwebtoken.spring.JwtProcessorMode;
 import org.unbrokendome.jsonwebtoken.spring.io.Base64DecodingByteSource;
-import org.unbrokendome.jsonwebtoken.spring.io.ResourceByteSourceAdapter;
+import org.unbrokendome.jsonwebtoken.spring.io.ResourceBinaryDataSupplier;
 
 import javax.annotation.Nullable;
 import java.nio.charset.StandardCharsets;
@@ -185,13 +184,13 @@ public class JwtProperties {
 
 
         @Nullable
-        protected ByteSource getKeyByteSource() {
+        protected IOSupplier<byte[]> getKeyByteSource() {
             if (key != null && !key.trim().isEmpty()) {
-                return new Base64DecodingByteSource(CharSource.wrap(key), StandardCharsets.UTF_8);
+                return new Base64DecodingByteSource(() -> key, StandardCharsets.UTF_8);
 
             } else if (keyResource != null) {
-                ByteSource encodedByteSource = new ResourceByteSourceAdapter(keyResource);
-                return new Base64DecodingByteSource(encodedByteSource);
+                return new Base64DecodingByteSource(
+                        new ResourceBinaryDataSupplier(keyResource));
 
             } else {
                 return null;
@@ -202,7 +201,7 @@ public class JwtProperties {
         @Nullable
         protected Key loadSigningKey(SignatureAlgorithm<?, ?> algorithm) {
 
-            ByteSource keyByteSource = getKeyByteSource();
+            IOSupplier<byte[]> keyByteSource = getKeyByteSource();
             if (keyByteSource == null) {
                 if (algorithm != SignatureAlgorithms.NONE) {
                     throw new IllegalStateException("A signature algorithm other than NONE was specified, but no signing " +
@@ -234,7 +233,7 @@ public class JwtProperties {
         @Nullable
         protected Key loadVerificationKey(SignatureAlgorithm<?, ?> algorithm) {
 
-            ByteSource keyByteSource = getKeyByteSource();
+            IOSupplier<byte[]> keyByteSource = getKeyByteSource();
             if (keyByteSource == null) {
                 if (algorithm != SignatureAlgorithms.NONE) {
                     throw new IllegalStateException("A signature algorithm other than NONE was specified, but no verification " +

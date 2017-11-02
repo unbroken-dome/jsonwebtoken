@@ -1,6 +1,6 @@
 package org.unbrokendome.jsonwebtoken.signature.impl;
 
-import com.google.common.io.ByteSource;
+import org.unbrokendome.jsonwebtoken.IOSupplier;
 import org.unbrokendome.jsonwebtoken.signature.KeyLoader;
 
 import java.io.IOException;
@@ -27,7 +27,7 @@ public class PublicKeyFromPrivateKeyLoader implements KeyLoader<PublicKey> {
 
 
     @Override
-    public PublicKey load(ByteSource source) throws IOException, InvalidKeySpecException {
+    public PublicKey load(IOSupplier<byte[]> source) throws IOException, InvalidKeySpecException {
         PrivateKey privateKey = privateKeyLoader.load(source);
         return publicKeyExtractor.publicKeyFromPrivateKey(privateKey, keyFactory);
     }

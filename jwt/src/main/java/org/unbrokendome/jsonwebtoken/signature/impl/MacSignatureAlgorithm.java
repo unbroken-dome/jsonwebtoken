@@ -1,11 +1,11 @@
 package org.unbrokendome.jsonwebtoken.signature.impl;
 
-import org.apache.commons.lang3.tuple.Pair;
 import org.unbrokendome.jsonwebtoken.signature.KeyLoader;
 import org.unbrokendome.jsonwebtoken.signature.Signer;
 import org.unbrokendome.jsonwebtoken.signature.Verifier;
 import org.unbrokendome.jsonwebtoken.signature.provider.AlgorithmProviders;
 import org.unbrokendome.jsonwebtoken.signature.provider.PoolConfigurer;
+import org.unbrokendome.jsonwebtoken.util.Pair;
 
 import javax.annotation.Nullable;
 import javax.crypto.SecretKey;
@@ -31,7 +31,7 @@ public final class MacSignatureAlgorithm extends AbstractSignatureAlgorithm<Secr
 
     @Override
     public Verifier<SecretKey> createVerifier(@Nullable PoolConfigurer poolConfigurer) {
-        return createSignerAndVerifier(poolConfigurer).getRight();
+        return createSignerAndVerifier(poolConfigurer).getSecond();
     }
 
 

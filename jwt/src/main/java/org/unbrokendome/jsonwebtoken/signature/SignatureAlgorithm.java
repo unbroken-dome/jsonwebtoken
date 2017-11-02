@@ -1,8 +1,8 @@
 package org.unbrokendome.jsonwebtoken.signature;
 
-import org.apache.commons.lang3.tuple.Pair;
 import org.unbrokendome.jsonwebtoken.JoseHeaderBuilder;
 import org.unbrokendome.jsonwebtoken.signature.provider.PoolConfigurer;
+import org.unbrokendome.jsonwebtoken.util.Pair;
 
 import javax.annotation.Nullable;
 import java.security.Key;

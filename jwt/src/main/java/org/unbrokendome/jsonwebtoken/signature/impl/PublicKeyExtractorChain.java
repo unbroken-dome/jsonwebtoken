@@ -1,21 +1,19 @@
 package org.unbrokendome.jsonwebtoken.signature.impl;
 
-import com.google.common.collect.ImmutableList;
-
 import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
-import java.util.Collection;
+import java.util.List;
 
 
 public class PublicKeyExtractorChain implements PublicKeyExtractor {
 
-    private final Collection<? extends PublicKeyExtractor> extractors;
+    private final List<? extends PublicKeyExtractor> extractors;
 
 
-    public PublicKeyExtractorChain(Iterable<? extends PublicKeyExtractor> extractors) {
-        this.extractors = ImmutableList.copyOf(extractors);
+    public PublicKeyExtractorChain(List<? extends PublicKeyExtractor> extractors) {
+        this.extractors = extractors;
     }
 
 

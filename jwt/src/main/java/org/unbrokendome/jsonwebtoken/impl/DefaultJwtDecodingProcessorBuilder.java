@@ -1,9 +1,6 @@
 package org.unbrokendome.jsonwebtoken.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import org.unbrokendome.jsonwebtoken.JwtDecodeOnlyProcessorBuilder;
 import org.unbrokendome.jsonwebtoken.JwtDecodingProcessor;
 import org.unbrokendome.jsonwebtoken.encoding.DefaultHeaderDeserializer;
@@ -18,7 +15,9 @@ import org.unbrokendome.jsonwebtoken.signature.Verifier;
 import org.unbrokendome.jsonwebtoken.signature.provider.PoolConfigurer;
 
 import java.security.Key;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -28,7 +27,7 @@ public final class DefaultJwtDecodingProcessorBuilder
         implements JwtDecodeOnlyProcessorBuilder {
 
     private final Map<String, Function<PoolConfigurer, VerifierWithKeyResolver<?>>> verifierBuilders = new HashMap<>();
-    private final ImmutableList.Builder<PayloadDeserializer<?>> payloadDeserializers = ImmutableList.builder();
+    private final List<PayloadDeserializer<?>> payloadDeserializers = new ArrayList<>();
 
 
     @Override
@@ -59,13 +58,12 @@ public final class DefaultJwtDecodingProcessorBuilder
 
         PoolConfigurer poolConfigurer = getPoolConfigurer();
 
-        @SuppressWarnings("ConstantConditions")
-        Map<String, VerifierWithKeyResolver<?>> verifiers = Maps.transformValues(verifierBuilders,
-                f -> f.apply(poolConfigurer));
+        Map<String, VerifierWithKeyResolver<?>> verifiers = new HashMap<>(verifierBuilders.size());
+        verifierBuilders.forEach((key, f) -> verifiers.put(key, f.apply(poolConfigurer)));
 
         return new DefaultJwtDecodingProcessor(
-                payloadDeserializers.build(),
-                ImmutableMap.copyOf(verifiers),
+                payloadDeserializers,
+                verifiers,
                 new DefaultHeaderDeserializer(objectMapper),
                 new JwsCompactDecoder());
     }

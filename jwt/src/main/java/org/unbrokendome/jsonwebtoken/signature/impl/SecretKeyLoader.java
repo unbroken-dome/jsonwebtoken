@@ -1,6 +1,6 @@
 package org.unbrokendome.jsonwebtoken.signature.impl;
 
-import com.google.common.io.ByteSource;
+import org.unbrokendome.jsonwebtoken.IOSupplier;
 import org.unbrokendome.jsonwebtoken.signature.KeyLoader;
 
 import javax.crypto.SecretKey;
@@ -22,8 +22,8 @@ public final class SecretKeyLoader implements KeyLoader<SecretKey> {
 
 
     @Override
-    public SecretKey load(ByteSource source) throws IOException {
-        byte[] bytes = source.read();
+    public SecretKey load(IOSupplier<byte[]> source) throws IOException {
+        byte[] bytes = source.get();
         return new SecretKeySpec(bytes, algorithm);
     }
 }

@@ -1,11 +1,12 @@
 package org.unbrokendome.jsonwebtoken.impl;
 
-import com.google.common.collect.ImmutableMap;
 import org.unbrokendome.jsonwebtoken.MapData;
 import org.unbrokendome.jsonwebtoken.MapDataBuilder;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -26,7 +27,7 @@ public abstract class AbstractMapDataBuilder<TBuilder extends MapDataBuilder<TBu
     @Override
     @Nonnull
     public Map<String, Object> asMap() {
-        return ImmutableMap.copyOf(map);
+        return Collections.unmodifiableMap(new HashMap<>(map));
     }
 
 

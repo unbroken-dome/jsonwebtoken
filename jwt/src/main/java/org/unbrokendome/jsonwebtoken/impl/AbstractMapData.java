@@ -1,10 +1,9 @@
 package org.unbrokendome.jsonwebtoken.impl;
 
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.google.common.collect.ImmutableMap;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.util.Map;
+import java.util.Objects;
 
 
 abstract class AbstractMapData {
@@ -13,7 +12,7 @@ abstract class AbstractMapData {
 
 
     protected AbstractMapData(Map<String, Object> map) {
-        this.map = ImmutableMap.copyOf(map);
+        this.map = map;
     }
 
 
@@ -41,7 +40,7 @@ abstract class AbstractMapData {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(map).toHashCode();
+        return Objects.hash(map);
     }
 
 

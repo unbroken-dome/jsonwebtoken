@@ -1,6 +1,6 @@
 package org.unbrokendome.jsonwebtoken.signature;
 
-import com.google.common.io.ByteSource;
+import org.unbrokendome.jsonwebtoken.IOSupplier;
 
 import java.io.IOException;
 import java.security.Key;
@@ -22,5 +22,5 @@ public interface KeyLoader<TKey extends Key> {
      * @throws IOException for I/O errors
      * @throws InvalidKeySpecException if the binary resource does not match the expected key format
      */
-    TKey load(ByteSource source) throws IOException, InvalidKeySpecException;
+    TKey load(IOSupplier<byte[]> source) throws IOException, InvalidKeySpecException;
 }

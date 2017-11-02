@@ -1,7 +1,5 @@
 package org.unbrokendome.jsonwebtoken;
 
-import com.google.common.collect.ImmutableSet;
-
 import javax.annotation.Nonnull;
 import java.time.Instant;
 import java.util.Set;
@@ -57,7 +55,7 @@ public interface ClaimsBuilder extends MapDataBuilder<ClaimsBuilder, Claims>, Cl
      */
     @Nonnull
     default ClaimsBuilder setAudiences(Set<String> audiences) {
-        return set(AUDIENCE, ImmutableSet.copyOf(audiences));
+        return set(AUDIENCE, audiences);
     }
 
 

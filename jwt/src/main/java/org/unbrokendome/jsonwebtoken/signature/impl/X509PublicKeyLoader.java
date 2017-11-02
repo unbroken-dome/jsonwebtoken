@@ -1,15 +1,13 @@
 package org.unbrokendome.jsonwebtoken.signature.impl;
 
-import com.google.common.io.ByteSource;
+import org.unbrokendome.jsonwebtoken.IOSupplier;
 import org.unbrokendome.jsonwebtoken.signature.KeyLoader;
 
 import java.io.IOException;
 import java.security.KeyFactory;
-import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
-import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.function.Supplier;
 
@@ -28,9 +26,9 @@ public class X509PublicKeyLoader implements KeyLoader<PublicKey> {
 
 
     @Override
-    public PublicKey load(ByteSource source) throws IOException, InvalidKeySpecException {
+    public PublicKey load(IOSupplier<byte[]> source) throws IOException, InvalidKeySpecException {
 
-        KeySpec keySpec = new X509EncodedKeySpec(source.read());
+        KeySpec keySpec = new X509EncodedKeySpec(source.get());
 
         KeyFactory keyFactory = keyFactorySupplier.get();
         return keyFactory.generatePublic(keySpec);
