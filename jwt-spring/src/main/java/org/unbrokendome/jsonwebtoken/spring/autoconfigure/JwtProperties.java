@@ -28,12 +28,24 @@ import java.util.List;
 
 
 @ConfigurationProperties(prefix = "jwt")
+@SuppressWarnings("unused")
 public class JwtProperties {
 
+    /**
+     * Mode of the processor. Default is {@code FULL}. Set to {@link JwtProcessorMode#ENCODE_ONLY ENCODE_ONLY} or
+     * {@link JwtProcessorMode#DECODE_ONLY DECODE_ONLY} if only encoding or decoding capabilities are needed.
+     */
     private JwtProcessorMode mode = JwtProcessorMode.FULL;
     private final Pool pool = new Pool();
     private Signing signing;
     private List<Verification> verification = new ArrayList<>(3);
+
+    /**
+     * If {@code true}, use the signing algorithm for verification, in addition to any verification strategies
+     * given in the {@link #verification} list.
+     *
+     * Only relevant if the processor {@link #mode} is {@code FULL}.
+     */
     private boolean verifyWithSigningAlgorithm = true;
 
 
@@ -77,8 +89,20 @@ public class JwtProperties {
 
     public static class Pool {
 
+        /**
+         * Enable pooling of crypto instances for signing or verification.
+         */
         private boolean enabled = true;
+
+        /**
+         * Minimum size of the crypto pool.
+         */
         private int minSize = 10;
+
+        /**
+         * Maximum number of idle objects. If more than this number become idle, instances will be released from
+         * the pool.
+         */
         private int maxIdle = 10;
 
 
@@ -121,10 +145,30 @@ public class JwtProperties {
 
 
     public static abstract class SigningOrVerification {
+
+        /**
+         * The name of the algorithm. This should be one of the known JWA names, e.g. {@code ES256} or {@code HS512}.
+         */
         private String algorithmName;
+
+        /**
+         * The Java Security provider to use for cryptographic operations. Note that this does not install the
+         * provider.
+         */
         private String provider;
+
+        /**
+         * A resource that contains the key material. Either this property or {@link #key} should be specified,
+         * but not both.
+         */
         private Resource keyResource;
+
+        /**
+         * A Base64-encoded representation of the key material. Either this property or {@link #keyResource} should
+         * be specified, but not both.
+         */
         private String key;
+
 
         public String getAlgorithm() {
             return algorithmName;
@@ -166,7 +210,8 @@ public class JwtProperties {
         }
 
 
-        protected SignatureAlgorithm<?, ?> getAlgorithmObject() {
+        @Nullable
+        SignatureAlgorithm<?, ?> getAlgorithmObject() {
             if (StringUtils.isEmpty(algorithmName)) {
                 return null;
             }
@@ -184,7 +229,7 @@ public class JwtProperties {
 
 
         @Nullable
-        protected IOSupplier<byte[]> getKeyByteSource() {
+        IOSupplier<byte[]> getKeyByteSource() {
             if (key != null && !key.trim().isEmpty()) {
                 return new Base64DecodingByteSource(() -> key, StandardCharsets.UTF_8);
 
@@ -199,7 +244,7 @@ public class JwtProperties {
 
 
         @Nullable
-        protected Key loadSigningKey(SignatureAlgorithm<?, ?> algorithm) {
+        Key loadSigningKey(SignatureAlgorithm<?, ?> algorithm) {
 
             IOSupplier<byte[]> keyByteSource = getKeyByteSource();
             if (keyByteSource == null) {
@@ -231,7 +276,7 @@ public class JwtProperties {
 
 
         @Nullable
-        protected Key loadVerificationKey(SignatureAlgorithm<?, ?> algorithm) {
+        Key loadVerificationKey(SignatureAlgorithm<?, ?> algorithm) {
 
             IOSupplier<byte[]> keyByteSource = getKeyByteSource();
             if (keyByteSource == null) {
