@@ -11,7 +11,7 @@ to your build script:
 repositories { jcenter() }
 
 dependencies {
-    implementation 'org.unbroken-dome.jsonwebtoken:jwt:1.4.0'
+    implementation 'org.unbroken-dome.jsonwebtoken:jwt:1.4.1'
 }
 ```
 
@@ -108,7 +108,7 @@ Include the library on the classpath:
 repositories { jcenter() }
 
 dependencies {
-    implementation 'org.unbroken-dome.jsonwebtoken:jwt-spring:1.4.0'
+    implementation 'org.unbroken-dome.jsonwebtoken:jwt-spring:1.4.1'
 }
 ```
 
