@@ -3,6 +3,7 @@ package org.unbrokendome.jsonwebtoken;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 
+@SuppressWarnings("UnusedReturnValue")
 public interface JwtProcessorBuilderBase<T extends JwtProcessorBase, B extends JwtProcessorBuilderBase<T, B>> {
 
     /**

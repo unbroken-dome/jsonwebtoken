@@ -18,7 +18,7 @@ import java.security.Security;
  */
 public final class SignatureAlgorithms {
 
-    public static final SignatureAlgorithm<?, ?> NONE = KnownAlgorithm.NONE.getAlgorithm();
+    public static final SignatureAlgorithm<NoneKey, NoneKey> NONE = getUnchecked(KnownAlgorithm.NONE);
     public static final SignatureAlgorithm<SecretKey, SecretKey> HS256 = getUnchecked(KnownAlgorithm.HS256);
     public static final SignatureAlgorithm<SecretKey, SecretKey> HS384 = getUnchecked(KnownAlgorithm.HS384);
     public static final SignatureAlgorithm<SecretKey, SecretKey> HS512 = getUnchecked(KnownAlgorithm.HS512);

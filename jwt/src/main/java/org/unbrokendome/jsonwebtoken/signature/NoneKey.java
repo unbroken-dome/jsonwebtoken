@@ -1,4 +1,6 @@
-package org.unbrokendome.jsonwebtoken.signature.impl;
+package org.unbrokendome.jsonwebtoken.signature;
+
+import org.unbrokendome.jsonwebtoken.signature.impl.NoneSignatureAlgorithm;
 
 import java.security.Key;
 
@@ -6,7 +8,7 @@ import java.security.Key;
 /**
  * A dummy implementation of {@link Key} used by the {@link NoneSignatureAlgorithm}.
  */
-final class NoneKey implements Key {
+public final class NoneKey implements Key {
 
     private static NoneKey INSTANCE = new NoneKey();
 

@@ -1,13 +1,14 @@
 package org.unbrokendome.jsonwebtoken.signature.impl;
 
 import org.unbrokendome.jsonwebtoken.BinaryData;
+import org.unbrokendome.jsonwebtoken.signature.NoneKey;
 import org.unbrokendome.jsonwebtoken.signature.Verifier;
 
 import javax.annotation.Nullable;
 import java.security.Key;
 
 
-public final class NoneVerifier implements Verifier<Key> {
+public final class NoneVerifier implements Verifier<NoneKey> {
 
     private static final NoneVerifier INSTANCE = new NoneVerifier();
 
@@ -22,6 +23,6 @@ public final class NoneVerifier implements Verifier<Key> {
 
 
     @Override
-    public void verify(BinaryData header, BinaryData payload, BinaryData signature, @Nullable Key key) {
+    public void verify(BinaryData header, BinaryData payload, BinaryData signature, NoneKey key) {
     }
 }

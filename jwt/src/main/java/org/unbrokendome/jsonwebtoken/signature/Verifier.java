@@ -2,7 +2,6 @@ package org.unbrokendome.jsonwebtoken.signature;
 
 import org.unbrokendome.jsonwebtoken.BinaryData;
 
-import javax.annotation.Nullable;
 import java.security.Key;
 
 
@@ -23,6 +22,6 @@ public interface Verifier<TVerificationKey extends Key> {
      * @throws JwsSignatureException if the signature could not be verified. Specifically, a
      *                               {@link JwsSignatureMismatchException} should be thrown if the signature is invalid.
      */
-    void verify(BinaryData header, BinaryData payload, BinaryData signature, @Nullable TVerificationKey key)
+    void verify(BinaryData header, BinaryData payload, BinaryData signature, TVerificationKey key)
             throws JwsSignatureException;
 }

@@ -2,6 +2,7 @@ package org.unbrokendome.jsonwebtoken.signature.impl;
 
 import org.unbrokendome.jsonwebtoken.JoseHeader;
 import org.unbrokendome.jsonwebtoken.JoseHeaderBuilder;
+import org.unbrokendome.jsonwebtoken.signature.NoneKey;
 import org.unbrokendome.jsonwebtoken.signature.SigningKeyResolver;
 import org.unbrokendome.jsonwebtoken.signature.VerificationKeyResolver;
 

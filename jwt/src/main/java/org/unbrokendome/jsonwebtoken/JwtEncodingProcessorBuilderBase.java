@@ -1,7 +1,9 @@
 package org.unbrokendome.jsonwebtoken;
 
 import org.unbrokendome.jsonwebtoken.encoding.payload.PayloadSerializer;
+import org.unbrokendome.jsonwebtoken.signature.NoneKey;
 import org.unbrokendome.jsonwebtoken.signature.SignatureAlgorithm;
+import org.unbrokendome.jsonwebtoken.signature.SignatureAlgorithms;
 import org.unbrokendome.jsonwebtoken.signature.SigningKeyResolver;
 
 import java.security.Key;
@@ -21,11 +23,11 @@ public interface JwtEncodingProcessorBuilderBase<T extends JwtEncodingProcessor,
      * {@link #signWith(SignatureAlgorithm, Key)} instead.
      *
      * @param algorithm          the signature algorithm to use; typically one of the predefined algorithms from
-     *                           {@link org.unbrokendome.jsonwebtoken.signature.SignatureAlgorithms SignatureAlgorithms}
+     *                           {@link SignatureAlgorithms SignatureAlgorithms}
      * @param signingKeyResolver a function that will select a key for signing a token, based on its payload
      * @param <TSigningKey>      the type of the signing key; must be a subclass of {@link Key}
      * @return the current builder instance
-     * @see org.unbrokendome.jsonwebtoken.signature.SignatureAlgorithms
+     * @see SignatureAlgorithms
      */
     <TSigningKey extends Key>
     B signWith(SignatureAlgorithm<TSigningKey, ?> algorithm, SigningKeyResolver<TSigningKey> signingKeyResolver);
@@ -37,15 +39,32 @@ public interface JwtEncodingProcessorBuilderBase<T extends JwtEncodingProcessor,
      * replaced.
      *
      * @param algorithm     the signature algorithm to use; typically one of the predefined algorithms from
-     *                      {@link org.unbrokendome.jsonwebtoken.signature.SignatureAlgorithms SignatureAlgorithms}
+     *                      {@link SignatureAlgorithms SignatureAlgorithms}
      * @param signingKey    the key to use for signing the tokens
      * @param <TSigningKey> the type of the signing key; must be a subclass of {@link Key}
      * @return the current builder instance
-     * @see org.unbrokendome.jsonwebtoken.signature.SignatureAlgorithms
+     * @see SignatureAlgorithms
      */
     default <TSigningKey extends Key>
     B signWith(SignatureAlgorithm<TSigningKey, ?> algorithm, TSigningKey signingKey) {
         return signWith(algorithm, (SigningKeyResolver<TSigningKey>) (h, p) -> signingKey);
+    }
+
+    /**
+     * Configures the JWT processor to sign every token using the specified algorithm.
+     * <p>
+     * Only one signing algorithm may be configured; any previously configured signing algorithm will be
+     * replaced.
+     * <p>
+     * This overload does not take a key parameter, and is intended for the {@code NONE} algorithm (which is the only
+     * algorithm that does not require a key for verification). Note that {@code NONE} is the algorithm used by default
+     *
+     *
+     * @param algorithm     the signature algorithm to use; typically {@link SignatureAlgorithms#NONE}
+     * @return the current builder instance
+     */
+    default B signWith(SignatureAlgorithm<NoneKey, ?> algorithm) {
+        return signWith(algorithm, NoneKey.getInstance());
     }
 
     /**

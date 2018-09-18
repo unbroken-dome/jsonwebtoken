@@ -1,7 +1,9 @@
 package org.unbrokendome.jsonwebtoken;
 
 import org.unbrokendome.jsonwebtoken.encoding.payload.PayloadDeserializer;
+import org.unbrokendome.jsonwebtoken.signature.NoneKey;
 import org.unbrokendome.jsonwebtoken.signature.SignatureAlgorithm;
+import org.unbrokendome.jsonwebtoken.signature.SignatureAlgorithms;
 import org.unbrokendome.jsonwebtoken.signature.VerificationKeyResolver;
 
 import java.security.Key;
@@ -22,7 +24,7 @@ public interface JwtDecodingProcessorBuilderBase<T extends JwtDecodingProcessor,
      * {@link #verifyWith(SignatureAlgorithm, Key)} instead.
      *
      * @param algorithm               the signature algorithm to use; typically one of the predefined algorithms from
-     *                                {@link org.unbrokendome.jsonwebtoken.signature.SignatureAlgorithms SignatureAlgorithms}
+     *                                {@link SignatureAlgorithms}
      * @param verificationKeyResolver a function that will select a key for verifying a token, based on its header
      *                                and payload
      * @param <TVerificationKey>      the type of the verification key; must be a subclass of {@link Key}
@@ -37,7 +39,7 @@ public interface JwtDecodingProcessorBuilderBase<T extends JwtDecodingProcessor,
      * method, using the specified algorithm.
      *
      * @param algorithm          the signature algorithm to use; typically one of the predefined algorithms from
-     *                           {@link org.unbrokendome.jsonwebtoken.signature.SignatureAlgorithms SignatureAlgorithms}
+     *                           {@link SignatureAlgorithms}
      * @param verificationKey    the key to use for verifying the tokens
      * @param <TVerificationKey> the type of the verification key; must be a subclass of {@link Key}
      * @return the current builder instance
@@ -45,6 +47,20 @@ public interface JwtDecodingProcessorBuilderBase<T extends JwtDecodingProcessor,
     default <TVerificationKey extends Key>
     B verifyWith(SignatureAlgorithm<?, TVerificationKey> algorithm, TVerificationKey verificationKey) {
         return verifyWith(algorithm, (VerificationKeyResolver<TVerificationKey>) ((h, p) -> verificationKey));
+    }
+
+    /**
+     * Configures the JWT processor to verify the signature of every token passed to the {@link JwtProcessor#decode}
+     * method, using the specified algorithm.
+     * <p>
+     * This overload does not take a key parameter, and is intended for the {@code NONE} algorithm (which is the only
+     * algorithm that does not require a key for verification).
+     *
+     * @param algorithm          the signature algorithm to use; usually {@link SignatureAlgorithms#NONE}
+     * @return the current builder instance
+     */
+    default B verifyWith(SignatureAlgorithm<?, NoneKey> algorithm) {
+        return verifyWith(algorithm, NoneKey.getInstance());
     }
 
     /**
