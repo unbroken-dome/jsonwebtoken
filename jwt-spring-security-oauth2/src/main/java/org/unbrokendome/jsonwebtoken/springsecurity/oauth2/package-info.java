@@ -1,2 +1,0 @@
-@javax.annotation.ParametersAreNonnullByDefault
-package org.unbrokendome.jsonwebtoken.springsecurity.oauth2;

@@ -1,14 +1,4 @@
 rootProject.name = 'jsonwebtoken'
 
-def path = [] as LinkedList
-rootDir.traverse(
-        type: groovy.io.FileType.FILES,
-        nameFilter: ~/^build\.gradle$/,
-        excludeNameFilter: 'buildSrc',
-        maxDepth: 3,
-        preDir: { path << it.name },
-        postDir: { path.removeLast() }) {
-    if (path) {
-        include path.join(':')
-    }
-}
+include 'jwt'
+include 'jwt-spring'
