@@ -1,7 +1,6 @@
 package org.unbrokendome.jsonwebtoken.spring;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.unbrokendome.jsonwebtoken.JwtProcessorBase;
 import org.unbrokendome.jsonwebtoken.JwtProcessorBuilderBase;
 
@@ -16,7 +15,7 @@ public abstract class AbstractJwtProcessorConfiguration<T extends JwtProcessorBa
     private List<JwtProcessorConfigurer<B>> configurers;
 
 
-    protected T jwtProcessorBean() {
+    T jwtProcessorBean() {
         B builder = createBuilder();
         if (configurers != null) {
             for (JwtProcessorConfigurer<B> configurer : configurers) {
