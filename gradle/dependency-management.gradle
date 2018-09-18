@@ -7,8 +7,7 @@ repositories {
 dependencyManagement {
 
     imports {
-        mavenBom 'org.springframework.boot:spring-boot-starter-parent:1.5.8.RELEASE'
-        mavenBom 'com.fasterxml.jackson:jackson-bom:2.9.2'
+        mavenBom 'org.springframework.boot:spring-boot-dependencies:2.0.5.RELEASE'
     }
 
     dependencies {
@@ -16,7 +15,7 @@ dependencyManagement {
 
         dependency 'nf.fr.eraasoft:objectpool:1.1.2'
 
-        dependencySet(group: 'org.bouncycastle', version: '1.58') {
+        dependencySet(group: 'org.bouncycastle', version: '1.60') {
             entry 'bcpkix-jdk15on'
             entry 'bcprov-jdk15on'
         }
