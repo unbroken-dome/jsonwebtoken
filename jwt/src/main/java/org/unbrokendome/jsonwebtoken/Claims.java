@@ -1,6 +1,7 @@
 package org.unbrokendome.jsonwebtoken;
 
 import javax.annotation.Nullable;
+import java.time.Clock;
 import java.time.Instant;
 import java.util.Set;
 
@@ -212,5 +213,19 @@ public interface Claims extends MapData {
     @Nullable
     default String getId() {
         return getString(ID);
+    }
+
+
+    /**
+     * Checks whether this set of claims is expired, according to the given {@link Clock}.
+     *
+     * Returns {@code false} if this instance does not contain an {@linkplain #EXPIRATION expiration} claim.
+     *
+     * @param clock a {@link Clock} that provides the current time
+     * @return {@code true} if this set of claims is expired; {@code false} if not
+     */
+    default boolean isExpired(Clock clock) {
+        Instant expiration = getExpiration();
+        return expiration != null && expiration.isBefore(clock.instant());
     }
 }
