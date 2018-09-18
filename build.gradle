@@ -2,7 +2,6 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.6.RELEASE' apply false
     id 'com.jfrog.bintray' version '1.8.4' apply false
     id 'nebula.optional-base' version '4.0.1' apply false
-    id 'net.ltgt.apt' version '0.18' apply false
     id 'org.unbroken-dome.test-sets' version '1.5.1' apply false
 }
 
@@ -35,5 +34,3 @@ subprojects { p ->
         p.apply from: "$rootDir/gradle/common-java.gradle"
     }
 }
-
-

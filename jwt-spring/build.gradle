@@ -2,7 +2,6 @@ apply plugin: 'java-library'
 apply plugin: 'groovy'
 apply plugin: 'maven-publish'
 apply plugin: 'com.jfrog.bintray'
-apply plugin: 'net.ltgt.apt'
 apply plugin: 'nebula.optional-base'
 
 dependencies {
