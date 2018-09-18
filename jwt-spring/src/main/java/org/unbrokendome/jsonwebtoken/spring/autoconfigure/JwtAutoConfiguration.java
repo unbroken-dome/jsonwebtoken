@@ -1,6 +1,5 @@
 package org.unbrokendome.jsonwebtoken.spring.autoconfigure;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
@@ -38,8 +37,13 @@ public class JwtAutoConfiguration {
     protected static class FullConfiguration
             implements JwtProcessorConfigurer<JwtProcessorBuilder> {
 
-        @Autowired
-        private JwtProperties jwtProperties;
+        private final JwtProperties jwtProperties;
+
+
+        public FullConfiguration(JwtProperties jwtProperties) {
+            this.jwtProperties = jwtProperties;
+        }
+
 
         @Override
         public void configure(JwtProcessorBuilder builder) {
@@ -55,8 +59,13 @@ public class JwtAutoConfiguration {
     protected static class EncodeOnlyConfiguration
             implements JwtProcessorConfigurer<JwtEncodeOnlyProcessorBuilder> {
 
-        @Autowired
-        private JwtProperties jwtProperties;
+        private final JwtProperties jwtProperties;
+
+
+        public EncodeOnlyConfiguration(JwtProperties jwtProperties) {
+            this.jwtProperties = jwtProperties;
+        }
+
 
         @Override
         public void configure(JwtEncodeOnlyProcessorBuilder builder) {
@@ -72,8 +81,13 @@ public class JwtAutoConfiguration {
     protected static class DecodeOnlyConfiguration
             implements JwtProcessorConfigurer<JwtDecodeOnlyProcessorBuilder> {
 
-        @Autowired
-        private JwtProperties jwtProperties;
+        private final JwtProperties jwtProperties;
+
+
+        public DecodeOnlyConfiguration(JwtProperties jwtProperties) {
+            this.jwtProperties = jwtProperties;
+        }
+
 
         @Override
         public void configure(JwtDecodeOnlyProcessorBuilder builder) {
