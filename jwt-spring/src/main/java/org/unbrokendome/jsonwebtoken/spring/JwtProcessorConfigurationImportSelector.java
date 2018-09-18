@@ -5,12 +5,14 @@ import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.util.Assert;
 
+import javax.annotation.Nonnull;
 import java.util.Map;
 
 
 public class JwtProcessorConfigurationImportSelector implements ImportSelector {
 
     @Override
+    @Nonnull
     public String[] selectImports(AnnotationMetadata importingClassMetadata) {
 
         Map<String, Object> attributesMap = importingClassMetadata.getAnnotationAttributes(
@@ -28,6 +30,7 @@ public class JwtProcessorConfigurationImportSelector implements ImportSelector {
     }
 
 
+    @Nonnull
     private Class<?> getConfigurationClassFromMode(JwtProcessorMode mode) {
         switch (mode) {
             case FULL:
