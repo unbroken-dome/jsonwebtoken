@@ -11,7 +11,7 @@ to your build script:
 repositories { jcenter() }
 
 dependencies {
-    compile 'org.unbroken-dome.jsonwebtoken:jwt:1.4.0'
+    implementation 'org.unbroken-dome.jsonwebtoken:jwt:1.4.0'
 }
 ```
 
@@ -97,18 +97,124 @@ JwtProcessor jwtProcessor = Jwt.processor()
 ```
 
 
-## Using with Spring Security OAuth2 and Spring Boot
+## Spring Support
 
-This library can be used together with Spring Security OAuth2 as a replacement for the built-in JWT support. It
- adds the following features that Spring Security OAuth2 does not offer:
+In addition to the core `jwt` library, there is another library called `jwt-spring` that includes some useful tools
+for managing a JWT processor in a Spring context.
 
-- Elliptic Curve (EC) and custom signing algorithms
-- Multiple signing/verification keys and custom key selection strategies
+Include the library on the classpath:
 
-The library provides implementations of `TokenStore`, `TokenEnhancer` and `AccessTokenConverter` that can be used
- in an authorization and/or resource server.
+```groovy
+repositories { jcenter() }
 
-### Injecting a custom `Clock`
+dependencies {
+    implementation 'org.unbroken-dome.jsonwebtoken:jwt-spring:1.4.0'
+}
+```
 
-The `JwtTokenStore` and `JwtTokenEnhancer` services can be provided with a custom `java.time.Clock` that will be used
-for timestamps in tokens as well as expiration checking. Using a fixed-instant clock can greatly simplify testing.
+
+### Configuring a JWT Processor explicitly
+
+Given that the `JwtProcessor` is immutable and all the configuration is done in the respective builder classes,
+defining one as a Spring bean is straightforward:
+
+```java
+@Configuration
+public class JwtProcessorConfig {
+
+    @Bean
+    public JwtProcessor jwtProcessor() {
+        return Jwt.processor()
+                .signAndVerifyWith(SignatureAlgorithms.HS256, signingKey)
+                .build();
+    }
+}
+```
+
+
+### Configuring a JWT Processor using Annotations
+
+By placing the `@EnableJwtProcessing` annotation on a Spring configuration class, you can have an instance of
+`JwtProcessor` set up automatically. Without further configuration (like supported encryption algorithms) the
+processor is not very useful, so you should also implement `JwtProcessorConfigurer` to perform further setup:
+
+```java
+@Configuration
+@EnableJwtProcessing
+public class JwtProcessorConfig implements JwtProcessorConfigurer<JwtProcessorBuilder> {
+
+    @Override
+    public void configure(JwtProcessorBuilder builder) {
+        builder.signAndVerifyWith(SignatureAlgorithms.HS256, signingKey)
+    }
+}
+```
+
+Note that the `JwtProcessorConfigurer` implementation does not have to be the same class on which the `@EnableJwtProcessing`
+annotation is placed. In fact, you can have multiple `JwtProcessorConfigurer` implementations in the application context, and
+they will be all picked up, honoring the standard Spring ordering rules (`@Order` annotation or `Ordered` interface). This allows
+for a more modular configuration of supported algorithms and keys if desired.
+
+If you only need encoding or decoding, you can pass the `mode` parameter to the annotation. In this case you need to use a
+different builder type as the generic type argument to `JwtProcessorConfigurer`:
+
+```java
+@Configuration
+@EnableJwtProcessing(mode = JwtProcessorMode.ENCODE_ONLY)
+public class JwtEncodeOnlyConfig implements JwtProcessorConfigurer<JwtEncodeOnlyProcessorBuilder> {
+
+    @Override
+    public void configure(JwtEncodeOnlyProcessorBuilder builder) {
+        builder.signWith(SignatureAlgorithms.HS256, signingKey)
+    }
+}
+```
+
+And similarly, for a decode-only configuration:
+
+```java
+@Configuration
+@EnableJwtProcessing(mode = JwtProcessorMode.DECODE_ONLY)
+public class JwtDecodeOnlyConfig implements JwtProcessorConfigurer<JwtDecodeOnlyProcessorBuilder> {
+
+    @Override
+    public void configure(JwtDecodeOnlyProcessorBuilder builder) {
+        builder.verifyWith(SignatureAlgorithms.HS256, verificationKey)
+    }
+}
+```
+
+
+### Using Spring Boot Auto-Configuration
+
+In a Spring Boot application, you can take advantage of the Spring Boot auto-configuration that comes with the
+`jwt-spring` library.
+
+If you have `jwt-spring` on the classpath of a Spring Boot application, and you do not define a `JwtProcessor`
+yourself (like described above), the auto-configuration will create one. You can fine-tune the processor using
+Spring Boot configuration properties (e.g. in the application.yaml file):
+
+```yaml
+jwt:
+  # FULL is the default, you can use ENCODE_ONLY or DECODE_ONLY just like with the annotation
+  mode: FULL
+
+  # Specify a signing key
+  signing:
+    algorithm: ES256
+    key-resource: file:/app/signing-key.pem
+
+  # Allow a FULL processor to use signing parameters also for verification. Set to false to disable this.
+  verify-with-signing-algorithm: true
+
+  # verification is a list, so multiple verification strategies can be configured
+  verification:
+    - algorithm: ES256
+      key-resource: file:/app/verification-key.pem
+```
+
+Key material can be specified by the `key-resource` property, like in the example, where the value
+is a Spring `Resource`. Usually the value will look like a URL starting with `file:` or `classpath:`.
+
+Alternatively, you can use the `key` property to specify the key directly in the configuration property, as a
+Base-64 encoded string.
