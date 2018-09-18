@@ -27,5 +27,5 @@ dependencies {
     testCompile 'org.bouncycastle:bcpkix-jdk15on'
     testCompile 'org.bouncycastle:bcprov-jdk15on'
 
-    apt 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 }
