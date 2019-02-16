@@ -6,11 +6,25 @@ import org.unbrokendome.jsonwebtoken.signature.SignatureAlgorithm;
 import org.unbrokendome.jsonwebtoken.signature.SignatureAlgorithms;
 import org.unbrokendome.jsonwebtoken.signature.SigningKeyResolver;
 
+import javax.annotation.Nonnull;
 import java.security.Key;
+import java.util.function.Consumer;
 
 
 public interface JwtEncodingProcessorBuilderBase<T extends JwtEncodingProcessor, B extends JwtEncodingProcessorBuilderBase<T, B>>
         extends JwtProcessorBuilderBase<T, B> {
+
+    /**
+     * Adds an action that modifies the JOSE header of each encoded JWT.
+     * <p>
+     * Note that the {@code alg} parameter should not be set by such an action; it will most likely be overridden
+     * by the {@link SignatureAlgorithm} when the token is signed.
+     *
+     * @param headerProcessor a {@link Consumer} that takes a {@link JoseHeaderBuilder}, possibly modifying
+     * @return the current builder instance
+     */
+    @Nonnull
+    B header(Consumer<? super JoseHeaderBuilder> headerProcessor);
 
     /**
      * Configures the JWT processor to sign every token using the specified algorithm.
@@ -29,6 +43,7 @@ public interface JwtEncodingProcessorBuilderBase<T extends JwtEncodingProcessor,
      * @return the current builder instance
      * @see SignatureAlgorithms
      */
+    @Nonnull
     <TSigningKey extends Key>
     B signWith(SignatureAlgorithm<TSigningKey, ?> algorithm, SigningKeyResolver<TSigningKey> signingKeyResolver);
 
@@ -45,6 +60,7 @@ public interface JwtEncodingProcessorBuilderBase<T extends JwtEncodingProcessor,
      * @return the current builder instance
      * @see SignatureAlgorithms
      */
+    @Nonnull
     default <TSigningKey extends Key>
     B signWith(SignatureAlgorithm<TSigningKey, ?> algorithm, TSigningKey signingKey) {
         return signWith(algorithm, (SigningKeyResolver<TSigningKey>) (h, p) -> signingKey);
@@ -59,10 +75,10 @@ public interface JwtEncodingProcessorBuilderBase<T extends JwtEncodingProcessor,
      * This overload does not take a key parameter, and is intended for the {@code NONE} algorithm (which is the only
      * algorithm that does not require a key for verification). Note that {@code NONE} is the algorithm used by default
      *
-     *
-     * @param algorithm     the signature algorithm to use; typically {@link SignatureAlgorithms#NONE}
+     * @param algorithm the signature algorithm to use; typically {@link SignatureAlgorithms#NONE}
      * @return the current builder instance
      */
+    @Nonnull
     default B signWith(SignatureAlgorithm<NoneKey, ?> algorithm) {
         return signWith(algorithm, NoneKey.getInstance());
     }
@@ -77,6 +93,6 @@ public interface JwtEncodingProcessorBuilderBase<T extends JwtEncodingProcessor,
      * @param payloadSerializer the custom {@link PayloadSerializer} to register
      * @return the current builder instance
      */
+    @Nonnull
     B serializePayloadWith(PayloadSerializer payloadSerializer);
-
 }

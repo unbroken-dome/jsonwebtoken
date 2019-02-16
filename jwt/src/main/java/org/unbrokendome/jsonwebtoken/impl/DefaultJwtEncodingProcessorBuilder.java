@@ -1,6 +1,7 @@
 package org.unbrokendome.jsonwebtoken.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.unbrokendome.jsonwebtoken.JoseHeaderBuilder;
 import org.unbrokendome.jsonwebtoken.JwtEncodeOnlyProcessorBuilder;
 import org.unbrokendome.jsonwebtoken.JwtEncodingProcessor;
 import org.unbrokendome.jsonwebtoken.encoding.DefaultHeaderSerializer;
@@ -15,10 +16,13 @@ import org.unbrokendome.jsonwebtoken.signature.Signer;
 import org.unbrokendome.jsonwebtoken.signature.SigningKeyResolver;
 import org.unbrokendome.jsonwebtoken.signature.impl.NoneKeyResolver;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.security.Key;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.function.Consumer;
 
 
 public final class DefaultJwtEncodingProcessorBuilder
@@ -26,11 +30,24 @@ public final class DefaultJwtEncodingProcessorBuilder
         implements JwtEncodeOnlyProcessorBuilder {
 
     private final List<PayloadSerializer> payloadSerializers = new ArrayList<>();
+    private List<Consumer<? super JoseHeaderBuilder>> headerProcessors;
     private SignatureAlgorithm<?, ?> signingAlgorithm = SignatureAlgorithms.NONE;
     @Nullable
     private SigningKeyResolver<?> signingKeyResolver;
 
 
+    @Nonnull
+    @Override
+    public JwtEncodeOnlyProcessorBuilder header(Consumer<? super JoseHeaderBuilder> headerProcessor) {
+        if (headerProcessors == null) {
+            headerProcessors = new ArrayList<>();
+        }
+        this.headerProcessors.add(headerProcessor);
+        return this;
+    }
+
+
+    @Nonnull
     @Override
     public JwtEncodeOnlyProcessorBuilder serializePayloadWith(PayloadSerializer payloadSerializer) {
         payloadSerializers.add(payloadSerializer);
@@ -38,6 +55,7 @@ public final class DefaultJwtEncodingProcessorBuilder
     }
 
 
+    @Nonnull
     @Override
     public <TSigningKey extends Key>
     JwtEncodeOnlyProcessorBuilder signWith(SignatureAlgorithm<TSigningKey, ?> algorithm,
@@ -48,8 +66,9 @@ public final class DefaultJwtEncodingProcessorBuilder
     }
 
 
+    @Nonnull
     @Override
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings("unchecked")
     public JwtEncodingProcessor build() {
 
         ObjectMapper objectMapper = getObjectMapper();
@@ -58,6 +77,7 @@ public final class DefaultJwtEncodingProcessorBuilder
         Signer<?> signer = signingAlgorithm.createSigner(getPoolConfigurer());
 
         return new DefaultJwtEncodingProcessor(
+                headerProcessors != null ? headerProcessors : Collections.emptyList(),
                 payloadSerializers,
                 signingAlgorithm, signer,
                 signingKeyResolver != null ? signingKeyResolver : NoneKeyResolver.getInstance(),
