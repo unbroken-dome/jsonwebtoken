@@ -11,7 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 
-public abstract class AbstractMapDataBuilder<TBuilder extends MapDataBuilder<TBuilder, TResult>, TResult extends MapData>
+abstract class AbstractMapDataBuilder<TBuilder extends MapDataBuilder<TBuilder, TResult>, TResult extends MapData>
         implements MapDataBuilder<TBuilder, TResult> {
 
     private final Map<String, Object> map = new LinkedHashMap<>();

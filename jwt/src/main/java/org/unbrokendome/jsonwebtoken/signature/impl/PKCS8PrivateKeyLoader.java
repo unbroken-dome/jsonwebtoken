@@ -3,6 +3,7 @@ package org.unbrokendome.jsonwebtoken.signature.impl;
 import org.unbrokendome.jsonwebtoken.IOSupplier;
 import org.unbrokendome.jsonwebtoken.signature.KeyLoader;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
@@ -12,16 +13,17 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.function.Supplier;
 
 
-public class PKCS8PrivateKeyLoader implements KeyLoader<PrivateKey> {
+final class PKCS8PrivateKeyLoader implements KeyLoader<PrivateKey> {
 
     private final Supplier<KeyFactory> keyFactorySupplier;
 
 
-    public PKCS8PrivateKeyLoader(Supplier<KeyFactory> keyFactorySupplier) {
+    PKCS8PrivateKeyLoader(Supplier<KeyFactory> keyFactorySupplier) {
         this.keyFactorySupplier = keyFactorySupplier;
     }
 
 
+    @Nonnull
     @Override
     public PrivateKey load(IOSupplier<byte[]> source) throws IOException, InvalidKeySpecException {
 

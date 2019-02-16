@@ -1,5 +1,6 @@
 package org.unbrokendome.jsonwebtoken.signature.impl;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ public class RSASignatureAlgorithm extends AbstractAsymmetricSignatureAlgorithm 
     }
 
 
+    @Nonnull
     @Override
     protected PublicKeyExtractor getPublicKeyExtractor() {
 

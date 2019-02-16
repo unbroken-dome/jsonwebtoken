@@ -14,6 +14,7 @@ import org.unbrokendome.jsonwebtoken.signature.VerificationKeyResolver;
 import org.unbrokendome.jsonwebtoken.signature.Verifier;
 import org.unbrokendome.jsonwebtoken.signature.provider.PoolConfigurer;
 
+import javax.annotation.Nonnull;
 import java.security.Key;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,6 +31,7 @@ public final class DefaultJwtDecodingProcessorBuilder
     private final List<PayloadDeserializer<?>> payloadDeserializers = new ArrayList<>();
 
 
+    @Nonnull
     @Override
     public JwtDecodeOnlyProcessorBuilder deserializePayloadWith(PayloadDeserializer<?> payloadDeserializer) {
         payloadDeserializers.add(payloadDeserializer);
@@ -37,6 +39,7 @@ public final class DefaultJwtDecodingProcessorBuilder
     }
 
 
+    @Nonnull
     @Override
     public <TVerificationKey extends Key>
     JwtDecodeOnlyProcessorBuilder verifyWith(SignatureAlgorithm<?, TVerificationKey> algorithm,
@@ -50,6 +53,7 @@ public final class DefaultJwtDecodingProcessorBuilder
     }
 
 
+    @Nonnull
     @Override
     public JwtDecodingProcessor build() {
 

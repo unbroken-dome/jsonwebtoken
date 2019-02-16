@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.unbrokendome.jsonwebtoken.BinaryData;
 import org.unbrokendome.jsonwebtoken.JoseHeader;
 
+import javax.annotation.Nonnull;
+
 
 public final class DefaultHeaderSerializer implements HeaderSerializer {
 
@@ -17,6 +19,7 @@ public final class DefaultHeaderSerializer implements HeaderSerializer {
 
 
     @Override
+    @Nonnull
     public BinaryData serialize(JoseHeader header) {
         try {
             byte[] headerBytes = objectMapper.writeValueAsBytes(header.asMap());

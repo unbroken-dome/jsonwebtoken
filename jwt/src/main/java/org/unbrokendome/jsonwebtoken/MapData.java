@@ -1,8 +1,13 @@
 package org.unbrokendome.jsonwebtoken;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.time.Instant;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -25,6 +30,7 @@ public interface MapData {
      *
      * @return a {@link Map} equivalent to this instance
      */
+    @Nonnull
     Map<String, Object> asMap();
 
 
@@ -53,7 +59,7 @@ public interface MapData {
      *
      * @param key the key
      * @return the associated values as a {@link Set} of strings or <code>null</code> if no entry with the given
-     *         key is present
+     * key is present
      */
     @Nullable
     default Set<String> getStringSet(String key) {

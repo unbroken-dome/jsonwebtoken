@@ -5,6 +5,8 @@ import org.unbrokendome.jsonwebtoken.impl.DefaultClaims;
 import org.unbrokendome.jsonwebtoken.signature.JwsSignatureException;
 import org.unbrokendome.jsonwebtoken.signature.JwsUnsupportedAlgorithmException;
 
+import javax.annotation.Nonnull;
+
 
 /**
  * Decodes JSON Web Tokens.
@@ -51,6 +53,7 @@ public interface JwtDecodingProcessor extends JwtProcessorBase {
      *                                          for wrong signatures)
      * @throws IllegalArgumentException         if the payload could not be deserialized into the desired type
      */
+    @Nonnull
     <T> T decode(String encodedToken, Class<T> payloadType) throws JwtMalformedTokenException,
             JwsUnsupportedAlgorithmException, JwsSignatureException;
 

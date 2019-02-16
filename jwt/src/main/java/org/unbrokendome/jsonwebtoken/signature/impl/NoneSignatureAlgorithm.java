@@ -8,6 +8,7 @@ import org.unbrokendome.jsonwebtoken.signature.Signer;
 import org.unbrokendome.jsonwebtoken.signature.Verifier;
 import org.unbrokendome.jsonwebtoken.signature.provider.PoolConfigurer;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 
@@ -25,18 +26,21 @@ public final class NoneSignatureAlgorithm implements SignatureAlgorithm<NoneKey,
     }
 
 
+    @Nonnull
     @Override
     public String getJwaName() {
         return "none";
     }
 
 
+    @Nonnull
     @Override
     public Signer<NoneKey> createSigner(@Nullable PoolConfigurer poolConfigurer) {
         return NoneSigner.getInstance();
     }
 
 
+    @Nonnull
     @Override
     public Verifier<NoneKey> createVerifier(@Nullable PoolConfigurer poolConfigurer) {
         return NoneVerifier.getInstance();
@@ -58,11 +62,14 @@ public final class NoneSignatureAlgorithm implements SignatureAlgorithm<NoneKey,
 
     private static class NoneKeyLoader implements KeyLoader<NoneKey> {
 
-        static NoneKeyLoader INSTANCE = new NoneKeyLoader();
+        static final NoneKeyLoader INSTANCE = new NoneKeyLoader();
+
 
         private NoneKeyLoader() {
         }
 
+
+        @Nonnull
         @Override
         public NoneKey load(IOSupplier<byte[]> source) {
             return NoneKey.getInstance();

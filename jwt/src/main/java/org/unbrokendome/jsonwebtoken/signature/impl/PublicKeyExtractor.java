@@ -1,5 +1,6 @@
 package org.unbrokendome.jsonwebtoken.signature.impl;
 
+import javax.annotation.Nonnull;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -13,5 +14,6 @@ public interface PublicKeyExtractor {
 
     boolean supports(PrivateKey privateKey);
 
+    @Nonnull
     PublicKey publicKeyFromPrivateKey(PrivateKey privateKey, KeyFactory keyFactory) throws InvalidKeySpecException;
 }

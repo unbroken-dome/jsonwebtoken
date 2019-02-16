@@ -3,6 +3,7 @@ package org.unbrokendome.jsonwebtoken.signature.impl;
 import org.unbrokendome.jsonwebtoken.BinaryData;
 import org.unbrokendome.jsonwebtoken.signature.provider.AlgorithmProvider;
 
+import javax.annotation.Nonnull;
 import java.security.PrivateKey;
 import java.security.Signature;
 import java.security.SignatureException;
@@ -12,14 +13,15 @@ import java.security.SignatureException;
  * Implementation of {@link org.unbrokendome.jsonwebtoken.signature.Signer Signer} that uses a {@link Signature}
  * algorithm and a private key.
  */
-public final class SignaturePrivateKeySigner extends AbstractSigner<Signature, PrivateKey> {
+final class SignaturePrivateKeySigner extends AbstractSigner<Signature, PrivateKey> {
 
-    public SignaturePrivateKeySigner(AlgorithmProvider<Signature> provider) {
+    SignaturePrivateKeySigner(AlgorithmProvider<Signature> provider) {
         super(provider);
     }
 
 
     @Override
+    @Nonnull
     protected final BinaryData calculateSignature(BinaryData header, BinaryData payload, PrivateKey key)
             throws SignatureException {
 

@@ -7,17 +7,18 @@ import java.security.InvalidKeyException;
 import java.security.SignatureException;
 
 
+@SuppressWarnings("Duplicates")
 abstract class SecurityAlgorithmSupport<T> {
 
     private final AlgorithmProvider<T> provider;
 
 
-    protected SecurityAlgorithmSupport(AlgorithmProvider<T> provider) {
+    SecurityAlgorithmSupport(AlgorithmProvider<T> provider) {
         this.provider = provider;
     }
 
 
-    protected final <R> R doWithAlgorithmSafely(SafeAlgorithmCallback<T, R> callback) {
+    final <R> R doWithAlgorithmSafely(SafeAlgorithmCallback<T, R> callback) {
         T instance = getAlgorithmInstance();
         try {
             return callback.callback(instance);
@@ -29,7 +30,7 @@ abstract class SecurityAlgorithmSupport<T> {
     }
 
 
-    protected final <R> R doWithAlgorithm(AlgorithmCallback<T, R> callback) throws SignatureException {
+    final <R> R doWithAlgorithm(AlgorithmCallback<T, R> callback) throws SignatureException {
         T instance = getAlgorithmInstance();
         try {
             return callback.callback(instance);

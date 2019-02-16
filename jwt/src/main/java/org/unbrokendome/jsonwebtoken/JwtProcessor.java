@@ -22,4 +22,5 @@ package org.unbrokendome.jsonwebtoken;
  * All {@link JwtProcessor} instances are immutable and safe for use by concurrent threads.
  */
 public interface JwtProcessor extends JwtEncodingProcessor, JwtDecodingProcessor {
+
 }

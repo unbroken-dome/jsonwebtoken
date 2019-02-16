@@ -5,6 +5,7 @@ import org.unbrokendome.jsonwebtoken.Jws;
 import org.unbrokendome.jsonwebtoken.encoding.text.Base64TextEncoding;
 import org.unbrokendome.jsonwebtoken.impl.DefaultJws;
 
+import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -29,9 +30,10 @@ public final class JwsCompactDecoder implements JwsDecoder {
 
 
     @Override
+    @Nonnull
     public Jws decode(String encoded) throws JwtMalformedTokenException {
         StringTokenizer tokenizer = new StringTokenizer(encoded, String.valueOf(SEPARATOR));
-        @SuppressWarnings({ "unchecked", "rawtypes" })
+        @SuppressWarnings({"unchecked", "rawtypes"})
         List<String> parts = (List) Collections.list(tokenizer);
 
         // For the NONE algorithm, the token ends with a dot - the signature part is empty. StringTokenizer won't
@@ -48,21 +50,25 @@ public final class JwsCompactDecoder implements JwsDecoder {
     }
 
 
+    @Nonnull
     private BinaryData decodeHeader(String encoded) throws JwtMalformedTokenException {
         return decodeText(encoded);
     }
 
 
+    @Nonnull
     private BinaryData decodePayload(String encoded) throws JwtMalformedTokenException {
         return decodeText(encoded);
     }
 
 
+    @Nonnull
     private BinaryData decodeSignature(String encoded) throws JwtMalformedTokenException {
         return !encoded.isEmpty() ? decodeText(encoded) : BinaryData.EMPTY;
     }
 
 
+    @Nonnull
     private BinaryData decodeText(String encoded) throws JwtMalformedTokenException {
         try {
             return textDecoder.apply(encoded);

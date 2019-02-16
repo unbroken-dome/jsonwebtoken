@@ -5,27 +5,32 @@ import org.unbrokendome.jsonwebtoken.JwtProcessorBase;
 import org.unbrokendome.jsonwebtoken.JwtProcessorBuilderBase;
 import org.unbrokendome.jsonwebtoken.signature.provider.PoolConfigurer;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.function.Supplier;
 
 
-public abstract class AbstractJwtProcessorBuilder<T extends JwtProcessorBase, B extends JwtProcessorBuilderBase<T, B>>
+abstract class AbstractJwtProcessorBuilder<T extends JwtProcessorBase, B extends JwtProcessorBuilderBase<T, B>>
         implements JwtProcessorBuilderBase<T, B> {
 
     private Supplier<ObjectMapper> objectMapperSupplier = ObjectMapper::new;
     private PoolConfigurer poolConfigurer;
 
 
-    protected final ObjectMapper getObjectMapper() {
+    @Nonnull
+    final ObjectMapper getObjectMapper() {
         return objectMapperSupplier.get();
     }
 
 
-    protected final PoolConfigurer getPoolConfigurer() {
+    @Nullable
+    final PoolConfigurer getPoolConfigurer() {
         return poolConfigurer;
     }
 
 
     @Override
+    @Nonnull
     @SuppressWarnings("unchecked")
     public B setObjectMapper(ObjectMapper objectMapper) {
         this.objectMapperSupplier = () -> objectMapper;
@@ -34,6 +39,7 @@ public abstract class AbstractJwtProcessorBuilder<T extends JwtProcessorBase, B 
 
 
     @Override
+    @Nonnull
     @SuppressWarnings("unchecked")
     public B configurePool(int minSize, int maxIdle) {
         this.poolConfigurer = settings -> settings.min(minSize).maxIdle(maxIdle);

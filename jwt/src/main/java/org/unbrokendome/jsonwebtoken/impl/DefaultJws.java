@@ -3,6 +3,8 @@ package org.unbrokendome.jsonwebtoken.impl;
 import org.unbrokendome.jsonwebtoken.BinaryData;
 import org.unbrokendome.jsonwebtoken.Jws;
 
+import javax.annotation.Nonnull;
+
 
 public final class DefaultJws implements Jws {
 
@@ -17,18 +19,21 @@ public final class DefaultJws implements Jws {
 
 
     @Override
+    @Nonnull
     public BinaryData getHeader() {
         return header;
     }
 
 
     @Override
+    @Nonnull
     public BinaryData getPayload() {
         return payload;
     }
 
 
     @Override
+    @Nonnull
     public BinaryData getSignature() {
         return signature;
     }

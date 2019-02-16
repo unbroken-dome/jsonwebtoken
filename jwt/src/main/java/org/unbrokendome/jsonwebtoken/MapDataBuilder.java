@@ -11,7 +11,7 @@ import java.util.Map;
  * <code>MapDataBuilder</code> also implements {@link MapData} itself so the current entries can be queried.
  *
  * @param <TBuilder> the type of builder that implements this interface
- * @param <TResult> the type of result that will be constructed by this builder
+ * @param <TResult>  the type of result that will be constructed by this builder
  */
 public interface MapDataBuilder<TBuilder extends MapDataBuilder<TBuilder, TResult>,
         TResult extends MapData>
@@ -20,7 +20,7 @@ public interface MapDataBuilder<TBuilder extends MapDataBuilder<TBuilder, TResul
     /**
      * Sets a single key-value entry.
      *
-     * @param key the key
+     * @param key   the key
      * @param value the value
      * @return the current builder instance
      */
@@ -29,6 +29,7 @@ public interface MapDataBuilder<TBuilder extends MapDataBuilder<TBuilder, TResul
 
     /**
      * Sets key-value entries from the given {@link Map}.
+     *
      * @param values a map of key-value entries
      * @return the current builder instance
      */
@@ -45,7 +46,7 @@ public interface MapDataBuilder<TBuilder extends MapDataBuilder<TBuilder, TResul
      * which complies with the <em>NumericDate</em> from
      * <a href="https://tools.ietf.org/html/rfc7519#section-2">RFC 7519</a>.
      *
-     * @param key the key
+     * @param key   the key
      * @param value the value as an {@link Instant}
      * @return the current builder instance
      */

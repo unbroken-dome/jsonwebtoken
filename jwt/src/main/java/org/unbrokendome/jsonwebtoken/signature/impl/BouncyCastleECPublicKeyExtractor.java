@@ -5,6 +5,7 @@ import org.bouncycastle.jce.spec.ECParameterSpec;
 import org.bouncycastle.jce.spec.ECPublicKeySpec;
 import org.bouncycastle.math.ec.ECPoint;
 
+import javax.annotation.Nonnull;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -20,6 +21,7 @@ public class BouncyCastleECPublicKeyExtractor implements PublicKeyExtractor {
 
 
     @Override
+    @Nonnull
     public PublicKey publicKeyFromPrivateKey(PrivateKey privateKey, KeyFactory keyFactory)
             throws InvalidKeySpecException {
 

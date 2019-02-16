@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.util.ByteBufferBackedInputStream;
 import org.unbrokendome.jsonwebtoken.BinaryData;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 
 
@@ -24,6 +25,7 @@ public final class DefaultPayloadDeserializer implements PayloadDeserializer<Obj
 
 
     @Override
+    @Nonnull
     public <U> U deserialize(BinaryData rawPayload, Class<U> targetType) {
         try {
             return objectMapper.readValue(new ByteBufferBackedInputStream(rawPayload.toByteBuffer()), targetType);

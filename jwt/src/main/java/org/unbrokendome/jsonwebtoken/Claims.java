@@ -76,8 +76,7 @@ public interface Claims extends MapData {
      * with a single audience.</p>
      *
      * @return the value (or the first element) of the audience claim, or
-     *         <code>null</code> if not set
-     *
+     * <code>null</code> if not set
      * @see #getAudiences()
      */
     @Nullable
@@ -113,7 +112,6 @@ public interface Claims extends MapData {
      * </blockquote>
      *
      * @return the value of the audience claim, or <code>null</code> if not set
-     *
      * @see #getAudience()
      */
     @Nullable
@@ -138,7 +136,7 @@ public interface Claims extends MapData {
      * </blockquote>
      *
      * @return the value of the expiration time claim as an {@link Instant}, or
-     *         <code>null</code> if not set
+     * <code>null</code> if not set
      */
     @Nullable
     default Instant getExpiration() {
@@ -162,7 +160,7 @@ public interface Claims extends MapData {
      * </blockquote>
      *
      * @return the value of the not-before claim as an {@link Instant}, or
-     *         <code>null</code> if not set
+     * <code>null</code> if not set
      */
     @Nullable
     default Instant getNotBefore() {
@@ -183,7 +181,7 @@ public interface Claims extends MapData {
      * </blockquote>
      *
      * @return the value of the issued-at claim as an {@link Instant}, or
-     *         <code>null</code> if not set
+     * <code>null</code> if not set
      */
     @Nullable
     default Instant getIssuedAt() {
@@ -208,7 +206,7 @@ public interface Claims extends MapData {
      * </blockquote>
      *
      * @return the value of the issued-at claim as an {@link Instant}, or
-     *         <code>null</code> if not set
+     * <code>null</code> if not set
      */
     @Nullable
     default String getId() {
@@ -218,7 +216,7 @@ public interface Claims extends MapData {
 
     /**
      * Checks whether this set of claims is expired, according to the given {@link Clock}.
-     *
+     * <p>
      * Returns {@code false} if this instance does not contain an {@linkplain #EXPIRATION expiration} claim.
      *
      * @param clock a {@link Clock} that provides the current time

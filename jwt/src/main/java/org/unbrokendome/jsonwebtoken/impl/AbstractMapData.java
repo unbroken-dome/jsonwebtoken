@@ -2,6 +2,8 @@ package org.unbrokendome.jsonwebtoken.impl;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.Objects;
 
@@ -11,17 +13,19 @@ abstract class AbstractMapData {
     private final Map<String, Object> map;
 
 
-    protected AbstractMapData(Map<String, Object> map) {
+    AbstractMapData(Map<String, Object> map) {
         this.map = map;
     }
 
 
+    @Nullable
     public Object get(String key) {
         return map.get(key);
     }
 
 
     @JsonValue
+    @Nonnull
     public Map<String, Object> asMap() {
         return map;
     }
@@ -45,6 +49,7 @@ abstract class AbstractMapData {
 
 
     @Override
+    @Nonnull
     public String toString() {
         return map.toString();
     }

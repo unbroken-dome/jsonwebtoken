@@ -10,7 +10,8 @@ import java.security.Key;
  */
 public final class NoneKey implements Key {
 
-    private static NoneKey INSTANCE = new NoneKey();
+    private static final NoneKey INSTANCE = new NoneKey();
+
 
     private NoneKey() {
     }
@@ -18,6 +19,7 @@ public final class NoneKey implements Key {
 
     /**
      * Gets the singleton instance of {@link NoneKey}.
+     *
      * @return the singleton instance
      */
     public static NoneKey getInstance() {

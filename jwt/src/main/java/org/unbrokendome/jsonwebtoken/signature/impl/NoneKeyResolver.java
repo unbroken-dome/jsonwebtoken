@@ -6,6 +6,7 @@ import org.unbrokendome.jsonwebtoken.signature.NoneKey;
 import org.unbrokendome.jsonwebtoken.signature.SigningKeyResolver;
 import org.unbrokendome.jsonwebtoken.signature.VerificationKeyResolver;
 
+import javax.annotation.Nonnull;
 import java.security.Key;
 
 
@@ -24,6 +25,7 @@ public final class NoneKeyResolver implements SigningKeyResolver<Key>, Verificat
 
     /**
      * Gets the singleton instance of {@link NoneKeyResolver}.
+     *
      * @return the singleton instance
      */
     public static NoneKeyResolver getInstance() {
@@ -31,12 +33,14 @@ public final class NoneKeyResolver implements SigningKeyResolver<Key>, Verificat
     }
 
 
+    @Nonnull
     @Override
     public Key getSigningKey(JoseHeaderBuilder header, Object payload) {
         return NoneKey.getInstance();
     }
 
 
+    @Nonnull
     @Override
     public Key getVerificationKey(JoseHeader header, Object payload) {
         return NoneKey.getInstance();

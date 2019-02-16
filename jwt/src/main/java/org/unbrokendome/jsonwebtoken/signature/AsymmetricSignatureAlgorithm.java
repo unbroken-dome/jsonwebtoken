@@ -1,5 +1,6 @@
 package org.unbrokendome.jsonwebtoken.signature;
 
+import javax.annotation.Nonnull;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
@@ -16,5 +17,6 @@ public interface AsymmetricSignatureAlgorithm<TSigningKey extends PrivateKey, TV
      * @return the {@link KeyFactory} instance
      * @throws NoSuchAlgorithmException if the key algorithm is not supported by the installed security providers
      */
+    @Nonnull
     KeyFactory getKeyFactory() throws NoSuchAlgorithmException;
 }

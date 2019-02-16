@@ -2,6 +2,8 @@ package org.unbrokendome.jsonwebtoken;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import javax.annotation.Nonnull;
+
 
 @SuppressWarnings("UnusedReturnValue")
 public interface JwtProcessorBuilderBase<T extends JwtProcessorBase, B extends JwtProcessorBuilderBase<T, B>> {
@@ -18,6 +20,7 @@ public interface JwtProcessorBuilderBase<T extends JwtProcessorBase, B extends J
      * @param maxIdle the maximum number of idle instances in the pool (any surplus will be released)
      * @return the current builder instance
      */
+    @Nonnull
     B configurePool(int minSize, int maxIdle);
 
     /**
@@ -26,7 +29,9 @@ public interface JwtProcessorBuilderBase<T extends JwtProcessorBase, B extends J
      * @param objectMapper the {@link ObjectMapper} instance to use
      * @return the current builder instance
      */
+    @Nonnull
     B setObjectMapper(ObjectMapper objectMapper);
 
+    @Nonnull
     T build();
 }

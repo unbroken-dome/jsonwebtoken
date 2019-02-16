@@ -1,5 +1,6 @@
 package org.unbrokendome.jsonwebtoken.signature.impl;
 
+import javax.annotation.Nonnull;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -7,12 +8,12 @@ import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 
 
-public class PublicKeyExtractorChain implements PublicKeyExtractor {
+final class PublicKeyExtractorChain implements PublicKeyExtractor {
 
     private final List<? extends PublicKeyExtractor> extractors;
 
 
-    public PublicKeyExtractorChain(List<? extends PublicKeyExtractor> extractors) {
+    PublicKeyExtractorChain(List<? extends PublicKeyExtractor> extractors) {
         this.extractors = extractors;
     }
 
@@ -24,6 +25,7 @@ public class PublicKeyExtractorChain implements PublicKeyExtractor {
     }
 
 
+    @Nonnull
     @Override
     public PublicKey publicKeyFromPrivateKey(PrivateKey privateKey, KeyFactory keyFactory)
             throws InvalidKeySpecException {

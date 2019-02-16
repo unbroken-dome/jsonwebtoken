@@ -4,8 +4,10 @@ import org.unbrokendome.jsonwebtoken.BinaryData;
 import org.unbrokendome.jsonwebtoken.signature.NoneKey;
 import org.unbrokendome.jsonwebtoken.signature.Signer;
 
+import javax.annotation.Nonnull;
 
-public final class NoneSigner implements Signer<NoneKey> {
+
+final class NoneSigner implements Signer<NoneKey> {
 
     private static final NoneSigner INSTANCE = new NoneSigner();
 
@@ -14,11 +16,12 @@ public final class NoneSigner implements Signer<NoneKey> {
     }
 
 
-    public static NoneSigner getInstance() {
+    static NoneSigner getInstance() {
         return INSTANCE;
     }
 
 
+    @Nonnull
     @Override
     public BinaryData sign(BinaryData header, BinaryData payload, NoneKey key) {
         return BinaryData.EMPTY;

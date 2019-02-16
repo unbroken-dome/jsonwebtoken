@@ -6,6 +6,7 @@ import org.unbrokendome.jsonwebtoken.BinaryData;
 import org.unbrokendome.jsonwebtoken.JoseHeader;
 import org.unbrokendome.jsonwebtoken.impl.DefaultJoseHeader;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.util.Map;
 
@@ -21,6 +22,7 @@ public final class DefaultHeaderDeserializer implements HeaderDeserializer {
 
 
     @Override
+    @Nonnull
     @SuppressWarnings("unchecked")
     public JoseHeader deserialize(BinaryData data) throws JwtMalformedTokenException {
         try {

@@ -9,6 +9,7 @@ import org.unbrokendome.jsonwebtoken.signature.provider.AlgorithmProviders;
 import org.unbrokendome.jsonwebtoken.signature.provider.PoolConfigurer;
 import org.unbrokendome.jsonwebtoken.util.Pair;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
@@ -18,15 +19,15 @@ import java.security.PublicKey;
 import java.security.Signature;
 
 
-public abstract class AbstractAsymmetricSignatureAlgorithm
+abstract class AbstractAsymmetricSignatureAlgorithm
         extends AbstractSignatureAlgorithm<PrivateKey, PublicKey>
         implements AsymmetricSignatureAlgorithm<PrivateKey, PublicKey> {
 
     private final String keyFamily;
 
 
-    protected AbstractAsymmetricSignatureAlgorithm(String jwaName, String jcaName,
-                                                   String keyFamily, @Nullable String jcaProvider) {
+    AbstractAsymmetricSignatureAlgorithm(String jwaName, String jcaName,
+                                         String keyFamily, @Nullable String jcaProvider) {
         super(jwaName, jcaName, jcaProvider);
         this.keyFamily = keyFamily;
 
@@ -45,12 +46,13 @@ public abstract class AbstractAsymmetricSignatureAlgorithm
     }
 
 
-    protected AbstractAsymmetricSignatureAlgorithm(String jwaName, String jcaName,
-                                                   String keyFamily) {
+    AbstractAsymmetricSignatureAlgorithm(String jwaName, String jcaName,
+                                         String keyFamily) {
         this(jwaName, jcaName, keyFamily, null);
     }
 
 
+    @Nonnull
     @Override
     public Signer<PrivateKey> createSigner(@Nullable PoolConfigurer poolConfigurer) {
         return new SignaturePrivateKeySigner(
@@ -58,6 +60,7 @@ public abstract class AbstractAsymmetricSignatureAlgorithm
     }
 
 
+    @Nonnull
     @Override
     public Verifier<PublicKey> createVerifier(@Nullable PoolConfigurer poolConfigurer) {
         return new SignaturePublicKeyVerifier(
@@ -65,6 +68,7 @@ public abstract class AbstractAsymmetricSignatureAlgorithm
     }
 
 
+    @Nonnull
     @Override
     public Pair<Signer<PrivateKey>, Verifier<PublicKey>>
     createSignerAndVerifier(@Nullable PoolConfigurer poolConfigurer) {
@@ -78,6 +82,7 @@ public abstract class AbstractAsymmetricSignatureAlgorithm
     }
 
 
+    @Nonnull
     @Override
     public final KeyFactory getKeyFactory() {
         String jcaProvider = getJcaProvider();
@@ -118,7 +123,7 @@ public abstract class AbstractAsymmetricSignatureAlgorithm
 
 
     @Nullable
-    protected String getPreferredProvider() {
+    String getPreferredProvider() {
         return null;
     }
 
@@ -142,6 +147,7 @@ public abstract class AbstractAsymmetricSignatureAlgorithm
     }
 
 
+    @Nonnull
     protected abstract PublicKeyExtractor getPublicKeyExtractor();
 
 

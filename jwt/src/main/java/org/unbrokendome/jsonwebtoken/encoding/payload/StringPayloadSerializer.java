@@ -2,6 +2,7 @@ package org.unbrokendome.jsonwebtoken.encoding.payload;
 
 import org.unbrokendome.jsonwebtoken.BinaryData;
 
+import javax.annotation.Nonnull;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
@@ -18,23 +19,27 @@ public final class StringPayloadSerializer extends AbstractPayloadSerializer<Str
     }
 
 
+    @Nonnull
     public static StringPayloadSerializer getInstance() {
         return UTF8_INSTANCE;
     }
 
 
+    @Nonnull
     public static StringPayloadSerializer getInstance(Charset charset) {
         return new StringPayloadSerializer(charset);
     }
 
 
     @Override
+    @Nonnull
     public BinaryData serialize(Object payload) {
         return BinaryData.of(charset.encode((String) payload));
     }
 
 
     @Override
+    @Nonnull
     public String deserialize(BinaryData rawPayload) {
         return charset.decode(rawPayload.toByteBuffer()).toString();
     }

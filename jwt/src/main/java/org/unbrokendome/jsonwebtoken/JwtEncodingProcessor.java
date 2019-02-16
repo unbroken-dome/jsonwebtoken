@@ -2,6 +2,8 @@ package org.unbrokendome.jsonwebtoken;
 
 import org.unbrokendome.jsonwebtoken.signature.JwsSignatureException;
 
+import javax.annotation.Nonnull;
+
 
 /**
  * Encodes objects into JSON Web Tokens.
@@ -39,6 +41,7 @@ public interface JwtEncodingProcessor extends JwtProcessorBase {
      * @return the encoded JSON Web Token as a string
      * @throws JwsSignatureException if the signature for the token cannot be created
      */
+    @Nonnull
     String encode(Object payload) throws JwsSignatureException;
 
 
@@ -53,6 +56,7 @@ public interface JwtEncodingProcessor extends JwtProcessorBase {
      * @return the encoded JSON Web Token as a string
      * @throws IllegalStateException if the signature for the token cannot be created
      */
+    @Nonnull
     default String encodeUnchecked(Object payload) {
         try {
             return encode(payload);

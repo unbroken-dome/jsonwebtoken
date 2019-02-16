@@ -11,10 +11,9 @@ import java.util.function.Function;
 
 public final class Base64TextEncoding implements TextEncoding {
 
+    public static final TextEncoding BASE64_URL = new Base64TextEncoding(Base64.getUrlEncoder(), Base64.getUrlDecoder());
     private final Base64.Encoder base64Encoder;
     private final Base64.Decoder base64Decoder;
-
-    public static final TextEncoding BASE64_URL = new Base64TextEncoding(Base64.getUrlEncoder(), Base64.getUrlDecoder());
 
 
     private Base64TextEncoding(Base64.Encoder base64Encoder, Base64.Decoder base64Decoder) {

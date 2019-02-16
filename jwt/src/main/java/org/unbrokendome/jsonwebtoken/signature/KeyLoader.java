@@ -2,6 +2,7 @@ package org.unbrokendome.jsonwebtoken.signature;
 
 import org.unbrokendome.jsonwebtoken.IOSupplier;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.security.Key;
 import java.security.spec.InvalidKeySpecException;
@@ -19,8 +20,9 @@ public interface KeyLoader<TKey extends Key> {
      *
      * @param source the binary resource from which the key should be loaded
      * @return the loaded key, never {@code null}
-     * @throws IOException for I/O errors
+     * @throws IOException             for I/O errors
      * @throws InvalidKeySpecException if the binary resource does not match the expected key format
      */
+    @Nonnull
     TKey load(IOSupplier<byte[]> source) throws IOException, InvalidKeySpecException;
 }

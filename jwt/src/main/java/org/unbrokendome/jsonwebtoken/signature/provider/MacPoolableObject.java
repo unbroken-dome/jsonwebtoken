@@ -6,9 +6,9 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 
 
-public final class MacPoolableObject extends AbstractAlgorithmPoolableObject<Mac> {
+final class MacPoolableObject extends AbstractAlgorithmPoolableObject<Mac> {
 
-    public MacPoolableObject(String algorithm, @Nullable String provider) {
+    MacPoolableObject(String algorithm, @Nullable String provider) {
         super(algorithm, provider);
     }
 

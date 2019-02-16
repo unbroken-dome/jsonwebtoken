@@ -6,6 +6,7 @@ import org.unbrokendome.jsonwebtoken.signature.SignatureAlgorithm;
 import org.unbrokendome.jsonwebtoken.signature.SigningKeyResolver;
 import org.unbrokendome.jsonwebtoken.signature.VerificationKeyResolver;
 
+import javax.annotation.Nonnull;
 import java.security.Key;
 import java.security.KeyPair;
 import java.security.PrivateKey;
@@ -17,7 +18,7 @@ import java.security.PublicKey;
  */
 public interface JwtProcessorBuilder
         extends JwtEncodingProcessorBuilderBase<JwtProcessor, JwtProcessorBuilder>,
-                JwtDecodingProcessorBuilderBase<JwtProcessor, JwtProcessorBuilder> {
+        JwtDecodingProcessorBuilderBase<JwtProcessor, JwtProcessorBuilder> {
 
     /**
      * Returns a builder to create a JWT processor that only encodes (but does not decode) tokens.
@@ -115,10 +116,10 @@ public interface JwtProcessorBuilder
      * This method is a convenience shorthand for calling both {@link #signWith} and {@link #verifyWith} with the
      * same algorithm, when the signing/verification keys are available in form of a {@link KeyPair}.
      *
-     * @param algorithm the signature algorithm to use; typically one of the predefined algorithms from
-     *                  {@link org.unbrokendome.jsonwebtoken.signature.SignatureAlgorithms SignatureAlgorithms}
-     * @param keyPair the cryptographic key pair that will be used for signing and verification
-     * @param <TSigningKey> the type of the signing key; must be a subclass of {@link PrivateKey}
+     * @param algorithm          the signature algorithm to use; typically one of the predefined algorithms from
+     *                           {@link org.unbrokendome.jsonwebtoken.signature.SignatureAlgorithms SignatureAlgorithms}
+     * @param keyPair            the cryptographic key pair that will be used for signing and verification
+     * @param <TSigningKey>      the type of the signing key; must be a subclass of {@link PrivateKey}
      * @param <TVerificationKey> the type of the verification key; must be a subclass of {@link PublicKey}
      * @return the current builder instance
      */
@@ -143,7 +144,7 @@ public interface JwtProcessorBuilder
      * payload formats can be registered by adding a custom payload serializer/deserializer using this method.
      *
      * @param payloadSerializer the custom payload serializer/deserializer to register
-     * @param <T> A type that implements both {@link PayloadSerializer} and {@link PayloadDeserializer}
+     * @param <T>               A type that implements both {@link PayloadSerializer} and {@link PayloadDeserializer}
      * @return the current builder instance
      */
     default <T extends PayloadSerializer & PayloadDeserializer<?>>
@@ -157,6 +158,7 @@ public interface JwtProcessorBuilder
      *
      * @return the {@link JwtProcessor}
      */
+    @Nonnull
     @Override
     JwtProcessor build();
 }

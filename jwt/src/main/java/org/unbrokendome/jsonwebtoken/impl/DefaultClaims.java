@@ -9,7 +9,7 @@ import java.util.Map;
 public final class DefaultClaims extends AbstractMapData implements Claims {
 
     @JsonCreator
-    public DefaultClaims(Map<String, Object> map) {
+    DefaultClaims(Map<String, Object> map) {
         super(map);
     }
 }

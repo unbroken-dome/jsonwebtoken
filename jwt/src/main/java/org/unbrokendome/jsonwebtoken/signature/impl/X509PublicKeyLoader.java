@@ -3,6 +3,7 @@ package org.unbrokendome.jsonwebtoken.signature.impl;
 import org.unbrokendome.jsonwebtoken.IOSupplier;
 import org.unbrokendome.jsonwebtoken.signature.KeyLoader;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.security.KeyFactory;
 import java.security.PublicKey;
@@ -25,6 +26,7 @@ public class X509PublicKeyLoader implements KeyLoader<PublicKey> {
     }
 
 
+    @Nonnull
     @Override
     public PublicKey load(IOSupplier<byte[]> source) throws IOException, InvalidKeySpecException {
 

@@ -8,12 +8,12 @@ import nf.fr.eraasoft.pool.PoolableObject;
 import java.security.NoSuchAlgorithmException;
 
 
-public abstract class AbstractPooledAlgorithmProvider<T> implements AlgorithmProvider<T> {
+abstract class AbstractPooledAlgorithmProvider<T> implements AlgorithmProvider<T> {
 
     private final ObjectPool<T> pool;
 
 
-    protected AbstractPooledAlgorithmProvider(PoolableObject<T> poolable, PoolConfigurer poolConfigurer) {
+    AbstractPooledAlgorithmProvider(PoolableObject<T> poolable, PoolConfigurer poolConfigurer) {
         PoolSettings<T> poolSettings = new PoolSettings<>(poolable);
         poolConfigurer.configure(poolSettings);
 

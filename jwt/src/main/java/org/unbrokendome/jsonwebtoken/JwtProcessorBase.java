@@ -7,4 +7,5 @@ package org.unbrokendome.jsonwebtoken;
  * Do not use this type directly; it is only intended as a type constraint for generic types.
  */
 public interface JwtProcessorBase {
+
 }

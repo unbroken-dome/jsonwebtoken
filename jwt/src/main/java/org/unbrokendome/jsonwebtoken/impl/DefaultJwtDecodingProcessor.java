@@ -13,6 +13,7 @@ import org.unbrokendome.jsonwebtoken.signature.JwsUnsupportedAlgorithmException;
 import org.unbrokendome.jsonwebtoken.signature.VerificationKeyResolver;
 import org.unbrokendome.jsonwebtoken.signature.Verifier;
 
+import javax.annotation.Nonnull;
 import java.security.Key;
 import java.util.List;
 import java.util.Map;
@@ -26,10 +27,10 @@ public final class DefaultJwtDecodingProcessor implements JwtDecodingProcessor {
     private final JwsDecoder jwsDecoder;
 
 
-    public DefaultJwtDecodingProcessor(List<PayloadDeserializer<?>> payloadDeserializers,
-                                       Map<String, VerifierWithKeyResolver<?>> verifiers,
-                                       HeaderDeserializer headerDeserializer,
-                                       JwsDecoder jwsDecoder) {
+    DefaultJwtDecodingProcessor(List<PayloadDeserializer<?>> payloadDeserializers,
+                                Map<String, VerifierWithKeyResolver<?>> verifiers,
+                                HeaderDeserializer headerDeserializer,
+                                JwsDecoder jwsDecoder) {
         this.payloadDeserializers = payloadDeserializers;
         this.verifiers = verifiers;
         this.headerDeserializer = headerDeserializer;
@@ -38,6 +39,7 @@ public final class DefaultJwtDecodingProcessor implements JwtDecodingProcessor {
 
 
     @Override
+    @Nonnull
     public <T> T decode(String encodedToken, Class<T> payloadType) throws JwtMalformedTokenException,
             JwsUnsupportedAlgorithmException, JwsSignatureException {
         Jws jws = jwsDecoder.decode(encodedToken);
@@ -51,6 +53,7 @@ public final class DefaultJwtDecodingProcessor implements JwtDecodingProcessor {
     }
 
 
+    @Nonnull
     private <T> T deserializePayload(BinaryData payloadBytes, Class<T> payloadType) throws JwtMalformedTokenException {
         PayloadDeserializer<T> payloadSerializer = findPayloadSerializerForType(payloadType);
 
@@ -63,6 +66,7 @@ public final class DefaultJwtDecodingProcessor implements JwtDecodingProcessor {
 
 
     @SuppressWarnings("unchecked")
+    @Nonnull
     private <T> PayloadDeserializer<T> findPayloadSerializerForType(Class<T> payloadType) {
         PayloadDeserializer<?> payloadDeserializer = payloadDeserializers
                 .stream()
@@ -76,7 +80,7 @@ public final class DefaultJwtDecodingProcessor implements JwtDecodingProcessor {
     }
 
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({"rawtypes", "unchecked"})
     private void verifySignature(Jws jws, JoseHeader header, Object payload)
             throws JwsUnsupportedAlgorithmException, JwsSignatureException {
         VerifierWithKeyResolver<?> verifierWithKeyResolver = getVerifierAndKeyResolver(header);
@@ -90,6 +94,7 @@ public final class DefaultJwtDecodingProcessor implements JwtDecodingProcessor {
     }
 
 
+    @Nonnull
     private VerifierWithKeyResolver<?> getVerifierAndKeyResolver(JoseHeader header)
             throws JwsUnsupportedAlgorithmException {
         String algorithmName = header.getAlgorithm();

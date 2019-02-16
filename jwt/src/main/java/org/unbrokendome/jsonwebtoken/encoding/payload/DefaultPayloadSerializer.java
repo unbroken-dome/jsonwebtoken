@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.unbrokendome.jsonwebtoken.BinaryData;
 
+import javax.annotation.Nonnull;
+
 
 public final class DefaultPayloadSerializer implements PayloadSerializer {
 
@@ -22,6 +24,7 @@ public final class DefaultPayloadSerializer implements PayloadSerializer {
 
 
     @Override
+    @Nonnull
     public BinaryData serialize(Object payload) {
         try {
             byte[] payloadBytes = objectMapper.writeValueAsBytes(payload);

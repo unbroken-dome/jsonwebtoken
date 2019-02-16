@@ -13,7 +13,7 @@ abstract class AbstractAlgorithmPoolableObject<T> extends PoolableObjectBase<T> 
     private final String provider;
 
 
-    protected AbstractAlgorithmPoolableObject(String algorithm, @Nullable String provider) {
+    AbstractAlgorithmPoolableObject(String algorithm, @Nullable String provider) {
         this.algorithm = algorithm;
         this.provider = provider;
     }
@@ -30,7 +30,7 @@ abstract class AbstractAlgorithmPoolableObject<T> extends PoolableObjectBase<T> 
 
 
     @Override
-    public void activate(T t) throws PoolException {
+    public void activate(T t) {
     }
 
 

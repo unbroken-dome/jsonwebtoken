@@ -2,6 +2,8 @@ package org.unbrokendome.jsonwebtoken.signature;
 
 import org.unbrokendome.jsonwebtoken.JwtException;
 
+import javax.annotation.Nonnull;
+
 
 public class JwsUnsupportedAlgorithmException extends JwtException {
 
@@ -16,6 +18,7 @@ public class JwsUnsupportedAlgorithmException extends JwtException {
     }
 
 
+    @Nonnull
     public String getAlgorithmName() {
         return algorithmName;
     }

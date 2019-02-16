@@ -4,11 +4,8 @@ import org.unbrokendome.jsonwebtoken.BinaryData;
 import org.unbrokendome.jsonwebtoken.signature.NoneKey;
 import org.unbrokendome.jsonwebtoken.signature.Verifier;
 
-import javax.annotation.Nullable;
-import java.security.Key;
 
-
-public final class NoneVerifier implements Verifier<NoneKey> {
+final class NoneVerifier implements Verifier<NoneKey> {
 
     private static final NoneVerifier INSTANCE = new NoneVerifier();
 
@@ -17,7 +14,7 @@ public final class NoneVerifier implements Verifier<NoneKey> {
     }
 
 
-    public static NoneVerifier getInstance() {
+    static NoneVerifier getInstance() {
         return INSTANCE;
     }
 

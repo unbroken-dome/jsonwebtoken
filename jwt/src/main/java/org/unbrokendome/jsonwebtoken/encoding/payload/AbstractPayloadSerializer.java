@@ -2,14 +2,15 @@ package org.unbrokendome.jsonwebtoken.encoding.payload;
 
 import org.unbrokendome.jsonwebtoken.BinaryData;
 
+import javax.annotation.Nonnull;
 
-@SuppressWarnings("null")
-public abstract class AbstractPayloadSerializer<T> implements PayloadSerializer, PayloadDeserializer<T> {
+
+abstract class AbstractPayloadSerializer<T> implements PayloadSerializer, PayloadDeserializer<T> {
 
     private final Class<T> payloadType;
 
 
-    protected AbstractPayloadSerializer(Class<T> payloadType) {
+    AbstractPayloadSerializer(Class<T> payloadType) {
         this.payloadType = payloadType;
     }
 
@@ -22,10 +23,12 @@ public abstract class AbstractPayloadSerializer<T> implements PayloadSerializer,
 
     @SuppressWarnings("unchecked")
     @Override
+    @Nonnull
     public <U extends T> U deserialize(BinaryData rawPayload, Class<U> targetType) {
         return (U) deserialize(rawPayload);
     }
 
 
+    @Nonnull
     protected abstract T deserialize(BinaryData rawPayload);
 }

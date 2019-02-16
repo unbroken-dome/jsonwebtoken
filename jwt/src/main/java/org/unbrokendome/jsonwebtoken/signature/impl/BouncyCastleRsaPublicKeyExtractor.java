@@ -2,6 +2,7 @@ package org.unbrokendome.jsonwebtoken.signature.impl;
 
 import org.bouncycastle.jcajce.provider.asymmetric.rsa.BCRSAPrivateCrtKey;
 
+import javax.annotation.Nonnull;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -17,6 +18,7 @@ public class BouncyCastleRsaPublicKeyExtractor implements PublicKeyExtractor {
     }
 
 
+    @Nonnull
     @Override
     public PublicKey publicKeyFromPrivateKey(PrivateKey privateKey, KeyFactory keyFactory)
             throws InvalidKeySpecException {

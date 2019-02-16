@@ -6,6 +6,7 @@ import org.unbrokendome.jsonwebtoken.signature.SignatureAlgorithm;
 import org.unbrokendome.jsonwebtoken.signature.SignatureAlgorithms;
 import org.unbrokendome.jsonwebtoken.signature.VerificationKeyResolver;
 
+import javax.annotation.Nonnull;
 import java.security.Key;
 
 
@@ -30,6 +31,7 @@ public interface JwtDecodingProcessorBuilderBase<T extends JwtDecodingProcessor,
      * @param <TVerificationKey>      the type of the verification key; must be a subclass of {@link Key}
      * @return the current builder instance
      */
+    @Nonnull
     <TVerificationKey extends Key>
     B verifyWith(SignatureAlgorithm<?, TVerificationKey> algorithm,
                  VerificationKeyResolver<TVerificationKey> verificationKeyResolver);
@@ -44,6 +46,7 @@ public interface JwtDecodingProcessorBuilderBase<T extends JwtDecodingProcessor,
      * @param <TVerificationKey> the type of the verification key; must be a subclass of {@link Key}
      * @return the current builder instance
      */
+    @Nonnull
     default <TVerificationKey extends Key>
     B verifyWith(SignatureAlgorithm<?, TVerificationKey> algorithm, TVerificationKey verificationKey) {
         return verifyWith(algorithm, (VerificationKeyResolver<TVerificationKey>) ((h, p) -> verificationKey));
@@ -56,9 +59,10 @@ public interface JwtDecodingProcessorBuilderBase<T extends JwtDecodingProcessor,
      * This overload does not take a key parameter, and is intended for the {@code NONE} algorithm (which is the only
      * algorithm that does not require a key for verification).
      *
-     * @param algorithm          the signature algorithm to use; usually {@link SignatureAlgorithms#NONE}
+     * @param algorithm the signature algorithm to use; usually {@link SignatureAlgorithms#NONE}
      * @return the current builder instance
      */
+    @Nonnull
     default B verifyWith(SignatureAlgorithm<?, NoneKey> algorithm) {
         return verifyWith(algorithm, NoneKey.getInstance());
     }
@@ -73,6 +77,6 @@ public interface JwtDecodingProcessorBuilderBase<T extends JwtDecodingProcessor,
      * @param payloadDeserializer the custom {@link PayloadDeserializer} to register
      * @return the current builder instance
      */
+    @Nonnull
     B deserializePayloadWith(PayloadDeserializer<?> payloadDeserializer);
-
 }

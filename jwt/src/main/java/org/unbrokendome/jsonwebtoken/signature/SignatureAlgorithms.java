@@ -1,10 +1,11 @@
 package org.unbrokendome.jsonwebtoken.signature;
 
-import org.unbrokendome.jsonwebtoken.signature.impl.MacSignatureAlgorithm;
 import org.unbrokendome.jsonwebtoken.signature.impl.EllipticCurveSignatureAlgorithm;
+import org.unbrokendome.jsonwebtoken.signature.impl.MacSignatureAlgorithm;
 import org.unbrokendome.jsonwebtoken.signature.impl.NoneSignatureAlgorithm;
 import org.unbrokendome.jsonwebtoken.signature.impl.RSASignatureAlgorithm;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.crypto.SecretKey;
 import java.security.NoSuchProviderException;
@@ -32,100 +33,12 @@ public final class SignatureAlgorithms {
     public static final SignatureAlgorithm<PrivateKey, PublicKey> PS384 = getUnchecked(KnownAlgorithm.PS384);
     public static final SignatureAlgorithm<PrivateKey, PublicKey> PS512 = getUnchecked(KnownAlgorithm.PS512);
 
-    public enum KnownAlgorithm {
-        NONE {
-            @Override
-            SignatureAlgorithm<?, ?> getAlgorithm(@Nullable String provider) {
-                return NoneSignatureAlgorithm.getInstance();
-            }
-        },
-        HS256 {
-            @Override
-            SignatureAlgorithm<?, ?> getAlgorithm(@Nullable String provider) {
-                return new MacSignatureAlgorithm("HS256", "HmacSHA256", provider);
-            }
-        },
-        HS384 {
-            @Override
-            SignatureAlgorithm<?, ?> getAlgorithm(@Nullable String provider) {
-                return new MacSignatureAlgorithm("HS384", "HmacSHA384", provider);
-            }
-        },
-        HS512 {
-            @Override
-            SignatureAlgorithm<?, ?> getAlgorithm(@Nullable String provider) {
-                return new MacSignatureAlgorithm("HS512", "HmacSHA512", provider);
-            }
-        },
-        RS256 {
-            @Override
-            SignatureAlgorithm<?, ?> getAlgorithm(@Nullable String provider) {
-                return new RSASignatureAlgorithm("RS256", "SHA256withRSA",
-                        "RSA", provider);
-            }
-        },
-        RS384 {
-            @Override
-            SignatureAlgorithm<?, ?> getAlgorithm(@Nullable String provider) {
-                return new RSASignatureAlgorithm("RS384", "SHA384withRSA",
-                        "RSA", provider);
-            }
-        },
-        RS512 {
-            @Override
-            SignatureAlgorithm<?, ?> getAlgorithm(@Nullable String provider) {
-                return new RSASignatureAlgorithm("RS512", "SHA512withRSA",
-                        "RSA", provider);
-            }
-        },
-        ES256 {
-            @Override
-            SignatureAlgorithm<?, ?> getAlgorithm(@Nullable String provider) {
-                return new EllipticCurveSignatureAlgorithm("ES256", "SHA256withECDSA", provider);
-            }
-        },
-        ES384 {
-            @Override
-            SignatureAlgorithm<?, ?> getAlgorithm(@Nullable String provider) {
-                return new EllipticCurveSignatureAlgorithm("ES384", "SHA384withECDSA", provider);
-            }
-        },
-        ES512 {
-            @Override
-            SignatureAlgorithm<?, ?> getAlgorithm(@Nullable String provider) {
-                return new EllipticCurveSignatureAlgorithm("ES512", "SHA512withECDSA", provider);
-            }
-        },
-        PS256 {
-            @Override
-            SignatureAlgorithm<?, ?> getAlgorithm(@Nullable String provider) {
-                return new RSASignatureAlgorithm("PS256", "SHA256WITHRSAANDMGF1",
-                        "RSA", provider);
-            }
-        },
-        PS384 {
-            @Override
-            SignatureAlgorithm<?, ?> getAlgorithm(@Nullable String provider) {
-                return new RSASignatureAlgorithm("PS384", "SHA384WITHRSAANDMGF1",
-                        "RSA", provider);
-            }
-        },
-        PS512 {
-            @Override
-            SignatureAlgorithm<?, ?> getAlgorithm(@Nullable String provider) {
-                return new RSASignatureAlgorithm("PS512", "SHA512WITHRSAANDMGF1",
-                        "RSA", provider);
-            }
-        };
-
-        abstract SignatureAlgorithm<?, ?> getAlgorithm(@Nullable String provider);
-
-        final SignatureAlgorithm<?, ?> getAlgorithm() {
-            return getAlgorithm(null);
-        }
+    private SignatureAlgorithms() {
+        // Private constructor prevents instantiation
     }
 
 
+    @Nonnull
     public static SignatureAlgorithm<?, ?> get(KnownAlgorithm algorithm, String provider)
             throws NoSuchProviderException {
         if (Security.getProvider(provider) == null) {
@@ -135,11 +48,13 @@ public final class SignatureAlgorithms {
     }
 
 
+    @Nonnull
     public static SignatureAlgorithm<?, ?> get(KnownAlgorithm algorithm) {
         return algorithm.getAlgorithm();
     }
 
 
+    @Nonnull
     public static SignatureAlgorithm<?, ?> get(String jwaName, String provider)
             throws NoSuchProviderException {
         if (Security.getProvider(provider) == null) {
@@ -149,19 +64,127 @@ public final class SignatureAlgorithms {
     }
 
 
+    @Nonnull
     public static SignatureAlgorithm<?, ?> get(String jwaName) {
         return KnownAlgorithm.valueOf(jwaName).getAlgorithm();
     }
 
 
     @SuppressWarnings("unchecked")
+    @Nonnull
     private static <T extends SignatureAlgorithm<?, ?>>
     T getUnchecked(KnownAlgorithm algorithm) {
         return (T) algorithm.getAlgorithm();
     }
 
 
-    private SignatureAlgorithms() {
-        // Private constructor prevents instantiation
+    public enum KnownAlgorithm {
+        NONE {
+            @Nonnull
+            @Override
+            SignatureAlgorithm<?, ?> getAlgorithm(@Nullable String provider) {
+                return NoneSignatureAlgorithm.getInstance();
+            }
+        },
+        HS256 {
+            @Nonnull
+            @Override
+            SignatureAlgorithm<?, ?> getAlgorithm(@Nullable String provider) {
+                return new MacSignatureAlgorithm("HS256", "HmacSHA256", provider);
+            }
+        },
+        HS384 {
+            @Nonnull
+            @Override
+            SignatureAlgorithm<?, ?> getAlgorithm(@Nullable String provider) {
+                return new MacSignatureAlgorithm("HS384", "HmacSHA384", provider);
+            }
+        },
+        HS512 {
+            @Nonnull
+            @Override
+            SignatureAlgorithm<?, ?> getAlgorithm(@Nullable String provider) {
+                return new MacSignatureAlgorithm("HS512", "HmacSHA512", provider);
+            }
+        },
+        RS256 {
+            @Nonnull
+            @Override
+            SignatureAlgorithm<?, ?> getAlgorithm(@Nullable String provider) {
+                return new RSASignatureAlgorithm("RS256", "SHA256withRSA",
+                        "RSA", provider);
+            }
+        },
+        RS384 {
+            @Nonnull
+            @Override
+            SignatureAlgorithm<?, ?> getAlgorithm(@Nullable String provider) {
+                return new RSASignatureAlgorithm("RS384", "SHA384withRSA",
+                        "RSA", provider);
+            }
+        },
+        RS512 {
+            @Nonnull
+            @Override
+            SignatureAlgorithm<?, ?> getAlgorithm(@Nullable String provider) {
+                return new RSASignatureAlgorithm("RS512", "SHA512withRSA",
+                        "RSA", provider);
+            }
+        },
+        ES256 {
+            @Nonnull
+            @Override
+            SignatureAlgorithm<?, ?> getAlgorithm(@Nullable String provider) {
+                return new EllipticCurveSignatureAlgorithm("ES256", "SHA256withECDSA", provider);
+            }
+        },
+        ES384 {
+            @Nonnull
+            @Override
+            SignatureAlgorithm<?, ?> getAlgorithm(@Nullable String provider) {
+                return new EllipticCurveSignatureAlgorithm("ES384", "SHA384withECDSA", provider);
+            }
+        },
+        ES512 {
+            @Nonnull
+            @Override
+            SignatureAlgorithm<?, ?> getAlgorithm(@Nullable String provider) {
+                return new EllipticCurveSignatureAlgorithm("ES512", "SHA512withECDSA", provider);
+            }
+        },
+        PS256 {
+            @Nonnull
+            @Override
+            SignatureAlgorithm<?, ?> getAlgorithm(@Nullable String provider) {
+                return new RSASignatureAlgorithm("PS256", "SHA256WITHRSAANDMGF1",
+                        "RSA", provider);
+            }
+        },
+        PS384 {
+            @Nonnull
+            @Override
+            SignatureAlgorithm<?, ?> getAlgorithm(@Nullable String provider) {
+                return new RSASignatureAlgorithm("PS384", "SHA384WITHRSAANDMGF1",
+                        "RSA", provider);
+            }
+        },
+        PS512 {
+            @Nonnull
+            @Override
+            SignatureAlgorithm<?, ?> getAlgorithm(@Nullable String provider) {
+                return new RSASignatureAlgorithm("PS512", "SHA512WITHRSAANDMGF1",
+                        "RSA", provider);
+            }
+        };
+
+
+        @Nonnull
+        abstract SignatureAlgorithm<?, ?> getAlgorithm(@Nullable String provider);
+
+
+        @Nonnull
+        final SignatureAlgorithm<?, ?> getAlgorithm() {
+            return getAlgorithm(null);
+        }
     }
 }

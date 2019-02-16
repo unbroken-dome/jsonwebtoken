@@ -9,9 +9,9 @@ public interface ClaimsBuilder extends MapDataBuilder<ClaimsBuilder, Claims>, Cl
 
     /**
      * Sets the value of the issuer (<code>iss</code>) claim.
+     *
      * @param issuer the value of the issuer claim
      * @return the current {@link ClaimsBuilder} instance
-     *
      * @see Claims#getIssuer()
      */
     @Nonnull
@@ -22,9 +22,9 @@ public interface ClaimsBuilder extends MapDataBuilder<ClaimsBuilder, Claims>, Cl
 
     /**
      * Sets the value of the subject (<code>sub</code>) claim.
+     *
      * @param subject the value of the subject claim
      * @return the current {@link ClaimsBuilder} instance
-     *
      * @see Claims#getSubject()
      */
     @Nonnull
@@ -35,9 +35,9 @@ public interface ClaimsBuilder extends MapDataBuilder<ClaimsBuilder, Claims>, Cl
 
     /**
      * Sets the value of the audience (<code>aud</code>) claim to a single string.
+     *
      * @param audience the value of the audience claim
      * @return the current {@link ClaimsBuilder} instance
-     *
      * @see Claims#getAudience()
      */
     @Nonnull
@@ -48,9 +48,9 @@ public interface ClaimsBuilder extends MapDataBuilder<ClaimsBuilder, Claims>, Cl
 
     /**
      * Sets the value of the audience (<code>aud</code>) claim to a set of strings.
+     *
      * @param audiences the value of the audience claim
      * @return the current {@link ClaimsBuilder} instance
-     *
      * @see Claims#getAudiences()
      */
     @Nonnull
@@ -61,9 +61,9 @@ public interface ClaimsBuilder extends MapDataBuilder<ClaimsBuilder, Claims>, Cl
 
     /**
      * Sets the value of the expiration time (<code>exp</code>) claim.
+     *
      * @param expiration the value of the expiration time claim
      * @return the current {@link ClaimsBuilder} instance
-     *
      * @see Claims#getExpiration()
      */
     @Nonnull
@@ -74,9 +74,9 @@ public interface ClaimsBuilder extends MapDataBuilder<ClaimsBuilder, Claims>, Cl
 
     /**
      * Sets the value of the not-before (<code>nbf</code>) claim.
+     *
      * @param notBefore the value of the not-before claim
      * @return the current {@link ClaimsBuilder} instance
-     *
      * @see Claims#getNotBefore()
      */
     @Nonnull
@@ -87,9 +87,9 @@ public interface ClaimsBuilder extends MapDataBuilder<ClaimsBuilder, Claims>, Cl
 
     /**
      * Sets the value of the issued-at (<code>iat</code>) claim.
+     *
      * @param issuedAt the value of the issued-at claim
      * @return the current {@link ClaimsBuilder} instance
-     *
      * @see Claims#getIssuedAt()
      */
     @Nonnull
@@ -100,9 +100,9 @@ public interface ClaimsBuilder extends MapDataBuilder<ClaimsBuilder, Claims>, Cl
 
     /**
      * Sets the value of the JWT ID (<code>jti</code>) claim.
+     *
      * @param id the value of the JWT ID claim
      * @return the current {@link ClaimsBuilder} instance
-     *
      * @see Claims#getId()
      */
     @Nonnull

@@ -9,7 +9,7 @@ import java.util.Objects;
 
 /**
  * Stores a blob of binary data.
- *
+ * <p>
  * This is essentially a wrapper over {@link ByteBuffer} to ensure immutability.
  */
 public final class BinaryData {

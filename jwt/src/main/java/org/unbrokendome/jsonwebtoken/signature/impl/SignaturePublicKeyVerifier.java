@@ -17,14 +17,14 @@ import java.security.SignatureException;
  * Implementation of {@link org.unbrokendome.jsonwebtoken.signature.Verifier Verifier} that uses a {@link Signature}
  * algorithm and a public key.
  */
-public final class SignaturePublicKeyVerifier
+final class SignaturePublicKeyVerifier
         extends SecurityAlgorithmSupport<Signature>
         implements Verifier<PublicKey> {
 
     private static final byte[] ENCODED_SEPARATOR = ".".getBytes(StandardCharsets.UTF_8);
 
 
-    public SignaturePublicKeyVerifier(AlgorithmProvider<Signature> provider) {
+    SignaturePublicKeyVerifier(AlgorithmProvider<Signature> provider) {
         super(provider);
     }
 

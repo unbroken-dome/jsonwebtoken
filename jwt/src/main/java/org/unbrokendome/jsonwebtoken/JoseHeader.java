@@ -2,7 +2,7 @@ package org.unbrokendome.jsonwebtoken;
 
 /**
  * Represents a JOSE (JSON Object Signing and Encryption) token header.
- *
+ * <p>
  * A JOSE header is essentially a key-value collection, where the keys are well-known and standardized.
  * Commonly used headers are defined as constants in this interface.
  */

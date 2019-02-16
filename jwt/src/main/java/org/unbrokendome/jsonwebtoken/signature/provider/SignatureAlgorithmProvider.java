@@ -1,7 +1,9 @@
 package org.unbrokendome.jsonwebtoken.signature.provider;
 
 import javax.annotation.Nullable;
-import java.security.*;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.Signature;
 
 
 public final class SignatureAlgorithmProvider implements AlgorithmProvider<Signature> {

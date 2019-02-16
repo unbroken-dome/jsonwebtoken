@@ -1,5 +1,6 @@
 package org.unbrokendome.jsonwebtoken.signature.impl;
 
+import javax.annotation.Nonnull;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -16,6 +17,7 @@ public class JcaRSAPublicKeyExtractor implements PublicKeyExtractor {
     }
 
 
+    @Nonnull
     @Override
     public PublicKey publicKeyFromPrivateKey(PrivateKey privateKey, KeyFactory keyFactory)
             throws InvalidKeySpecException {
